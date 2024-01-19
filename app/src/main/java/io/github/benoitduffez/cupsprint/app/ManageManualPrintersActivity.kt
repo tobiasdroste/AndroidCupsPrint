@@ -63,8 +63,8 @@ class ManageManualPrintersActivity : AppCompatActivity() {
         return printers
     }
 
-    private class ManualPrinterInfo(internal var name: String, internal var url: String)
-    private class ManualPrinterInfoViews internal constructor(internal var name: TextView, internal var url: TextView)
+    private class ManualPrinterInfo(var name: String, var url: String)
+    private class ManualPrinterInfoViews(var name: TextView, var url: TextView)
 
     private class ManualPrintersAdapter(context: Context, @LayoutRes resource: Int, objects: List<ManualPrinterInfo>) : ArrayAdapter<ManualPrinterInfo>(context, resource, objects) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

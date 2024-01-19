@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.ViewGroup
-import io.github.benoitduffez.cupsprint.R
 import io.github.benoitduffez.cupsprint.databinding.BasicAuthBinding
 
 /**

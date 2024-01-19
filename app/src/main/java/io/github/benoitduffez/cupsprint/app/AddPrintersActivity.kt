@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 import android.view.View
 import io.github.benoitduffez.cupsprint.AppExecutors
@@ -64,7 +65,7 @@ class AddPrintersActivity : Activity() {
         // TODO: inform user?
 
         // Allow the system to process the new printer addition before we get back to the list of printers
-        Handler().postDelayed({ finish() }, 200)
+        Handler(Looper.getMainLooper()).postDelayed({ finish() }, 200)
     }
 
     fun searchPrinters(@Suppress("UNUSED_PARAMETER") button: View) {
@@ -122,16 +123,18 @@ class AddPrintersActivity : Activity() {
         var id = prefs.getInt(PREF_NUM_PRINTERS, 0)
         while (matcher.find()) {
             val path = matcher.group(1)
-            url = if (path.startsWith("/")) {
-                baseHost + path
-            } else {
-                baseUrl + path
+            if(path != null) {
+                url = if (path.startsWith("/")) {
+                    baseHost + path
+                } else {
+                    baseUrl + path
+                }
+                name = matcher.group(3) ?: "Unnamed"
+                Timber.d("saving printer from search on $scheme: $url")
+                editor.putString(PREF_URL + id, url)
+                editor.putString(PREF_NAME + id, name)
+                id++
             }
-            Timber.d("saving printer from search on $scheme: $url")
-            name = matcher.group(3)
-            editor.putString(PREF_URL + id, url)
-            editor.putString(PREF_NAME + id, name)
-            id++
         }
         editor.putInt(PREF_NUM_PRINTERS, id)
         editor.apply()
