@@ -8,7 +8,7 @@ import android.text.TextUtils
 import android.view.View
 import io.github.benoitduffez.cupsprint.AppExecutors
 import io.github.benoitduffez.cupsprint.R
-import kotlinx.android.synthetic.main.add_printers.*
+import io.github.benoitduffez.cupsprint.databinding.AddPrintersBinding
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.InputStreamReader
@@ -22,31 +22,33 @@ import java.util.regex.Pattern
  */
 class AddPrintersActivity : Activity() {
     private val executors: AppExecutors by inject()
+    private lateinit var binding: AddPrintersBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.add_printers)
+        binding = AddPrintersBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     /**
      * Called when the button will be clicked
      */
     fun addPrinter(@Suppress("UNUSED_PARAMETER") button: View) {
-        val url = add_url.text.toString()
-        val name = add_name.text.toString()
+        val url = binding.addUrl.text.toString()
+        val name = binding.addName.text.toString()
 
         if (TextUtils.isEmpty(name)) {
-            add_name.error = getString(R.string.err_add_printer_empty_name)
+            binding.addName.error = getString(R.string.err_add_printer_empty_name)
             return
         }
         if (TextUtils.isEmpty(url)) {
-            add_url.error = getString(R.string.err_add_printer_empty_url)
+            binding.addUrl.error = getString(R.string.err_add_printer_empty_url)
             return
         }
         try {
             URI(url)
         } catch (e: Exception) {
-            add_url.error = e.localizedMessage
+            binding.addUrl.error = e.localizedMessage
             return
         }
 
@@ -80,7 +82,7 @@ class AddPrintersActivity : Activity() {
     private fun searchPrinters(scheme: String) {
         var urlConnection: HttpURLConnection? = null
         val sb = StringBuilder()
-        var server = add_server_ip.text.toString()
+        var server = binding.addServerIp.text.toString()
         if (!server.contains(":")) {
             server += ":631"
         }

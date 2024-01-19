@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
 import io.github.benoitduffez.cupsprint.R
-import kotlinx.android.synthetic.main.host_not_verified.*
+import io.github.benoitduffez.cupsprint.databinding.HostNotVerifiedBinding
 
 /**
  * Ask for host trust when it couldn't be verified
@@ -13,16 +13,19 @@ import kotlinx.android.synthetic.main.host_not_verified.*
 class HostNotVerifiedActivity : Activity() {
     private var unverifiedHostname: String? = null
 
+    private lateinit var binding: HostNotVerifiedBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.host_not_verified)
+        binding = HostNotVerifiedBinding.inflate(layoutInflater)
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         unverifiedHostname = intent.getStringExtra(KEY_HOST)
-        host_not_verified_title.text = getString(R.string.host_not_verified_title, unverifiedHostname)
+        binding.hostNotVerifiedTitle.text = getString(R.string.host_not_verified_title, unverifiedHostname)
 
-        host_not_verified_trust_button.setOnClickListener { validateTrust(true) }
-        host_not_verified_abort_button.setOnClickListener { validateTrust(false) }
+        binding.hostNotVerifiedTrustButton.setOnClickListener { validateTrust(true) }
+        binding.hostNotVerifiedAbortButton.setOnClickListener { validateTrust(false) }
+        setContentView(binding.root)
     }
 
     /**

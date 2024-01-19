@@ -19,15 +19,14 @@ try {
 apply from: 'versioning.gradle'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.triplet.play'
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-    mavenCentral()
-}
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
+
+    buildFeatures {
+        viewBinding=true
+    }
+
     packagingOptions {
         resources {
             excludes += ['META-INF/LICENSE.txt', 'META-INF/NOTICE.txt']
@@ -35,8 +34,8 @@ android {
     }
     defaultConfig {
         applicationId "io.github.benoitduffez.cupsprint"
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion 23
+        targetSdkVersion 33
         versionCode buildVersionCode()
         versionName version
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -59,15 +58,17 @@ android {
             testCoverageEnabled true
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
     flavorDimensions "type"
     productFlavors {
-        fdroid {
-            dimension "type"
-            ext.useFabric = false
-        }
         playstore {
             dimension "type"
-            ext.useFabric = true
         }
     }
     namespace 'io.github.benoitduffez.cupsprint'
@@ -76,20 +77,15 @@ android {
 dependencies {
     implementation 'javax.jmdns:jmdns:3.4.1'
     implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'junit:junit:4.12'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22"
     implementation 'com.jakewharton.timber:timber:4.7.1'
     // Koin DI
-    implementation "org.koin:koin-core:${versions.koin}"
-    implementation "org.koin:koin-core-ext:${versions.koin}"
-    implementation "org.koin:koin-android:${versions.koin}"
-    apply plugin: 'kotlin-android-extensions'
+    implementation "io.insert-koin:koin-android:3.5.3"
 }
 
 apply plugin: 'jacoco'
@@ -109,20 +105,4 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
             "jacoco/testDebugUnitTest.exec",
             "outputs/code-coverage/connected/*coverage.ec"
     ]))
-}
-
-play {
-    def envTrack = System.getenv('PLAY_STORE_RELEASE_CHANNEL')
-    if ("production" == envTrack || "beta" == envTrack || "alpha" == envTrack || "rollout" == envTrack) {
-        track = envTrack
-    } else {
-        println "The PLAY_STORE_RELEASE_CHANNEL environment variable is invalid, it was ignored"
-    }
-    jsonFile = rootProject.file('GooglePlayAPI.json')
-}
-
-android.productFlavors.each {
-    flavor -> if (getGradle().getStartParameter().getTaskRequests().toString().toLowerCase().contains(flavor.name) && flavor.ext.useFabric){
-        apply plugin: 'io.fabric'
-    }
 }
