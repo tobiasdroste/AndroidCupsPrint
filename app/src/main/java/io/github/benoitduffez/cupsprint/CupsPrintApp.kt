@@ -7,9 +7,6 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import timber.log.Timber
 
-val applicationModule = module {
-    single { AppExecutors() }
-}
 
 class CupsPrintApp : Application() {
 
@@ -23,7 +20,6 @@ class CupsPrintApp : Application() {
         startKoin{
             androidLogger()
             androidContext(this@CupsPrintApp)
-            modules(applicationModule)
         }
     }
 }

@@ -1,16 +1,20 @@
 package io.github.benoitduffez.cupsprint.app
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.view.View
-import io.github.benoitduffez.cupsprint.AppExecutors
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import io.github.benoitduffez.cupsprint.R
 import io.github.benoitduffez.cupsprint.databinding.AddPrintersBinding
-import org.koin.android.ext.android.inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -21,8 +25,7 @@ import java.util.regex.Pattern
 /**
  * Called when the system needs to manually add a printer
  */
-class AddPrintersActivity : Activity() {
-    private val executors: AppExecutors by inject()
+class AddPrintersActivity : AppCompatActivity() {
     private lateinit var binding: AddPrintersBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,18 +72,31 @@ class AddPrintersActivity : Activity() {
     }
 
     fun searchPrinters(@Suppress("UNUSED_PARAMETER") button: View) {
-        executors.networkIO.execute {
-            searchPrinters("http")
-            searchPrinters("https")
+        lifecycleScope.launch {
+            val foundPrinters = withContext(Dispatchers.IO) {
+                searchPrinters("http") + searchPrinters("https")
+            }
+
+            withContext(Dispatchers.Main) {
+                snackFoundPrintersCount(foundPrinters)
+                finish()
+            }
         }
+    }
+
+    private suspend fun snackFoundPrintersCount(count: Int) {
+        val snackDurationInMs = 5000
+        Snackbar.make(binding.root, "Added $count printers.", snackDurationInMs).show()
+        delay(snackDurationInMs.toLong())
     }
 
     /**
      * Will search for printers at the scheme://xxx/printers/ URL
      *
      * @param scheme The target scheme, http or https
+     * @return found printers
      */
-    private fun searchPrinters(scheme: String) {
+    private fun searchPrinters(scheme: String): Int {
         var urlConnection: HttpURLConnection? = null
         val sb = StringBuilder()
         var server = binding.addServerIp.text.toString()
@@ -100,7 +116,7 @@ class AddPrintersActivity : Activity() {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return
+            return 0
         } finally {
             urlConnection?.disconnect()
         }
@@ -114,16 +130,18 @@ class AddPrintersActivity : Activity() {
          * 6: Current state
          * pattern matching fields:                       1          2                  3               4                5              6
          */
-        val p = Pattern.compile("<TR><TD><A HREF=\"([^\"]+)\">([^<]*)</A></TD><TD>([^<]*)</TD><TD>([^<]*)</TD><TD>([^<]*)</TD><TD>([^<]*)</TD></TR>\n")
+        val p =
+            Pattern.compile("<TR><TD><A HREF=\"([^\"]+)\">([^<]*)</A></TD><TD>([^<]*)</TD><TD>([^<]*)</TD><TD>([^<]*)</TD><TD>([^<]*)</TD></TR>\n")
         val matcher = p.matcher(sb)
         var url: String
         var name: String
         val prefs = getSharedPreferences(SHARED_PREFS_MANUAL_PRINTERS, Context.MODE_PRIVATE)
         val editor = prefs.edit()
+        var foundPrinters = 0
         var id = prefs.getInt(PREF_NUM_PRINTERS, 0)
         while (matcher.find()) {
             val path = matcher.group(1)
-            if(path != null) {
+            if (path != null) {
                 url = if (path.startsWith("/")) {
                     baseHost + path
                 } else {
@@ -134,10 +152,12 @@ class AddPrintersActivity : Activity() {
                 editor.putString(PREF_URL + id, url)
                 editor.putString(PREF_NAME + id, name)
                 id++
+                foundPrinters++
             }
         }
         editor.putInt(PREF_NUM_PRINTERS, id)
         editor.apply()
+        return foundPrinters
     }
 
     companion object {

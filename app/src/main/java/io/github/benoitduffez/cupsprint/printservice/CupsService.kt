@@ -1,18 +1,22 @@
 package io.github.benoitduffez.cupsprint.printservice
 
 import android.os.Handler
+import android.os.Looper
 import android.os.ParcelFileDescriptor
 import android.print.PrintJobId
 import android.printservice.PrintJob
 import android.printservice.PrintService
 import android.printservice.PrinterDiscoverySession
 import android.widget.Toast
-import io.github.benoitduffez.cupsprint.AppExecutors
 import io.github.benoitduffez.cupsprint.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cups4j.CupsClient
 import org.cups4j.CupsPrinter
 import org.cups4j.JobStateEnum
-import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -22,7 +26,6 @@ import java.net.SocketTimeoutException
 import java.net.URI
 import java.net.URISyntaxException
 import java.net.URL
-import java.util.HashMap
 import javax.net.ssl.SSLException
 
 /**
@@ -34,11 +37,14 @@ private const val JOB_CHECK_POLLING_INTERVAL = 5000
  * CUPS print service
  */
 class CupsService : PrintService() {
-    private val executors: AppExecutors by inject()
+
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.IO + job)
+
     private val jobs = HashMap<PrintJobId, Int>()
 
-    override fun onCreatePrinterDiscoverySession(): PrinterDiscoverySession? =
-            CupsPrinterDiscoverySession(this)
+    override fun onCreatePrinterDiscoverySession(): PrinterDiscoverySession =
+        CupsPrinterDiscoverySession(this)
 
     override fun onRequestCancelPrintJob(printJob: PrintJob) {
         val jobInfo = printJob.info
@@ -66,10 +72,12 @@ class CupsService : PrintService() {
             val schemeHostPort = tmpUri.scheme + "://" + tmpUri.host + ":" + tmpUri.port
 
             val clientURL = URL(schemeHostPort)
-            executors.networkIO.execute {
+
+            scope.launch {
                 cancelPrintJob(clientURL, jobId)
-                executors.mainThread.execute { onPrintJobCancelled(printJob) }
+                onPrintJobCancelled(printJob)
             }
+
         } catch (e: MalformedURLException) {
             Timber.e(e, "Couldn't cancel print job: $printJob, jobId: $jobId")
         } catch (e: URISyntaxException) {
@@ -83,9 +91,9 @@ class CupsService : PrintService() {
      * @param clientURL The printer client URL
      * @param jobId     The printer job ID
      */
-    private fun cancelPrintJob(clientURL: URL, jobId: Int) {
+    private suspend fun cancelPrintJob(clientURL: URL, jobId: Int) = withContext(Dispatchers.IO) {
         try {
-            val client = CupsClient(this, clientURL)
+            val client = CupsClient(this@CupsService, clientURL)
             client.cancelJob(jobId)
         } catch (e: Exception) {
             Timber.e(e, "Couldn't cancel job: $jobId")
@@ -97,7 +105,7 @@ class CupsService : PrintService() {
      *
      * @param printJob The print job
      */
-    private fun onPrintJobCancelled(printJob: PrintJob) {
+    private suspend fun onPrintJobCancelled(printJob: PrintJob) = withContext(Dispatchers.Main) {
         jobs.remove(printJob.id)
         printJob.cancel()
     }
@@ -127,13 +135,13 @@ class CupsService : PrintService() {
             }
             val jobId = printJob.id
 
-            // Send print job
-            executors.networkIO.execute {
+            scope.launch {
+                // Send print job
                 try {
                     printDocument(jobId, clientURL, printerURL, data)
-                    executors.mainThread.execute { onPrintJobSent(printJob) }
+                    onPrintJobSent(printJob)
                 } catch (e: Exception) {
-                    executors.mainThread.execute { handleJobException(printJob, e) }
+                    handleJobException(printJob, e)
                 } finally {
                     // Close the file descriptor, after printing
                     try {
@@ -159,36 +167,48 @@ class CupsService : PrintService() {
      * @param printJob The print job
      * @param e     The exception that occurred
      */
-    private fun handleJobException(printJob: PrintJob, e: Exception) {
-        when (e) {
-            is SocketTimeoutException -> {
-                printJob.fail(getString(R.string.err_job_socket_timeout))
-                Toast.makeText(this, R.string.err_job_socket_timeout, Toast.LENGTH_LONG).show()
-            }
-            is NullPrinterException -> {
-                printJob.fail(getString(R.string.err_printer_null_when_printing))
-                Toast.makeText(this, R.string.err_printer_null_when_printing, Toast.LENGTH_LONG).show()
-            }
-            else -> {
-                val jobId = printJob.id
-                val errorMsg = getString(R.string.err_job_exception, jobId.toString(), e.localizedMessage)
-                printJob.fail(errorMsg)
-                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show()
-                if (e is SSLException && e.message?.contains("I/O error during system call, Broken pipe") == true) {
-                    // Don't send this crash report: https://github.com/BenoitDuffez/AndroidCupsPrint/issues/70
-                    Timber.e("Couldn't query job $jobId")
-                } else {
-                    Timber.e(e, "Couldn't query job $jobId")
+    private suspend fun handleJobException(printJob: PrintJob, e: Exception) =
+        withContext(Dispatchers.Main) {
+            when (e) {
+                is SocketTimeoutException -> {
+                    printJob.fail(getString(R.string.err_job_socket_timeout))
+                    Toast.makeText(
+                        this@CupsService,
+                        R.string.err_job_socket_timeout,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                is NullPrinterException -> {
+                    printJob.fail(getString(R.string.err_printer_null_when_printing))
+                    Toast.makeText(
+                        this@CupsService,
+                        R.string.err_printer_null_when_printing,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                else -> {
+                    val jobId = printJob.id
+                    val errorMsg =
+                        getString(R.string.err_job_exception, jobId.toString(), e.localizedMessage)
+                    printJob.fail(errorMsg)
+                    Toast.makeText(this@CupsService, errorMsg, Toast.LENGTH_LONG).show()
+                    if (e is SSLException && e.message?.contains("I/O error during system call, Broken pipe") == true) {
+                        // Don't send this crash report: https://github.com/BenoitDuffez/AndroidCupsPrint/issues/70
+                        Timber.e("Couldn't query job $jobId")
+                    } else {
+                        Timber.e(e, "Couldn't query job $jobId")
+                    }
                 }
             }
         }
-    }
 
     private fun startPolling(printJob: PrintJob) {
-        Handler().postDelayed(object : Runnable {
+        Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
             override fun run() {
                 if (updateJobStatus(printJob)) {
-                    Handler().postDelayed(this, JOB_CHECK_POLLING_INTERVAL.toLong())
+                    Handler(Looper.getMainLooper()).postDelayed(this, JOB_CHECK_POLLING_INTERVAL.toLong())
                 }
             }
         }, JOB_CHECK_POLLING_INTERVAL.toLong())
@@ -232,12 +252,12 @@ class CupsService : PrintService() {
         }
 
         // Send print job
-        executors.networkIO.execute {
+        scope.launch {
             try {
                 val jobState = getJobState(jobId, clientURL)
-                executors.mainThread.execute { onJobStateUpdate(printJob, jobState) }
+                onJobStateUpdate(printJob, jobState)
             } catch (e: Exception) {
-                executors.mainThread.execute {
+                withContext(Dispatchers.Main) {
                     jobs.remove(printJob.id)
                     Timber.e("Couldn't get job: $jobId state because: $e")
 
@@ -245,12 +265,22 @@ class CupsService : PrintService() {
                         (e is SocketException || e is SocketTimeoutException)
                                 && e.message?.contains("ECONNRESET") == true -> {
                             printJob.fail(getString(R.string.err_job_econnreset, jobId))
-                            Toast.makeText(this@CupsService, getString(R.string.err_job_econnreset, jobId), Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this@CupsService,
+                                getString(R.string.err_job_econnreset, jobId),
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
+
                         e is FileNotFoundException -> {
                             printJob.fail(getString(R.string.err_job_not_found, jobId))
-                            Toast.makeText(this@CupsService, getString(R.string.err_job_not_found, jobId), Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this@CupsService,
+                                getString(R.string.err_job_not_found, jobId),
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
+
                         e is NullPointerException -> printJob.complete()
                         else -> {
                             printJob.fail(e.localizedMessage)
@@ -274,11 +304,12 @@ class CupsService : PrintService() {
      * @return true if the job is complete/aborted/cancelled, false if it's still processing (printing, paused, etc)
      */
     @Throws(Exception::class)
-    private fun getJobState(jobId: Int, clientURL: URL): JobStateEnum {
-        val client = CupsClient(this, clientURL)
-        val attr = client.getJobAttributes(jobId)
-        return attr.jobState!!
-    }
+    private suspend fun getJobState(jobId: Int, clientURL: URL): JobStateEnum =
+        withContext(Dispatchers.IO) {
+            val client = CupsClient(this@CupsService, clientURL)
+            val attr = client.getJobAttributes(jobId)
+            return@withContext attr.jobState!!
+        }
 
     /**
      * Called on the main thread, when a job status has been checked
@@ -286,18 +317,24 @@ class CupsService : PrintService() {
      * @param printJob The print job
      * @param state    Print job state
      */
-    private fun onJobStateUpdate(printJob: PrintJob, state: JobStateEnum?) {
-        // Couldn't check state -- don't do anything
-        if (state == null) {
-            jobs.remove(printJob.id)
-            printJob.cancel()
-        } else {
-            if (state == JobStateEnum.CANCELED) {
-                jobs.remove(printJob.id)
-                printJob.cancel()
-            } else if (state == JobStateEnum.COMPLETED || state == JobStateEnum.ABORTED) {
-                jobs.remove(printJob.id)
-                printJob.complete()
+    private suspend fun onJobStateUpdate(printJob: PrintJob, state: JobStateEnum?) {
+        withContext(Dispatchers.Main) {
+            // Couldn't check state -- don't do anything
+            when (state) {
+                null -> {
+                    jobs.remove(printJob.id)
+                    printJob.cancel()
+                }
+                JobStateEnum.CANCELED -> {
+                    jobs.remove(printJob.id)
+                    printJob.cancel()
+                }
+                JobStateEnum.COMPLETED, JobStateEnum.ABORTED -> {
+                    jobs.remove(printJob.id)
+                    printJob.complete()
+                }
+
+                else -> {}
             }
         }
     }
@@ -310,8 +347,13 @@ class CupsService : PrintService() {
      * @param fd         The document to print, as a [ParcelFileDescriptor]
      */
     @Throws(Exception::class)
-    internal fun printDocument(jobId: PrintJobId, clientURL: URL, printerURL: URL, fd: ParcelFileDescriptor) {
-        val client = CupsClient(this, clientURL)
+    internal suspend fun printDocument(
+        jobId: PrintJobId,
+        clientURL: URL,
+        printerURL: URL,
+        fd: ParcelFileDescriptor
+    ) = withContext(Dispatchers.IO) {
+        val client = CupsClient(this@CupsService, clientURL)
         val printer = client.getPrinter(printerURL)?.let { printer ->
             val cupsPrinter = CupsPrinter(printerURL, printer.name, true)
             cupsPrinter.location = printer.location
@@ -320,7 +362,7 @@ class CupsService : PrintService() {
 
         val doc = ParcelFileDescriptor.AutoCloseInputStream(fd)
         val job = org.cups4j.PrintJob.Builder(doc).build()
-        val result = printer?.print(job, this) ?: throw NullPrinterException()
+        val result = printer?.print(job, this@CupsService) ?: throw NullPrinterException()
         jobs[jobId] = result.jobId
     }
 
@@ -329,9 +371,10 @@ class CupsService : PrintService() {
      *
      * @param printJob The print job
      */
-    private fun onPrintJobSent(printJob: PrintJob) {
+    private suspend fun onPrintJobSent(printJob: PrintJob) = withContext(Dispatchers.Main) {
         startPolling(printJob)
     }
 
-    private class NullPrinterException internal constructor() : Exception("Printer is null when trying to print: printer no longer available?")
+    private class NullPrinterException :
+        Exception("Printer is null when trying to print: printer no longer available?")
 }
