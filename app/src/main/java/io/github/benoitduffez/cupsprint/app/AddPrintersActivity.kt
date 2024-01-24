@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import io.github.benoitduffez.cupsprint.R
 import io.github.benoitduffez.cupsprint.databinding.AddPrintersBinding
+import io.github.benoitduffez.cupsprint.printservice.CupsPrinterDiscoverySession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -76,7 +77,9 @@ class AddPrintersActivity : AppCompatActivity() {
             val foundPrinters = withContext(Dispatchers.IO) {
                 searchPrinters("http") + searchPrinters("https")
             }
-
+            CupsPrinterDiscoverySession.currentSession?.let {
+                it.addManualPrinters()
+            }
             withContext(Dispatchers.Main) {
                 snackFoundPrintersCount(foundPrinters)
                 finish()

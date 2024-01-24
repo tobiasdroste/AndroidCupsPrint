@@ -6,6 +6,7 @@ import android.print.PrintAttributes
 import android.print.PrinterCapabilitiesInfo
 import android.print.PrinterId
 import android.print.PrinterInfo
+import android.print.PrinterInfo.STATUS_UNAVAILABLE
 import android.printservice.PrintService
 import android.printservice.PrinterDiscoverySession
 import android.text.TextUtils
@@ -51,6 +52,11 @@ import kotlin.math.min
  */
 internal class CupsPrinterDiscoverySession(private val printService: PrintService) :
     PrinterDiscoverySession() {
+
+    init {
+        currentSession = this
+    }
+
     private var responseCode: Int = 0
     private var serverCerts: Array<X509Certificate>? =
         null // If the server sends a non-trusted cert, it will be stored here
@@ -61,11 +67,10 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
         0.9f,
         4
     ) // Threadsafe access for 4 threads to ippOperation in PrinterStateTracking
+
     @Volatile
     private var mdnsPrinterDiscovery: MdnsServices? =
         null // Threadsafe access to mdnsService at PrinterDiscovery
-    @Volatile
-    private var runningPrinterDiscovery: Boolean = false // Threadsafe state of PrinterDiscovery
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
@@ -77,15 +82,25 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
      * @param priorityList The list of printers that the user selected sometime in the past, that need to be checked first
      */
     override fun onStartPrinterDiscovery(priorityList: List<PrinterId>) {
+
+        // Add a dummy printer when no printers are available
+        if (getPrinters().size == 0) {
+            addPrinters(
+                listOf(
+                    PrinterInfo.Builder(
+                        printService.generatePrinterId("DUMMY"),
+                        "Dummy Printer to prevent framework bug.",
+                        STATUS_UNAVAILABLE
+                    ).build()
+                )
+            )
+        }
+
         // ToDo: Use the priorityList
 
         scope.launch {
-            runningPrinterDiscovery = true
             val printers = scanPrinters()
-            if (runningPrinterDiscovery) {
-                onPrintersDiscovered(printers)
-            }
-            runningPrinterDiscovery = false
+            onPrintersDiscovered(printers)
         }
     }
 
@@ -95,28 +110,27 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
      *
      * @param printers The list of printers found, as a map of URL=>name
      */
-    private fun onPrintersDiscovered(printers: Map<String, String>) {
-        Timber.d("onPrintersDiscovered($printers)")
+    private suspend fun onPrintersDiscovered(printers: Map<String, String>) =
+        withContext(Dispatchers.Main) {
+            Timber.d("onPrintersDiscovered($printers)")
 
-        val res = printService.applicationContext.resources
-        val toast =
-            res.getQuantityString(R.plurals.printer_discovery_result, printers.size, printers.size)
-        Toast.makeText(printService, toast, Toast.LENGTH_SHORT).show()
+            val res = printService.applicationContext.resources
+            val toast =
+                res.getQuantityString(
+                    R.plurals.printer_discovery_result,
+                    printers.size,
+                    printers.size
+                )
+            Toast.makeText(printService, toast, Toast.LENGTH_SHORT).show()
 
-        val printersInfo = ArrayList<PrinterInfo>(printers.size)
-        for (url in printers.keys) {
-            val printerId = printService.generatePrinterId(url)
-            printersInfo.add(
+            addPrinters(printers.map {
                 PrinterInfo.Builder(
-                    printerId,
-                    printers[url]!!,
+                    printService.generatePrinterId(it.key),
+                    it.value,
                     PrinterInfo.STATUS_IDLE
                 ).build()
-            )
+            })
         }
-
-        addPrinters(printersInfo)
-    }
 
     /**
      * Ran in the background thread, will check whether a printer is valid
@@ -126,7 +140,7 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
     @Throws(Exception::class)
     suspend fun checkPrinter(url: String?, printerId: PrinterId): PrinterCapabilitiesInfo? =
         withContext(Dispatchers.IO) {
-            if (url == null || !url.startsWith("http://") && !url.startsWith("https://")) {
+            if (url == null || (!url.startsWith("http://") && !url.startsWith("https://"))) {
                 return@withContext null
             }
             val printerURL = URL(url)
@@ -328,32 +342,24 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
         printerCapabilitiesInfo: PrinterCapabilitiesInfo?
     ) = withContext(Dispatchers.Main) {
         Timber.d("onPrinterChecked: $printerId (printers: $printers), cap: $printerCapabilitiesInfo")
-        if (printerCapabilitiesInfo == null) {
-            val printerIds = ArrayList<PrinterId>()
-            printerIds.add(printerId)
-            removePrinters(printerIds)
+        if (printerCapabilitiesInfo != null) {
+            printers.firstOrNull { it.id == printerId }?.let {
+                addPrinters(
+                    listOf(
+                        PrinterInfo.Builder(it.id, it.name, PrinterInfo.STATUS_IDLE)
+                            .setCapabilities(printerCapabilitiesInfo)
+                            .build()
+                    )
+                )
+            }
+        } else {
+            removePrinters(listOf(printerId))
             Toast.makeText(
                 printService,
                 printService.getString(R.string.printer_not_responding, printerId.localId),
                 Toast.LENGTH_LONG
             ).show()
             Timber.d("onPrinterChecked: Printer has no cap, removing it from the list")
-        } else {
-            val printers = ArrayList<PrinterInfo>()
-            for (printer in getPrinters()) {
-                if (printer.id == printerId) {
-                    val printerWithCaps =
-                        PrinterInfo.Builder(printerId, printer.name, PrinterInfo.STATUS_IDLE)
-                            .setCapabilities(printerCapabilitiesInfo)
-                            .build()
-                    Timber.d("onPrinterChecked: adding printer: $printerWithCaps")
-                    printers.add(printerWithCaps)
-                } else {
-                    printers.add(printer)
-                }
-            }
-            Timber.d("onPrinterChecked: we had ${getPrinters().size}printers, we now have ${printers.size}")
-            addPrinters(printers)
         }
     }
 
@@ -364,34 +370,31 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
      */
     private suspend fun scanPrinters(): Map<String, String> = withContext(Dispatchers.IO) {
         Timber.d("Scanning for printers using mDNS, and add manual printers...")
-
-        val printers = HashMap<String, String>()
-        scanMDnsPrinters(printers)
-        addManualPrinters(printers)
-
-        return@withContext printers
+        return@withContext scanMDnsPrinters() + getManualPrinters()
     }
 
     /**
      * Perform mDNS scan and add valid printers
      */
-    private fun scanMDnsPrinters(printers: HashMap<String, String>) {
+    private fun scanMDnsPrinters(): Map<String, String> {
         val mdns = MdnsServices()
         mdnsPrinterDiscovery = mdns
         val result = mdns.scan()
         mdnsPrinterDiscovery = null
+        val printers = mutableMapOf<String, String>()
         result.printers?.forEach { rec ->
             val mDnsUrl =
                 rec.protocol + "://" + rec.host + ":" + rec.port + "/printers/" + rec.queue
             printers[mDnsUrl] = rec.nickname
             Timber.d("mDNS scan found printer ${rec.nickname} at URL: $mDnsUrl")
         }
+        return printers
     }
 
     /**
      * Add the printers that were manually entered from the app launcher activity
      */
-    private fun addManualPrinters(printers: HashMap<String, String>) {
+    private fun getManualPrinters(): MutableMap<String, String> {
         val prefs = printService.getSharedPreferences(
             AddPrintersActivity.SHARED_PREFS_MANUAL_PRINTERS,
             Context.MODE_PRIVATE
@@ -399,6 +402,9 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
         val numPrinters = prefs.getInt(AddPrintersActivity.PREF_NUM_PRINTERS, 0)
         var name: String?
         var url: String?
+
+        val printers = mutableMapOf<String, String>()
+
         for (i in 0 until numPrinters) {
             url = prefs.getString(AddPrintersActivity.PREF_URL + i, null)
             name = prefs.getString(AddPrintersActivity.PREF_NAME + i, null)
@@ -421,10 +427,10 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
                 }
             }
         }
+        return printers
     }
 
     override fun onStopPrinterDiscovery() {
-        runningPrinterDiscovery = false
         mdnsPrinterDiscovery?.stop()
     }
 
@@ -477,7 +483,11 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
     ): Boolean = withContext(Dispatchers.Main) {
         // Happens when the HTTP response code is in the 4xx range
         when {
-            exception is FileNotFoundException -> return@withContext handleHttpError(exception, printerId)
+            exception is FileNotFoundException -> return@withContext handleHttpError(
+                exception,
+                printerId
+            )
+
             exception is SSLPeerUnverifiedException || exception is IOException && exception.message != null && exception.message?.contains(
                 "not verified"
             ) == true -> {
@@ -582,9 +592,17 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
 
     override fun onDestroy() {
         job.cancel()
+        currentSession = null
+    }
+
+    suspend fun addManualPrinters() {
+        onPrintersDiscovered(getManualPrinters())
     }
 
     companion object {
+
+        var currentSession: CupsPrinterDiscoverySession? = null
+
         private const val HTTP_UPGRADE_REQUIRED = 426
         private const val MM_IN_MILS = 39.3700787
         private val REQUIRED_ATTRIBUTES = arrayOf(
