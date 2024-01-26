@@ -11,8 +11,9 @@
     <string name="add_server_ip">IP-адрес сервера или имя хоста</string>
     <string name="add_autodetect">Вы можете либо автоматически определить принтеры с вашего сервера, введя его IP-адрес или введя имя хоста ниже</string>
     <plurals name="printer_discovery_result">
-        <item quantity="zero">Поиск не нашел принтер</item>
         <item quantity="one">Найден %d принтер</item>
+        <item quantity="few">Найдено %d принтера</item>
+        <item quantity="many">Найдено %d принтеров</item>
         <item quantity="other">Найдено %d принтеров</item>
     </plurals>
     <string name="printer_not_responding">Принтер не отвечает. Пожалуйста, проверьте, включен и доступен ли он по адресу %1$s</string>
@@ -21,17 +22,6 @@
     <string name="err_add_printer_empty_url">URL-адрес принтера не может быть пустым</string>
     <string name="untrusted_title">Ненадежное SSL-соединение</string>
     <string name="untrusted_info">Ваш сервер отправил сертификат, которому не доверяет ваше устройство. Пожалуйста, просмотрите информацию о сертификате ниже и выберите, согласны ли вы доверять ему или нет:</string>
-    <string name="untrusted_certinfo"
-            translatable="false">
-        Issuer: CN=test-server\n
-        Validity\n
-        Not Before: Aug 21 19:36:21 2016 GMT\n
-        Not After : Aug 19 19:36:21 2026 GMT\n
-        Subject: CN=test-server\n
-        Subject Public Key Info:\n
-        Public Key Algorithm: rsaEncryption\n
-        Public-Key: (2048 bit)\n
-    </string>
     <string name="untrusted_trust_button">Доверенное соединение</string>
     <string name="untrusted_abort_button">Прервать соединение</string>
     <string name="untrusted_trusted">Сертификаты добавлены в список доверенных. Пожалуйста, повторите попытку с этим принтером.</string>

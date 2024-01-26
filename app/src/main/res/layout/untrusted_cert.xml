@@ -30,7 +30,7 @@
         android:layout_below="@+id/untrusted_info"
         android:fontFamily="monospace"
         android:padding="8dp"
-        android:text="@string/untrusted_certinfo"/>
+        android:text="@string/untrusted_certificate_info"/>
 
     <View
         android:id="@+id/untrusted_bottom_anchor"
@@ -42,7 +42,7 @@
 
     <Button
         android:id="@+id/untrusted_trust_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/untrusted_bottom_anchor"
@@ -50,7 +50,7 @@
 
     <Button
         android:id="@+id/untrusted_abort_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/untrusted_bottom_anchor"

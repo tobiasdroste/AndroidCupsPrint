@@ -26,7 +26,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/basic_auth_login"
         android:inputType="textPersonName"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:autofillHints="username" />
 
     <EditText
         android:id="@+id/basic_auth_password"
@@ -34,7 +35,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/basic_auth_password"
         android:inputType="textPassword"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:autofillHints="password" />
 
     <Button
         android:id="@+id/basic_auth_button"

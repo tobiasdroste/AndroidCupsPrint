@@ -25,7 +25,7 @@ class Tag {
     var value: String
     var name: String
     var description: String? = null
-    var max: Short? = null
+    private var max: Short? = null
 
     constructor(value: String, name: String) {
         this.value = value

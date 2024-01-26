@@ -23,10 +23,10 @@
         tools:targetApi="o" />
 
     <Button
+        android:id="@+id/search_printers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:onClick="searchPrinters"
         android:text="@string/add_search_button" />
 
     <TextView
@@ -55,9 +55,9 @@
         tools:targetApi="o" />
 
     <Button
+        android:id="@+id/add_printer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="addPrinter"
         android:text="@string/add_button" />
 
 </LinearLayout>

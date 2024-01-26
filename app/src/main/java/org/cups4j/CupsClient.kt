@@ -27,15 +27,11 @@ package org.cups4j
 import android.content.Context
 import org.cups4j.operations.cups.CupsGetDefaultOperation
 import org.cups4j.operations.cups.CupsGetPrintersOperation
-import org.cups4j.operations.cups.CupsMoveJobOperation
 import org.cups4j.operations.ipp.IppCancelJobOperation
 import org.cups4j.operations.ipp.IppGetJobAttributesOperation
-import org.cups4j.operations.ipp.IppGetJobsOperation
-import org.cups4j.operations.ipp.IppHoldJobOperation
-import org.cups4j.operations.ipp.IppReleaseJobOperation
+import timber.log.Timber
 import java.net.URL
 import java.security.cert.X509Certificate
-import timber.log.Timber
 
 /**
  * Main Client for accessing CUPS features like
@@ -113,44 +109,11 @@ class CupsClient @JvmOverloads constructor(
     fun getJobAttributes(jobID: Int): PrintJobAttributes = getJobAttributes(url, userName, jobID)
 
     @Throws(Exception::class)
-    fun getJobAttributes(userName: String, jobID: Int): PrintJobAttributes =
-            getJobAttributes(url, userName, jobID)
-
-    @Throws(Exception::class)
     private fun getJobAttributes(url: URL, userName: String, jobID: Int): PrintJobAttributes =
             IppGetJobAttributesOperation(context).getPrintJobAttributes(url, userName, jobID)
 
     @Throws(Exception::class)
-    fun getJobs(printer: CupsPrinter, whichJobs: WhichJobsEnum, userName: String, myJobs: Boolean): List<PrintJobAttributes> =
-            IppGetJobsOperation(context).getPrintJobs(printer, whichJobs, userName, myJobs)
-
-    @Throws(Exception::class)
     fun cancelJob(jobID: Int): Boolean = IppCancelJobOperation(context).cancelJob(url, userName, jobID)
-
-    @Throws(Exception::class)
-    fun cancelJob(url: URL, userName: String, jobID: Int): Boolean =
-            IppCancelJobOperation(context).cancelJob(url, userName, jobID)
-
-    @Throws(Exception::class)
-    fun holdJob(jobID: Int): Boolean = IppHoldJobOperation(context).holdJob(url, userName, jobID)
-
-    @Throws(Exception::class)
-    fun holdJob(url: URL, userName: String, jobID: Int): Boolean =
-            IppHoldJobOperation(context).holdJob(url, userName, jobID)
-
-    @Throws(Exception::class)
-    fun releaseJob(jobID: Int): Boolean = IppReleaseJobOperation(context).releaseJob(url, userName, jobID)
-
-    @Throws(Exception::class)
-    fun releaseJob(url: URL, userName: String, jobID: Int): Boolean =
-            IppReleaseJobOperation(context).releaseJob(url, userName, jobID)
-
-    @Throws(Exception::class)
-    fun moveJob(jobID: Int, userName: String, currentPrinter: CupsPrinter, targetPrinter: CupsPrinter): Boolean {
-        val currentHost = currentPrinter.printerURL.host
-
-        return CupsMoveJobOperation(context).moveJob(currentHost, userName, jobID, targetPrinter.printerURL)
-    }
 
     /**
      * Ensure path starts and ends with a slash

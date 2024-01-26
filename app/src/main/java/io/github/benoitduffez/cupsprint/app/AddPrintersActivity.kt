@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
@@ -32,13 +31,15 @@ class AddPrintersActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AddPrintersBinding.inflate(layoutInflater)
+        binding.addPrinter.setOnClickListener { addPrinter() }
+        binding.searchPrinters.setOnClickListener { searchPrinters() }
         setContentView(binding.root)
     }
 
     /**
      * Called when the button will be clicked
      */
-    fun addPrinter(@Suppress("UNUSED_PARAMETER") button: View) {
+    private fun addPrinter() {
         val url = binding.addUrl.text.toString()
         val name = binding.addName.text.toString()
 
@@ -72,14 +73,12 @@ class AddPrintersActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({ finish() }, 200)
     }
 
-    fun searchPrinters(@Suppress("UNUSED_PARAMETER") button: View) {
+    private fun searchPrinters() {
         lifecycleScope.launch {
             val foundPrinters = withContext(Dispatchers.IO) {
                 searchPrinters("http") + searchPrinters("https")
             }
-            CupsPrinterDiscoverySession.currentSession?.let {
-                it.addManualPrinters()
-            }
+            CupsPrinterDiscoverySession.currentSession?.addManualPrinters()
             withContext(Dispatchers.Main) {
                 snackFoundPrintersCount(foundPrinters)
                 finish()

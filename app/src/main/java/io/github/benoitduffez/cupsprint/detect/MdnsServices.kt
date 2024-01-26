@@ -195,14 +195,14 @@ class MdnsServices {
             val hi = DatagramPacket(packet, packet.size, group, 5353)
             s.send(hi)
             val buf = ByteArray(65535)
-            val recv = DatagramPacket(buf, buf.size)
+            val receivePacket = DatagramPacket(buf, buf.size)
             error = false
             var passes = 1
             while (!error) {
                 try {
-                    s.receive(recv)
-                    process(printers, recv, service)
-                    recv.length = buf.size
+                    s.receive(receivePacket)
+                    process(printers, receivePacket, service)
+                    receivePacket.length = buf.size
                     passes++
                     if (passes > MAX_PASSES) {
                         error = true

@@ -1,15 +1,15 @@
 package io.github.benoitduffez.cupsprint.ssl
 
+import android.annotation.SuppressLint
 import java.security.KeyStore
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
-import java.util.ArrayList
-import java.util.Arrays
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
 private const val UNTRUSTED_CERTIFICATE = "Untrusted Certificate"
 
+@SuppressLint("CustomX509TrustManager") // Yes, the risk is known and accepted
 internal class AdditionalKeyStoresTrustManager(vararg additionalKeyStores: KeyStore) : X509TrustManager {
     private val x509TrustManagers = ArrayList<X509TrustManager>()
     var certChain: Array<X509Certificate>? = null
@@ -60,7 +60,7 @@ internal class AdditionalKeyStoresTrustManager(vararg additionalKeyStores: KeySt
     }
 
     /*
-     * Loop over the trustmanagers until we find one that accepts our server
+     * Loop over the trust managers until we find one that accepts our server
      */
     @Throws(CertificateException::class)
     override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
@@ -79,7 +79,7 @@ internal class AdditionalKeyStoresTrustManager(vararg additionalKeyStores: KeySt
     override fun getAcceptedIssuers(): Array<X509Certificate> {
         val list = ArrayList<X509Certificate>()
         for (tm in x509TrustManagers) {
-            list.addAll(Arrays.asList(*tm.acceptedIssuers))
+            list.addAll(listOf(*tm.acceptedIssuers))
         }
         return list.toTypedArray()
     }

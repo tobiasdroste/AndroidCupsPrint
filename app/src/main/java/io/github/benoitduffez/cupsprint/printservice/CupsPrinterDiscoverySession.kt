@@ -1,5 +1,6 @@
 package io.github.benoitduffez.cupsprint.printservice
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.print.PrintAttributes
@@ -601,6 +602,7 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
 
     companion object {
 
+        @SuppressLint("StaticFieldLeak") // This shouldn't cause a leak as we will set this to null in [onDestroy] of the session
         var currentSession: CupsPrinterDiscoverySession? = null
 
         private const val HTTP_UPGRADE_REQUIRED = 426

@@ -11,6 +11,7 @@
     <string name="add_url">http://serveur-cups.domaine:631/printers/Nom_de_limprimante</string>
     <plurals name="printer_discovery_result">
         <item quantity="one">La recherche a trouvé %d imprimante</item>
+        <item quantity="many">La recherche a trouvé %d imprimantes</item>
         <item quantity="other">La recherche a trouvé %d imprimantes</item>
     </plurals>
     <string name="printer_not_responding">L\'imprimante ne répond pas. Veuillez vérifier qu\'elle est allumée et disponible à l\'adresse %1$s</string>

@@ -16,17 +16,4 @@ received a copy of the GNU Lesser General Public License along with this
 program; if not, see <http://www.gnu.org/licenses/>.
 */
 
-class EnumItem {
-    var name: String
-    var description: String
-
-    constructor(name: String) {
-        this.name = name
-        this.description = name
-    }
-
-    constructor(name: String, description: String) {
-        this.name = name
-        this.description = description
-    }
-}
+class EnumItem(val name: String)

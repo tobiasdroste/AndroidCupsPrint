@@ -11,7 +11,6 @@
     <string name="add_server_ip">IP-Nummer oder Hostname</string>
     <string name="add_autodetect">Du kannst die Drucker eines Servers auflisten lassen, indem du die IP-Nummer oder den Hostnamen des Servers angibst.</string>
     <plurals name="printer_discovery_result">
-        <item quantity="zero">Suche hat keinen Drucker gefunden</item>
         <item quantity="one">Ein Drucker gefunden</item>
         <item quantity="other">%d Drucker gefunden</item>
     </plurals>

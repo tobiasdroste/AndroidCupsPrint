@@ -22,8 +22,4 @@ package org.cups4j
 /**
  * Used while querying print jobs to define which jobs should be returned.
  */
-enum class WhichJobsEnum(val value: String) {
-    COMPLETED("completed"),
-    NOT_COMPLETED("not-completed"),
-    ALL("all")
-}
+enum class WhichJobsEnum(val value: String)

@@ -11,8 +11,6 @@
     <string name="add_server_ip">サーバー IP またはホスト名</string>
     <string name="add_autodetect">以下の IP またはホスト名を入力して、サーバーからプリンターを自動検出することができます</string>
     <plurals name="printer_discovery_result">
-        <item quantity="zero">プリンターが見つかりませんでした</item>
-        <item quantity="one">%d プリンターが見つかりました</item>
         <item quantity="other">%d プリンターが見つかりました</item>
     </plurals>
     <string name="printer_not_responding">プリンターが応答していません。 電源がオンになっていて、%1$s で利用可能であることを確認してください</string>
@@ -50,5 +48,9 @@
     <string name="print_service_vendor">汎用 CUPS クライアント</string>
     <string name="manage_printers_none">手動で入力したプリンターはありません。 アプリ設定の印刷セクションで追加できます。</string>
     <string name="manage_printers_help">ここに手動で追加されたプリンターがあります。 削除するアイテムを 1 つクリックしてください (確認は表示されません!)</string>
+
+    <string name="print_job_queue_fail_malformed_url">印刷ジョブをキューに追加できませんでした：%1$s</string>
+    <string name="print_job_queue_fail_uri_syntax">URI を解析できませんでした：%1$s</string>
+    <string name="cleartext_error_android_9">Android 9.0 ではクリアテキストのトラフィックが許可されていません。CUPS サーバー/プリンターで SSL/TLS を有効にしてください。</string>
 
 </resources>

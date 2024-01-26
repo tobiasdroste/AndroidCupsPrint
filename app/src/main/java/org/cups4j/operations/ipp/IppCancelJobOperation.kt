@@ -72,7 +72,7 @@ class IppCancelJobOperation(context: Context) : IppOperation(context) {
 
     @Throws(Exception::class)
     fun cancelJob(url: URL, userName: String?, jobID: Int): Boolean {
-        val requestUrl = URL(url.toString() + "/jobs/" + Integer.toString(jobID))
+        val requestUrl = URL("$url/jobs/$jobID")
 
         val map = HashMap<String, String>()
         map["requesting-user-name"] = userName?:CupsClient.DEFAULT_USER

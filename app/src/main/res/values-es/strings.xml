@@ -10,9 +10,9 @@
     <string name="add_server_ip">Dirección IP o nombre de host</string>
     <string name="add_url">http://serveur-cups.domaine:631/printers/Nombre_de_impresora</string>
     <plurals name="printer_discovery_result">
-        <item quantity="zero">No se encontraron impresoras</item>
         <item quantity="one">Encontrada %d impresora</item>
-        <item quantity="other">Encontradas %d impresora</item>
+        <item quantity="many">Encontradas %d impresoras</item>
+        <item quantity="other">Encontradas %d impresoras</item>
     </plurals>
     <string name="printer_not_responding">La impresora no responde. Por favor, asegúrate de que esté encendido y disponible en %1$s</string>
     <string name="err_document_fd_null">Imposible leer el documento a imprimir</string>

@@ -5,8 +5,6 @@ import ch.ethz.vppserver.schema.ippclient.AttributeGroup
 import ch.ethz.vppserver.schema.ippclient.AttributeValue
 import java.io.IOException
 import java.nio.ByteBuffer
-import java.nio.channels.SocketChannel
-import java.util.ArrayList
 
 /**
  * Copyright (C) 2008 ITS of ETH Zurich, Switzerland, Sarah Windler Burri
@@ -40,43 +38,20 @@ class IppResponse {
     private var _result: MutableList<AttributeGroup>? = null
 
     // read IPP response in global buffer
-    internal var _buf: ByteBuffer? = null
+    private var byteBuffer: ByteBuffer? = null
 
-    /**
-     *
-     * @return
-     */
-    private val httpHeader: String?
-        get() {
-            val endOf = CRLF + CRLF
-            val sb = StringBuffer()
-            while (sb.indexOf(endOf) == -1) {
-                val b = _buf!!.get().toInt()
-                val ival = b and 0xff
-                val c = ival.toChar()
-                sb.append(c)
-            }
-            return if (sb.isNotEmpty()) {
-                sb.toString()
-            } else null
-        }
-
-    /**
-     *
-     * @return
-     */
     private val ippHeader: String?
         get() {
             val sb = StringBuffer()
-            sb.append("Major Version:" + IppUtil.toHexWithMarker(_buf!!.get().toInt()))
-            sb.append(" Minor Version:" + IppUtil.toHexWithMarker(_buf!!.get().toInt()))
+            sb.append("Major Version:" + IppUtil.toHexWithMarker(byteBuffer!!.get().toInt()))
+            sb.append(" Minor Version:" + IppUtil.toHexWithMarker(byteBuffer!!.get().toInt()))
 
-            val statusCode = IppUtil.toHexWithMarker(_buf!!.get().toInt()) + IppUtil.toHex(_buf!!.get().toInt())
+            val statusCode = IppUtil.toHexWithMarker(byteBuffer!!.get().toInt()) + IppUtil.toHex(byteBuffer!!.get().toInt())
             val statusMessage = IppLists.statusCodeMap[statusCode]
-            sb.append(" Request Id:" + _buf!!.int + "\n")
+            sb.append(" Request Id:" + byteBuffer!!.int + "\n")
             sb.append("Status Code:$statusCode($statusMessage)")
 
-            return if (sb.length != 0) {
+            return if (sb.isNotEmpty()) {
                 sb.toString()
             } else null
         }
@@ -122,10 +97,9 @@ class IppResponse {
     // not defined
     val attributeGroupList: List<AttributeGroup>?
         get() {
-            loop@ while (_buf!!.hasRemaining()) {
+            loop@ while (byteBuffer!!.hasRemaining()) {
 
-                val tag = _buf!!.get().toInt()
-                when (tag) {
+                when (val tag = byteBuffer!!.get().toInt()) {
                     0x00 -> {
                         setAttributeGroup(tag)
                         continue@loop
@@ -156,7 +130,7 @@ class IppResponse {
                         continue@loop
                     }
                     0x13 -> {
-                        setNoValueAttribute(tag)
+                        setNoValueAttribute()
                         continue@loop
                     }
                     0x21 -> {
@@ -235,83 +209,13 @@ class IppResponse {
 
     init {
         _result = ArrayList()
-        _buf = ByteBuffer.allocate(BYTEBUFFER_CAPACITY)
+        byteBuffer = ByteBuffer.allocate(BYTEBUFFER_CAPACITY)
     }
 
-    /**
-     *
-     * @param channel
-     * @return
-     * @throws IOException
-     */
-    @Throws(IOException::class)
-    fun getResponse(channel: SocketChannel?): IppResult? {
-        if (channel == null) {
-            System.err.println("IppResponse.getResponse(): no channel given")
-            return null
-        }
-
-        _buf!!.clear()
-
-        _attributeGroupResult = null
-        _attributeResult = null
-        _result!!.clear()
-
-        val result = IppResult()
-        var httpResponse = false
-        var ippHeaderResponse = false
-
-        // be careful: HTTP and IPP could be transmitted in different set of
-        // buffers.
-        // see RFC2910, http://www.ietf.org/rfc/rfc2910, page 19
-        var ippByteCount = 0
-        var tmpBuffer = ByteBuffer.allocate(BYTEBUFFER_CAPACITY)
-        val bufferList = ArrayList<ByteBuffer>()
-
-        while (channel.read(tmpBuffer) != -1) {
-            tmpBuffer.flip()
-            // read HTTP header
-            if (!httpResponse && tmpBuffer.hasRemaining()) {
-                _buf = tmpBuffer
-                result.httpStatusResponse = httpHeader
-                httpResponse = true
-            }
-
-            // read IPP header
-            if (!ippHeaderResponse && tmpBuffer.hasRemaining()) {
-                _buf = tmpBuffer
-                result.ippStatusResponse = ippHeader
-                ippHeaderResponse = true
-            }
-
-            // read the IPP-answer - this can be large, so take to read all
-            // information
-            if (tmpBuffer.hasRemaining()) {
-                ippByteCount += tmpBuffer.remaining()
-                bufferList.add(tmpBuffer)
-            }
-            tmpBuffer = ByteBuffer.allocate(BYTEBUFFER_CAPACITY)
-        }
-
-        _buf = concatenateBytebuffers(bufferList)
-        // read attribute group list with attributes
-        attributeGroupList
-
-        closeAttributeGroup()
-        result.attributeGroupList = _result
-        return result
-    }
-
-    /**
-     *
-     * @param channel
-     * @return
-     * @throws IOException
-     */
     @Throws(IOException::class)
     fun getResponse(buffer: ByteBuffer): IppResult {
 
-        _buf!!.clear()
+        byteBuffer!!.clear()
 
         _attributeGroupResult = null
         _attributeResult = null
@@ -319,48 +223,23 @@ class IppResponse {
 
         val result = IppResult()
         result.buf = buffer.array()
-        var ippHeaderResponse = false
 
         // be careful: HTTP and IPP could be transmitted in different set of
         // buffers.
         // see RFC2910, http://www.ietf.org/rfc/rfc2910, page 19
         // read IPP header
-        if (!ippHeaderResponse && buffer.hasRemaining()) {
-            _buf = buffer
+        if (buffer.hasRemaining()) {
+            byteBuffer = buffer
             result.ippStatusResponse = ippHeader
-            ippHeaderResponse = true
         }
 
-        _buf = buffer
+        byteBuffer = buffer
         // read attribute group list with attributes
         attributeGroupList
 
         closeAttributeGroup()
         result.attributeGroupList = _result
         return result
-    }
-
-    /**
-     * concatenate nio-ByteBuffers
-     *
-     * @param buffers
-     * ArrayList<ByteBuffer>
-     * @return ByteBuffer
-    </ByteBuffer> */
-    private fun concatenateBytebuffers(buffers: ArrayList<ByteBuffer>): ByteBuffer {
-        var n = 0
-        for (b in buffers)
-            n += b.remaining()
-
-        val buf = if (n > 0 && buffers[0].isDirect) ByteBuffer.allocateDirect(n) else ByteBuffer.allocate(n)
-        if (n > 0)
-            buf.order(buffers[0].order())
-
-        for (b in buffers)
-            buf.put(b.duplicate())
-
-        buf.flip()
-        return buf
     }
 
     /**
@@ -394,19 +273,19 @@ class IppResponse {
      * @param tag
      */
     private fun setTextAttribute(tag: Int) {
-        var length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        var length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
 
         // set attribute value
-        if (!_buf!!.hasRemaining()) {
+        if (!byteBuffer!!.hasRemaining()) {
             return
         }
-        length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             val dst = ByteArray(length.toInt())
-            _buf!!.get(dst)
+            byteBuffer!!.get(dst)
             val value = IppUtil.toString(dst)
             val hex = IppUtil.toHexWithMarker(tag)
             val attrValue = AttributeValue()
@@ -424,21 +303,21 @@ class IppResponse {
      * @param tag
      */
     private fun setTextWithLanguageAttribute(tag: Int) {
-        var length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        var length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
 
         // set natural-language and attribute value
-        if (!_buf!!.hasRemaining()) {
+        if (!byteBuffer!!.hasRemaining()) {
             return
         }
 
         // set tag, tag name, natural-language
-        length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             var dst = ByteArray(length.toInt())
-            _buf!!.get(dst)
+            byteBuffer!!.get(dst)
             var value = IppUtil.toString(dst)
             val hex = IppUtil.toHexWithMarker(tag)
             var attrValue = AttributeValue()
@@ -449,10 +328,10 @@ class IppResponse {
             _attributeResult!!.attributeValue.add(attrValue)
 
             // set value
-            length = _buf!!.short
-            if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+            length = byteBuffer!!.short
+            if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
                 dst = ByteArray(length.toInt())
-                _buf!!.get(dst)
+                byteBuffer!!.get(dst)
                 value = IppUtil.toString(dst)
                 attrValue = AttributeValue()
                 attrValue.value = value
@@ -467,21 +346,21 @@ class IppResponse {
      * @param tag
      */
     private fun setNameWithLanguageAttribute(tag: Int) {
-        var length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        var length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
 
         // set natural-language and attribute value
-        if (!_buf!!.hasRemaining()) {
+        if (!byteBuffer!!.hasRemaining()) {
             return
         }
 
         // set tag, tag name, natural-language
-        length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             var dst = ByteArray(length.toInt())
-            _buf!!.get(dst)
+            byteBuffer!!.get(dst)
             var value = IppUtil.toString(dst)
             val hex = IppUtil.toHexWithMarker(tag)
             var attrValue = AttributeValue()
@@ -492,10 +371,10 @@ class IppResponse {
             _attributeResult!!.attributeValue.add(attrValue)
 
             // set value
-            length = _buf!!.short
-            if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+            length = byteBuffer!!.short
+            if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
                 dst = ByteArray(length.toInt())
-                _buf!!.get(dst)
+                byteBuffer!!.get(dst)
                 value = IppUtil.toString(dst)
                 attrValue = AttributeValue()
                 attrValue.value = value
@@ -509,18 +388,18 @@ class IppResponse {
      * @param tag
      */
     private fun setBooleanAttribute(tag: Int) {
-        var length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        var length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
 
         // set attribute value
-        if (!_buf!!.hasRemaining()) {
+        if (!byteBuffer!!.hasRemaining()) {
             return
         }
-        length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
-            val value = _buf!!.get()
+        length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
+            val value = byteBuffer!!.get()
             val hex = IppUtil.toHexWithMarker(tag)
             val attrValue = AttributeValue()
             attrValue.tag = hex
@@ -536,19 +415,19 @@ class IppResponse {
      * @param tag
      */
     private fun setDateTimeAttribute(tag: Int) {
-        var length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        var length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
 
         // set attribute value
-        if (!_buf!!.hasRemaining()) {
+        if (!byteBuffer!!.hasRemaining()) {
             return
         }
-        length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             val dst = ByteArray(length.toInt())
-            _buf!!.get(dst, 0, length.toInt())
+            byteBuffer!!.get(dst, 0, length.toInt())
             val value = IppUtil.toDateTime(dst)
             val hex = IppUtil.toHexWithMarker(tag)
             val attrValue = AttributeValue()
@@ -565,34 +444,30 @@ class IppResponse {
      * @param tag
      */
     private fun setIntegerAttribute(tag: Int) {
-        var length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        var length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
         // set attribute value
-        if (!_buf!!.hasRemaining()) {
+        if (!byteBuffer!!.hasRemaining()) {
             return
         }
-        length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
-            val value = _buf!!.int
+        length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
+            val value = byteBuffer!!.int
             val hex = IppUtil.toHexWithMarker(tag)
             val attrValue = AttributeValue()
             attrValue.tag = hex
             val tagName = getTagName(hex)
             attrValue.tagName = tagName
-            attrValue.value = Integer.toString(value)
+            attrValue.value = value.toString()
             _attributeResult!!.attributeValue.add(attrValue)
         }
     }
 
-    /**
-     *
-     * @param tag
-     */
-    private fun setNoValueAttribute(tag: Int) {
-        val length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+    private fun setNoValueAttribute() {
+        val length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
     }
@@ -602,24 +477,24 @@ class IppResponse {
      * @param tag
      */
     private fun setRangeOfIntegerAttribute(tag: Int) {
-        var length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        var length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
         // set attribute value
-        if (!_buf!!.hasRemaining()) {
+        if (!byteBuffer!!.hasRemaining()) {
             return
         }
-        length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
-            val value1 = _buf!!.int
-            val value2 = _buf!!.int
+        length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
+            val value1 = byteBuffer!!.int
+            val value2 = byteBuffer!!.int
             val hex = IppUtil.toHexWithMarker(tag)
             val attrValue = AttributeValue()
             attrValue.tag = hex
             val tagName = getTagName(hex)
             attrValue.tagName = tagName
-            attrValue.value = Integer.toString(value1) + "," + Integer.toString(value2)
+            attrValue.value = "$value1,$value2"
             _attributeResult!!.attributeValue.add(attrValue)
         }
     }
@@ -629,26 +504,26 @@ class IppResponse {
      * @param tag
      */
     private fun setResolutionAttribute(tag: Int) {
-        var length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        var length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
 
         // set attribute value
-        if (!_buf!!.hasRemaining()) {
+        if (!byteBuffer!!.hasRemaining()) {
             return
         }
-        length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
-            val value1 = _buf!!.int
-            val value2 = _buf!!.int
-            val value3 = _buf!!.get()
+        length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
+            val value1 = byteBuffer!!.int
+            val value2 = byteBuffer!!.int
+            val value3 = byteBuffer!!.get()
             val hex = IppUtil.toHexWithMarker(tag)
             val attrValue = AttributeValue()
             attrValue.tag = hex
             val tagName = getTagName(hex)
             attrValue.tagName = tagName
-            attrValue.value = Integer.toString(value1) + "," + Integer.toString(value2) + "," + Integer.toString(value3.toInt())
+            attrValue.value = "$value1,$value2,${value3.toInt()}"
             _attributeResult!!.attributeValue.add(attrValue)
         }
     }
@@ -658,32 +533,32 @@ class IppResponse {
      * @param tag
      */
     private fun setEnumAttribute(tag: Int) {
-        var length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        var length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             setAttributeName(length)
         }
 
         // set attribute value
-        if (!_buf!!.hasRemaining()) {
+        if (!byteBuffer!!.hasRemaining()) {
             return
         }
 
-        length = _buf!!.short
-        if (length.toInt() != 0 && _buf!!.remaining() >= length) {
+        length = byteBuffer!!.short
+        if (length.toInt() != 0 && byteBuffer!!.remaining() >= length) {
             val hex = IppUtil.toHexWithMarker(tag)
             val attrValue = AttributeValue()
             attrValue.tag = hex
             val tagName = getTagName(hex)
             attrValue.tagName = tagName
 
-            val value = _buf!!.int
+            val value = byteBuffer!!.int
             if (_attributeResult != null) {
                 val enumName = getEnumName(value, _attributeResult!!.name)
                 attrValue.value = enumName
             } else {
                 _attributeResult = Attribute()
                 _attributeResult!!.name = "no attribute name given:"
-                attrValue.value = Integer.toString(value)
+                attrValue.value = "$value"
             }
 
             _attributeResult!!.attributeValue.add(attrValue)
@@ -695,11 +570,11 @@ class IppResponse {
      * @param length
      */
     private fun setAttributeName(length: Short) {
-        if (length.toInt() == 0 || _buf!!.remaining() < length) {
+        if (length.toInt() == 0 || byteBuffer!!.remaining() < length) {
             return
         }
         val dst = ByteArray(length.toInt())
-        _buf!!.get(dst)
+        byteBuffer!!.get(dst)
         val name = IppUtil.toString(dst)
         _attributeResult?.let { _attributeGroupResult?.attribute?.add(it) }
         _attributeResult = Attribute()
@@ -741,7 +616,6 @@ class IppResponse {
     }
 
     companion object {
-        private const val CRLF = "\r\n"
         private const val BYTEBUFFER_CAPACITY = 8192
     }
 }

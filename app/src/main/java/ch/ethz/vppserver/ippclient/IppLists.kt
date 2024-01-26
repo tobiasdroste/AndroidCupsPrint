@@ -113,7 +113,7 @@ object IppLists {
         //itemMap.put(8, new EnumItem("aborted", "job has aborted due to error"));
         //itemMap.put(9, new EnumItem("completed", "job has completed successfully"));
 
-        var itemMap = EnumItemMap("0x23", "enum", "type2 enum")
+        var itemMap = EnumItemMap() // "0x23", "enum", "type2 enum"
         enumMap["status-code"] = itemMap
         itemMap[0x0000] = EnumItem("successful-ok")
         itemMap[0x0001] = EnumItem("successful-ok-ignored-substituted-attributes")
@@ -152,7 +152,7 @@ object IppLists {
         itemMap[0x00FF] = EnumItem("successful-ok")
 
         //probably don't want this one
-        itemMap = EnumItemMap("0x23", "enum", "type2 enum")
+        itemMap = EnumItemMap() // "0x23", "enum", "type2 enum"
         enumMap["job-collation-type"] = itemMap
         itemMap[1] = EnumItem("other")
         itemMap[2] = EnumItem("unknown")
@@ -160,7 +160,7 @@ object IppLists {
         itemMap[4] = EnumItem("collated-documents")
         itemMap[5] = EnumItem("uncollated-documents")
 
-        itemMap = EnumItemMap("0x23", "enum", "type1 enum")
+        itemMap = EnumItemMap() // "0x23", "enum", "type1 enum"
         enumMap["job-state"] = itemMap
         itemMap[3] = EnumItem("pending")
         itemMap[4] = EnumItem("pending-held")
@@ -170,7 +170,7 @@ object IppLists {
         itemMap[8] = EnumItem("aborted")
         itemMap[9] = EnumItem("completed")
 
-        itemMap = EnumItemMap("0x23", "enum", "type1 enum")
+        itemMap = EnumItemMap() //"0x23", "enum", "type1 enum"
         enumMap["printer-state"] = itemMap
         itemMap[3] = EnumItem("idle")
         itemMap[4] = EnumItem("processing")

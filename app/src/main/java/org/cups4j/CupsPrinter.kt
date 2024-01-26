@@ -19,11 +19,8 @@ package org.cups4j
  */
 
 import android.content.Context
-import org.cups4j.operations.ipp.IppGetJobAttributesOperation
-import org.cups4j.operations.ipp.IppGetJobsOperation
 import org.cups4j.operations.ipp.IppPrintJobOperation
 import java.net.URL
-import java.util.HashMap
 
 /**
  * Represents a printer on your IPP server
@@ -44,7 +41,7 @@ class CupsPrinter(
 
         /**
          * Name of this printer.
-         * For a printer http://localhost:631/printers/printername 'printername' will
+         * For a printer http://localhost:631/printers/printerName 'printerName' will
          * be returned.
          */
         val name: String,
@@ -95,7 +92,7 @@ class CupsPrinter(
         val rangesString = StringBuilder()
         if (copies > 0) {// other values are considered bad value by CUPS
             copiesString = "copies:integer:$copies"
-            addAttribute(attributes, "job-attributes", copiesString)
+            addJobAttribute(attributes, copiesString)
         }
         if (pageRanges != null && "" != pageRanges) {
             val ranges = pageRanges.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -114,15 +111,14 @@ class CupsPrinter(
                 // following ranges need to be separated with ","
                 delimiter = ","
             }
-            addAttribute(attributes, "job-attributes", rangesString.toString())
+            addJobAttribute(attributes, rangesString.toString())
         }
 
         if (printJob.isDuplex) {
-            addAttribute(attributes, "job-attributes", "sides:keyword:two-sided-long-edge")
+            addJobAttribute(attributes, "sides:keyword:two-sided-long-edge")
         }
         val command = IppPrintJobOperation(context)
         val ippResult = command.request(printerURL, attributes, document)
-        //    IppResultPrinter.print(ippResult);
 
         val result = PrintRequestResult(ippResult)
 
@@ -142,11 +138,11 @@ class CupsPrinter(
 
     /**
      * @param map   Attributes map
-     * @param name  Attribute key
      * @param value Attribute value
      */
-    private fun addAttribute(map: MutableMap<String, String>, name: String?, value: String?) {
-        if (value != null && name != null) {
+    private fun addJobAttribute(map: MutableMap<String, String>, value: String?) {
+        val name = "job-attributes"
+        if (value != null) {
             var attribute: String? = map[name]
             if (attribute == null) {
                 attribute = value
@@ -155,45 +151,6 @@ class CupsPrinter(
             }
             map[name] = attribute
         }
-    }
-
-    /**
-     * Get a list of jobs
-     *
-     * @param whichJobs completed, not completed or all
-     * @param user      requesting user (null will be translated to anonymous)
-     * @param myJobs    boolean only jobs for requesting user or all jobs for this printer?
-     * @return job list
-     * @throws Exception
-     */
-    @Throws(Exception::class)
-    fun getJobs(whichJobs: WhichJobsEnum, user: String, myJobs: Boolean, context: Context): List<PrintJobAttributes> =
-            IppGetJobsOperation(context).getPrintJobs(this, whichJobs, user, myJobs)
-
-    /**
-     * Get current status for the print job with the given ID.
-     *
-     * @param jobID Job ID
-     * @return job status
-     * @throws Exception
-     */
-    @Throws(Exception::class)
-    fun getJobStatus(jobID: Int, context: Context): JobStateEnum? = getJobStatus(CupsClient.DEFAULT_USER, jobID, context)
-
-    /**
-     * Get current status for the print job with the given ID
-     *
-     * @param userName Requesting user name
-     * @param jobID    Job ID
-     * @return job status
-     * @throws Exception
-     */
-    @Throws(Exception::class)
-    fun getJobStatus(userName: String, jobID: Int, context: Context): JobStateEnum? {
-        val command = IppGetJobAttributesOperation(context)
-        val job = command.getPrintJobAttributes(printerURL, userName, jobID)
-
-        return job.jobState
     }
 
     /**

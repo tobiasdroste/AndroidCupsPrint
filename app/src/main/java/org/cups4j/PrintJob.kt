@@ -18,7 +18,6 @@ package org.cups4j
  * not, see <http:></http:>//www.gnu.org/licenses/>.
  */
 
-import java.io.ByteArrayInputStream
 import java.io.InputStream
 
 /**
@@ -59,50 +58,18 @@ class PrintJob internal constructor(builder: Builder) {
      * documents are supplied as byte[] or as InputStream
      *
      */
-    class Builder {
-        var document: InputStream
+    class Builder
+    /**
+     * Constructor
+     *
+     * @param document Printed document
+     */(var document: InputStream) {
         var copies = 1
         var pageRanges: String? = null
         var userName: String? = null
         var jobName: String? = null
         var duplex = false
         var attributes: MutableMap<String, String>? = null
-
-        /**
-         * Constructor
-         *
-         * @param document Printed document
-         */
-        constructor(document: ByteArray) {
-            this.document = ByteArrayInputStream(document)
-        }
-
-        /**
-         * Constructor
-         *
-         * @param document Printed document
-         */
-        constructor(document: InputStream) {
-            this.document = document
-        }
-
-        /**
-         * @param copies Number of copies - 0 and 1 are both treated as one copy
-         * @return Builder
-         */
-        fun copies(copies: Int): Builder {
-            this.copies = copies
-            return this
-        }
-
-        /**
-         * @param pageRanges Page ranges 1-3, 5, 8, 10-13
-         * @return Builder
-         */
-        fun pageRanges(pageRanges: String): Builder {
-            this.pageRanges = pageRanges
-            return this
-        }
 
         /**
          * @param userName Requesting user name
@@ -114,29 +81,11 @@ class PrintJob internal constructor(builder: Builder) {
         }
 
         /**
-         * @param jobName Job name
-         * @return Builder
-         */
-        fun jobName(jobName: String): Builder {
-            this.jobName = jobName
-            return this
-        }
-
-        /**
-         * @param duplex Duplex mode
-         * @return Builder
-         */
-        fun duplex(duplex: Boolean): Builder {
-            this.duplex = duplex
-            return this
-        }
-
-        /**
          * Additional attributes for the print operation and the print job
          *
          * @param attributes provide operation attributes and/or a String of job-attributes
          *
-         * job attributes are seperated by "#"
+         * job attributes are separated by "#"
          *
          * example:
          * `

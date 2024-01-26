@@ -4,6 +4,7 @@ import android.print.PrintAttributes
 import ch.ethz.vppserver.schema.ippclient.AttributeValue
 import java.util.Locale
 import java.util.regex.Pattern
+import kotlin.math.roundToInt
 
 /**
  * Misc util methods
@@ -18,10 +19,8 @@ internal object CupsPrinterDiscoveryUtils {
      */
     fun getResolutionFromAttributeValue(id: String, attributeValue: AttributeValue): PrintAttributes.Resolution {
         val resolution = attributeValue.value!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val horizontal: Int
-        val vertical: Int
-        horizontal = Integer.parseInt(resolution[0])
-        vertical = Integer.parseInt(resolution[1])
+        val horizontal = Integer.parseInt(resolution[0])
+        val vertical = Integer.parseInt(resolution[1])
         return PrintAttributes.Resolution(id, String.format(Locale.ENGLISH, "%dx%d dpi", horizontal, vertical), horizontal, vertical)
     }
 
@@ -120,26 +119,35 @@ internal object CupsPrinterDiscoveryUtils {
             else -> {
                 val m = Pattern.compile("_((\\d*\\.?\\d+)x(\\d*\\.?\\d+)([a-z]+))$").matcher(value)
                 if (m.find()) {
-                    try {
-                        var x = java.lang.Float.parseFloat(m.group(2))
-                        var y = java.lang.Float.parseFloat(m.group(3))
-                        when (m.group(4)) {
-                            "mm" -> {
-                                x /= 25.4f
-                                y /= 25.4f
-                                x *= 1000f
-                                y *= 1000f
+                    val label = m.group(1)
+                    val xInput = m.group(2)
+                    val yInput = m.group(3)
+                    if(label != null && xInput != null && yInput != null) {
+                        try {
+                            var x = java.lang.Float.parseFloat(xInput)
+                            var y = java.lang.Float.parseFloat(yInput)
+                            when (m.group(4)) {
+                                "mm" -> {
+                                    x /= 25.4f
+                                    y /= 25.4f
+                                    x *= 1000f
+                                    y *= 1000f
+                                }
+                                // fall thru
+                                "in" -> {
+                                    x *= 1000f
+                                    y *= 1000f
+                                }
+                                else -> return null
                             }
-                            // fall thru
-                            "in" -> {
-                                x *= 1000f
-                                y *= 1000f
-                            }
-                            else -> return null
+                            return PrintAttributes.MediaSize(value, label, x.roundToInt(),
+                                y.roundToInt()
+                            )
+                        } catch (ignored: NumberFormatException) {
                         }
-                        return PrintAttributes.MediaSize(value, m.group(1), Math.round(x), Math.round(y))
-                    } catch (ignored: NumberFormatException) {
                     }
+
+
                 }
                 return null
             }

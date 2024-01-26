@@ -22,8 +22,6 @@ package ch.ethz.vppserver.schema.ippclient
  * XML parsing annotations, etc. have been removed Jon Freeman - 2013 */
 
 class AttributeValue {
-    var setOfKeyword: SetOfKeyword? = null
-    var setOfEnum: SetOfEnum? = null
     var tag: String? = null
     var tagName: String? = null
     var value: String? = null

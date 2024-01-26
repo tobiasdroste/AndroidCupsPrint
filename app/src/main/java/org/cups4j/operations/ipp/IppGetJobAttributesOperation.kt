@@ -96,29 +96,47 @@ class IppGetJobAttributesOperation(context: Context) : IppOperation(context) {
 
         map["requested-attributes"] = "all"
         map["requesting-user-name"] = userName
-        val result = request(URL(url.toString() + "/jobs/" + jobID), map)
+        val result = request(URL("$url/jobs/$jobID"), map)
 
         // IppResultPrinter.print(result);
         for (group in result!!.attributeGroupList!!) {
             if ("job-attributes-tag" == group.tagName || "unassigned" == group.tagName) {
                 for (attr in group.attribute) {
-                    if (!attr.attributeValue.isEmpty()) {
+                    if (attr.attributeValue.isNotEmpty()) {
                         val attValue = getAttributeValue(attr)
 
-                        when {
-                            "job-uri" == attr.name -> job.jobURL = URL(attValue.replace("ipp://", "http://"))
-                            "job-id" == attr.name -> job.jobID = Integer.parseInt(attValue)
-                            "job-state" == attr.name -> {
+                        when (attr.name) {
+                            "job-uri" -> {
+                                job.jobURL = URL(attValue.replace("ipp://", "http://"))
+                            }
+                            "job-id" -> {
+                                job.jobID = Integer.parseInt(attValue)
+                            }
+                            "job-state" -> {
                                 println("job-state $attValue")
                                 job.jobState = JobStateEnum.fromString(attValue)
                             }
-                            "job-printer-uri" == attr.name -> job.printerURL = URL(attValue.replace("ipp://", "http://"))
-                            "job-name" == attr.name -> job.jobName = attValue
-                            "job-originating-user-name" == attr.name -> job.userName = attValue
-                            "job-k-octets" == attr.name -> job.size = Integer.parseInt(attValue)
-                            "time-at-creation" == attr.name -> job.jobCreateTime = Date(1000 * java.lang.Long.parseLong(attValue))
-                            "time-at-completed" == attr.name -> job.jobCompleteTime = Date(1000 * java.lang.Long.parseLong(attValue))
-                            "job-media-sheets-completed" == attr.name -> job.pagesPrinted = Integer.parseInt(attValue)
+                            "job-printer-uri" -> {
+                                job.printerURL = URL(attValue.replace("ipp://", "http://"))
+                            }
+                            "job-name" -> {
+                                job.jobName = attValue
+                            }
+                            "job-originating-user-name" -> {
+                                job.userName = attValue
+                            }
+                            "job-k-octets" -> {
+                                job.size = Integer.parseInt(attValue)
+                            }
+                            "time-at-creation" -> {
+                                job.jobCreateTime = Date(1000 * java.lang.Long.parseLong(attValue))
+                            }
+                            "time-at-completed" -> {
+                                job.jobCompleteTime = Date(1000 * java.lang.Long.parseLong(attValue))
+                            }
+                            "job-media-sheets-completed" -> {
+                                job.pagesPrinted = Integer.parseInt(attValue)
+                            }
                         }
                     }
                 }

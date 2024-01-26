@@ -36,10 +36,6 @@ object IppTag {
     private const val OPERATION_ATTRIBUTES_TAG: Byte = 0x01
     private const val JOB_ATTRIBUTES_TAG: Byte = 0x02
     private const val END_OF_ATTRIBUTES_TAG: Byte = 0x03
-    private const val PRINTER_ATTRIBUTES_TAG: Byte = 0x04
-    private const val UNSUPPORTED_ATTRIBUTES_TAG: Byte = 0x05
-    private const val SUBSCRIPTION_ATTRIBUTES_TAG: Byte = 0x06
-    private const val EVENT_NOTIFICATION_ATTRIBUTES_TAG: Byte = 0x07
     private const val INTEGER_TAG: Byte = 0x21
     private const val BOOLEAN_TAG: Byte = 0x22
     private const val ENUM_TAG: Byte = 0x23
@@ -49,7 +45,6 @@ object IppTag {
     private const val NAME_WITHOUT_LANGUAGE_TAG: Byte = 0x42
     private const val KEYWORD_TAG: Byte = 0x44
     private const val URI_TAG: Byte = 0x45
-    private const val URI_SCHEME_TAG: Byte = 0x46
     private const val CHARSET_TAG: Byte = 0x47
     private const val NATURAL_LANGUAGE_TAG: Byte = 0x48
     private const val MIME_MEDIA_TYPE_TAG: Byte = 0x49
@@ -85,58 +80,8 @@ object IppTag {
      * @param ippBuf
      * @return
      */
-    fun getOperationAttributesTag(ippBuf: ByteBuffer): ByteBuffer {
-        ippBuf.put(OPERATION_ATTRIBUTES_TAG)
-        return ippBuf
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @return
-     */
     fun getJobAttributesTag(ippBuf: ByteBuffer): ByteBuffer {
         ippBuf.put(JOB_ATTRIBUTES_TAG)
-        return ippBuf
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @return
-     */
-    fun getSubscriptionAttributesTag(ippBuf: ByteBuffer): ByteBuffer {
-        ippBuf.put(SUBSCRIPTION_ATTRIBUTES_TAG)
-        return ippBuf
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @return
-     */
-    fun getEventNotificationAttributesTag(ippBuf: ByteBuffer): ByteBuffer {
-        ippBuf.put(EVENT_NOTIFICATION_ATTRIBUTES_TAG)
-        return ippBuf
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @return
-     */
-    fun getUnsupportedAttributesTag(ippBuf: ByteBuffer): ByteBuffer {
-        ippBuf.put(UNSUPPORTED_ATTRIBUTES_TAG)
-        return ippBuf
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @return
-     */
-    fun getPrinterAttributesTag(ippBuf: ByteBuffer): ByteBuffer {
-        ippBuf.put(PRINTER_ATTRIBUTES_TAG)
         return ippBuf
     }
 
@@ -180,20 +125,6 @@ object IppTag {
     @JvmOverloads
     fun getUri(ippBuf: ByteBuffer, attributeName: String? = null, value: String? = null): ByteBuffer {
         return getUsAscii(ippBuf, URI_TAG, attributeName, value)
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @param attributeName
-     * @param value
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    @Throws(UnsupportedEncodingException::class)
-    @JvmOverloads
-    fun getUriScheme(ippBuf: ByteBuffer, attributeName: String? = null, value: String? = null): ByteBuffer {
-        return getUsAscii(ippBuf, URI_SCHEME_TAG, attributeName, value)
     }
 
     /**
@@ -255,28 +186,6 @@ object IppTag {
     /**
      * @param ippBuf
      * @param attributeName
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    @Throws(UnsupportedEncodingException::class)
-    @JvmOverloads
-    fun getInteger(ippBuf: ByteBuffer, attributeName: String? = null): ByteBuffer {
-        ippBuf.put(INTEGER_TAG)
-        if (attributeName != null) {
-            ippBuf.putShort(attributeName.length.toShort())
-            ippBuf.put(IppUtil.toBytes(attributeName))
-        } else {
-            ippBuf.putShort(NULL_LENGTH)
-        }
-
-        ippBuf.putShort(NULL_LENGTH)
-
-        return ippBuf
-    }
-
-    /**
-     * @param ippBuf
-     * @param attributeName
      * @param value
      * @return
      * @throws UnsupportedEncodingException
@@ -293,28 +202,6 @@ object IppTag {
 
         ippBuf.putShort(ATTRIBUTES_INTEGER_VALUE_LENGTH)
         ippBuf.putInt(value)
-        return ippBuf
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @param attributeName
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    @Throws(UnsupportedEncodingException::class)
-    @JvmOverloads
-    fun getBoolean(ippBuf: ByteBuffer, attributeName: String? = null): ByteBuffer {
-        ippBuf.put(BOOLEAN_TAG)
-        if (attributeName != null) {
-            ippBuf.putShort(attributeName.length.toShort())
-            ippBuf.put(IppUtil.toBytes(attributeName))
-        } else {
-            ippBuf.putShort(NULL_LENGTH)
-        }
-
-        ippBuf.putShort(NULL_LENGTH)
         return ippBuf
     }
 
@@ -349,27 +236,6 @@ object IppTag {
      *
      * @param ippBuf
      * @param attributeName
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    @Throws(UnsupportedEncodingException::class)
-    @JvmOverloads
-    fun getEnum(ippBuf: ByteBuffer, attributeName: String? = null): ByteBuffer {
-        ippBuf.put(ENUM_TAG)
-        if (attributeName != null) {
-            ippBuf.putShort(attributeName.length.toShort())
-            ippBuf.put(IppUtil.toBytes(attributeName))
-        } else {
-            ippBuf.putShort(NULL_LENGTH)
-        }
-        ippBuf.putShort(NULL_LENGTH)
-        return ippBuf
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @param attributeName
      * @param value
      * @return
      * @throws UnsupportedEncodingException
@@ -385,27 +251,6 @@ object IppTag {
         }
         ippBuf.putShort(ATTRIBUTES_INTEGER_VALUE_LENGTH)
         ippBuf.putInt(value)
-        return ippBuf
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @param attributeName
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    @Throws(UnsupportedEncodingException::class)
-    @JvmOverloads
-    fun getResolution(ippBuf: ByteBuffer, attributeName: String? = null): ByteBuffer{
-        ippBuf.put(RESOLUTION_TAG)
-        if (attributeName != null) {
-            ippBuf.putShort(attributeName.length.toShort())
-            ippBuf.put(IppUtil.toBytes(attributeName))
-        } else {
-            ippBuf.putShort(NULL_LENGTH)
-        }
-        ippBuf.putShort(NULL_LENGTH)
         return ippBuf
     }
 
@@ -432,27 +277,6 @@ object IppTag {
         ippBuf.putInt(value1)
         ippBuf.putInt(value2)
         ippBuf.put(value3)
-        return ippBuf
-    }
-
-    /**
-     *
-     * @param ippBuf
-     * @param attributeName
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    @Throws(UnsupportedEncodingException::class)
-    @JvmOverloads
-    fun getRangeOfInteger(ippBuf: ByteBuffer, attributeName: String? = null): ByteBuffer {
-        ippBuf.put(RANGE_OF_INTEGER_TAG)
-        if (attributeName != null) {
-            ippBuf.putShort(attributeName.length.toShort())
-            ippBuf.put(IppUtil.toBytes(attributeName))
-        } else {
-            ippBuf.putShort(NULL_LENGTH)
-        }
-        ippBuf.putShort(NULL_LENGTH)
         return ippBuf
     }
 

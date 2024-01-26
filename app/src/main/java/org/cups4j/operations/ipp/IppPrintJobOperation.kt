@@ -39,7 +39,6 @@ class IppPrintJobOperation(context: Context) : IppOperation(context) {
     /**
      * TODO: not all possibilities implemented
      *
-     * @param ippBuf          IPP buffer
      * @param attributeBlocks Job attributes
      * @return Modified IPP buffer
      * @throws UnsupportedEncodingException
