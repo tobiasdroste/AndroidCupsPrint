@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Android CUPS Print</string>
+    <string name="app_name">CUPSLink: DroidPrint</string>
     <string name="add_url">http://cups-server.mit.domäne:631/printers/Drucker_Name</string>
     <string name="add_name">Bezeichnung des Druckers</string>
     <string name="add_button">Drucker hinzufügen</string>

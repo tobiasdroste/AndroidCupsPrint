@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Impresión Android CUPS </string>
+    <string name="app_name">CUPSLink: DroidPrint</string>
     <string name="activity_add_label">Añade una impresora CUPS</string>
     <string name="add_autodetect">Puede detectar automáticamente las impresoras en su servidor introduciendo su IP o nombre de host a continuación</string>
     <string name="add_full_manual">Como alternativa, puede introducir la URI completa de la impresora en los campos de abajo</string>
