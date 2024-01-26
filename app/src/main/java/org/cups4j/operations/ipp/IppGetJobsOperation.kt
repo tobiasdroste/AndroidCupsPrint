@@ -86,7 +86,7 @@ class IppGetJobsOperation(context: Context) : IppOperation(context) {
         }
 
         ippBuf = IppTag.getEnd(ippBuf)
-        ippBuf?.flip()
+        ippBuf.flip()
         return ippBuf
     }
 

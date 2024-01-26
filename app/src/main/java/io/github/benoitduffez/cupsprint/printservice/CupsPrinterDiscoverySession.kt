@@ -84,7 +84,7 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
     override fun onStartPrinterDiscovery(priorityList: List<PrinterId>) {
 
         // Add a dummy printer when no printers are available
-        if (getPrinters().size == 0) {
+        if (printers.size == 0) {
             addPrinters(
                 listOf(
                     PrinterInfo.Builder(

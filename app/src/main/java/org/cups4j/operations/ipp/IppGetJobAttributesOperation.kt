@@ -82,7 +82,7 @@ class IppGetJobAttributesOperation(context: Context) : IppOperation(context) {
             ippBuf = IppTag.getBoolean(ippBuf, "my-jobs", value)
         }
         ippBuf = IppTag.getEnd(ippBuf)
-        ippBuf?.flip()
+        ippBuf.flip()
         return ippBuf
     }
 

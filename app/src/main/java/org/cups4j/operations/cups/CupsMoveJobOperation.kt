@@ -61,7 +61,7 @@ class CupsMoveJobOperation(context: Context) : IppOperation(context) {
         ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "requesting-user-name", map["requesting-user-name"])
         ippBuf = IppTag.getUri(ippBuf, "job-printer-uri", map["target-printer-uri"])
         ippBuf = IppTag.getEnd(ippBuf)
-        ippBuf?.flip()
+        ippBuf.flip()
         return ippBuf
     }
 

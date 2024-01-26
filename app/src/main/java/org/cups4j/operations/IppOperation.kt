@@ -64,7 +64,7 @@ abstract class IppOperation(val context: Context) {
      * @throws UnsupportedEncodingException If the ipp data can't be generated
      */
     @Throws(UnsupportedEncodingException::class)
-    fun getIppHeader(url: URL): ByteBuffer? = getIppHeader(url, null)
+    fun getIppHeader(url: URL): ByteBuffer = getIppHeader(url, null)
 
     @Throws(Exception::class)
     fun request(url: URL, map: Map<String, String>): IppResult? = sendRequest(url, getIppHeader(url, map))
@@ -107,7 +107,7 @@ abstract class IppOperation(val context: Context) {
         }
 
         ippBuf = IppTag.getEnd(ippBuf)
-        ippBuf?.flip()
+        ippBuf.flip()
         return ippBuf
     }
 

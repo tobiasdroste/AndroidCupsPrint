@@ -65,7 +65,7 @@ class IppGetPrinterAttributesOperation(context: Context) : IppOperation(context)
         ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "document-format", map["document-format"])
 
         ippBuf = IppTag.getEnd(ippBuf)
-        ippBuf?.flip()
+        ippBuf.flip()
         return ippBuf
     }
 }
