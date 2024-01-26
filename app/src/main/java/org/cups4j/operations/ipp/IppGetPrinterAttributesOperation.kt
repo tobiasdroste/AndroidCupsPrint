@@ -26,10 +26,7 @@ package org.cups4j.operations.ipp
  */
 
 import android.content.Context
-import ch.ethz.vppserver.ippclient.IppTag
 import org.cups4j.operations.IppOperation
-import java.io.UnsupportedEncodingException
-import java.nio.ByteBuffer
 
 class IppGetPrinterAttributesOperation(context: Context) : IppOperation(context) {
     init {
@@ -37,35 +34,4 @@ class IppGetPrinterAttributesOperation(context: Context) : IppOperation(context)
         bufferSize = 8192
     }
 
-    @Throws(UnsupportedEncodingException::class)
-    @JvmOverloads
-    fun getIppHeader(url: String, map: Map<String, String>? = null): ByteBuffer? {
-        var ippBuf = ByteBuffer.allocateDirect(bufferSize.toInt())
-
-        ippBuf = IppTag.getOperation(ippBuf, operationID)
-        ippBuf = IppTag.getUri(ippBuf, "printer-uri", url)
-
-        if (map == null) {
-            ippBuf = IppTag.getKeyword(ippBuf, "requested-attributes", "all")
-            ippBuf = IppTag.getEnd(ippBuf)
-            ippBuf.flip()
-            return ippBuf
-        }
-
-        ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "requesting-user-name", map["requesting-user-name"])
-        map["requested-attributes"]?.let { requestedAttributes ->
-            val sta = requestedAttributes.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            ippBuf = IppTag.getKeyword(ippBuf, "requested-attributes", sta[0])
-            val l = sta.size
-            for (i in 1 until l) {
-                ippBuf = IppTag.getKeyword(ippBuf, null, sta[i])
-            }
-        }
-
-        ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "document-format", map["document-format"])
-
-        ippBuf = IppTag.getEnd(ippBuf)
-        ippBuf.flip()
-        return ippBuf
-    }
 }

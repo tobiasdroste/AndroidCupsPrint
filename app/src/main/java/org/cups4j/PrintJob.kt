@@ -72,15 +72,6 @@ class PrintJob internal constructor(builder: Builder) {
         var attributes: MutableMap<String, String>? = null
 
         /**
-         * @param userName Requesting user name
-         * @return Builder
-         */
-        fun userName(userName: String): Builder {
-            this.userName = userName
-            return this
-        }
-
-        /**
          * Additional attributes for the print operation and the print job
          *
          * @param attributes provide operation attributes and/or a String of job-attributes

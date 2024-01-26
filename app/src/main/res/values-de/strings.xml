@@ -50,5 +50,6 @@
     <string name="manage_printers_help">Hier sind die manuell hinzugefügten Drucker. Klicken Sie auf ein Element, um es zu entfernen (keine Bestätigung!)</string>
     <string name="print_job_queue_fail_malformed_url">Der Auftrag konnte nicht zur Warteschlange hinzugefügt werden: %1$s</string>
     <string name="print_job_queue_fail_uri_syntax">Die URI konnte nicht verarbeitet werden: %1$s</string>
+    <string name="cleartext_error_android_9">Datenübertragung im Klartext ist in Android 9.0 nicht mehr erlaubt. Bitte aktivieren Sie SSL/TLS auf dem CUPS-Server/Drucker.</string>
 
 </resources>
