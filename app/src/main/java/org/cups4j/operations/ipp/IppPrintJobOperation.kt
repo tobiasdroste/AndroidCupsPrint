@@ -44,14 +44,18 @@ class IppPrintJobOperation(context: Context) : IppOperation(context) {
      * @throws UnsupportedEncodingException
      */
     @Throws(UnsupportedEncodingException::class)
-    private fun getJobAttributes(inputIppBuf: ByteBuffer, attributeBlocks: Array<String>?): ByteBuffer {
+    private fun getJobAttributes(
+        inputIppBuf: ByteBuffer,
+        attributeBlocks: Array<String>?
+    ): ByteBuffer {
         if (attributeBlocks == null) {
             return inputIppBuf
         }
 
         var ippBuf = IppTag.getJobAttributesTag(inputIppBuf)
         for (attributeBlock in attributeBlocks) {
-            val attr = attributeBlock.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val attr =
+                attributeBlock.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (attr.size != 3) {
                 return ippBuf
             }
@@ -69,18 +73,21 @@ class IppPrintJobOperation(context: Context) : IppOperation(context) {
                 "integer" -> ippBuf = IppTag.getInteger(ippBuf, name, Integer.parseInt(value))
 
                 "rangeOfInteger" -> {
-                    val range = value.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val range =
+                        value.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                     val low = Integer.parseInt(range[0])
                     val high = Integer.parseInt(range[1])
                     ippBuf = IppTag.getRangeOfInteger(ippBuf, name, low, high)
                 }
 
                 "setOfRangeOfInteger" -> {
-                    val ranges = value.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val ranges =
+                        value.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
                     for (r in ranges) {
                         val range = r.trim { it <= ' ' }
-                        val values = range.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                        val values =
+                            range.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
                         val value1 = Integer.parseInt(values[0])
                         var value2 = value1
@@ -102,7 +109,8 @@ class IppPrintJobOperation(context: Context) : IppOperation(context) {
                 "enum" -> ippBuf = IppTag.getEnum(ippBuf, name, Integer.parseInt(value))
 
                 "resolution" -> {
-                    val resolution = value.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val resolution =
+                        value.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                     val value1 = Integer.parseInt(resolution[0])
                     val value2 = Integer.parseInt(resolution[1])
                     val value3 = java.lang.Byte.valueOf(resolution[2])
@@ -125,19 +133,36 @@ class IppPrintJobOperation(context: Context) : IppOperation(context) {
             return ippBuf
         }
 
-        ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "requesting-user-name", map["requesting-user-name"])
+        ippBuf = IppTag.getNameWithoutLanguage(
+            ippBuf,
+            "requesting-user-name",
+            map["requesting-user-name"]
+        )
 
         map["job-name"]?.let { ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "job-name", it) }
-        map["ipp-attribute-fidelity"]?.let { ippBuf = IppTag.getBoolean(ippBuf, "ipp-attribute-fidelity", it == "true") }
-        map["document-name"]?.let { ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "document-name", it) }
+        map["ipp-attribute-fidelity"]?.let {
+            ippBuf = IppTag.getBoolean(ippBuf, "ipp-attribute-fidelity", it == "true")
+        }
+        map["document-name"]?.let {
+            ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "document-name", it)
+        }
         map["compression"]?.let { ippBuf = IppTag.getKeyword(ippBuf, "compression", it) }
-        map["document-format"]?.let { ippBuf = IppTag.getMimeMediaType(ippBuf, "document-format", it) }
-        map["document-natural-language"]?.let { ippBuf = IppTag.getNaturalLanguage(ippBuf, "document-natural-language", it) }
+        map["document-format"]?.let {
+            ippBuf = IppTag.getMimeMediaType(ippBuf, "document-format", it)
+        }
+        map["document-natural-language"]?.let {
+            ippBuf = IppTag.getNaturalLanguage(ippBuf, "document-natural-language", it)
+        }
         map["job-k-octets"]?.let { ippBuf = IppTag.getInteger(ippBuf, "job-k-octets", it.toInt()) }
-        map["job-impressions"]?.let { ippBuf = IppTag.getInteger(ippBuf, "job-impressions", it.toInt()) }
-        map["job-media-sheets"]?.let { ippBuf = IppTag.getInteger(ippBuf, "job-media-sheets", it.toInt()) }
+        map["job-impressions"]?.let {
+            ippBuf = IppTag.getInteger(ippBuf, "job-impressions", it.toInt())
+        }
+        map["job-media-sheets"]?.let {
+            ippBuf = IppTag.getInteger(ippBuf, "job-media-sheets", it.toInt())
+        }
         map["job-attributes"]?.let { jobAttributes ->
-            val attributeBlocks = jobAttributes.split("#".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val attributeBlocks =
+                jobAttributes.split("#".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             ippBuf = getJobAttributes(ippBuf, attributeBlocks)
         }
 

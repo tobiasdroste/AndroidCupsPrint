@@ -1,6 +1,5 @@
 package io.github.benoitduffez.cupsprint.detect
 
-import java.util.ArrayList
 import java.util.Collections
 
 class PrinterResult internal constructor() {

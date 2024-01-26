@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="32dp"
@@ -12,7 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/untrusted_title"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
     <TextView
         android:id="@+id/untrusted_info"
@@ -20,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/untrusted_title"
         android:padding="8dp"
-        android:text="@string/untrusted_info"/>
+        android:text="@string/untrusted_info" />
 
     <TextView
         android:id="@+id/untrusted_certinfo"
@@ -30,15 +29,14 @@
         android:layout_below="@+id/untrusted_info"
         android:fontFamily="monospace"
         android:padding="8dp"
-        android:text="@string/untrusted_certificate_info"/>
+        android:text="@string/untrusted_certificate_info" />
 
     <View
         android:id="@+id/untrusted_bottom_anchor"
         android:layout_width="16dp"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/untrusted_trust_button"
@@ -46,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/untrusted_bottom_anchor"
-        android:text="@string/untrusted_trust_button"/>
+        android:text="@string/untrusted_trust_button" />
 
     <Button
         android:id="@+id/untrusted_abort_button"
@@ -54,6 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/untrusted_bottom_anchor"
-        android:text="@string/untrusted_abort_button"/>
+        android:text="@string/untrusted_abort_button" />
 
 </RelativeLayout>

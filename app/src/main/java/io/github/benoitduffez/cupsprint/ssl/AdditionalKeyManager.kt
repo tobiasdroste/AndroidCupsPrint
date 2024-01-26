@@ -16,8 +16,18 @@ import javax.net.ssl.X509KeyManager
 /**
  * Uses the system keystore
  */
-class AdditionalKeyManager private constructor(val context: Context, private val clientAlias: String, private val certificateChain: Array<X509Certificate>, private val privateKey: PrivateKey) : X509KeyManager {
-    override fun chooseClientAlias(keyType: Array<String>, issuers: Array<Principal>, socket: Socket): String = clientAlias
+class AdditionalKeyManager private constructor(
+    val context: Context,
+    private val clientAlias: String,
+    private val certificateChain: Array<X509Certificate>,
+    private val privateKey: PrivateKey
+) : X509KeyManager {
+    override fun chooseClientAlias(
+        keyType: Array<String>,
+        issuers: Array<Principal>,
+        socket: Socket
+    ): String = clientAlias
+
     override fun getCertificateChain(alias: String): Array<X509Certificate> = certificateChain
     override fun getPrivateKey(alias: String): PrivateKey = privateKey
 
@@ -25,7 +35,11 @@ class AdditionalKeyManager private constructor(val context: Context, private val
         throw UnsupportedOperationException()
     }
 
-    override fun chooseServerAlias(keyType: String, issuers: Array<Principal>, socket: Socket): String {
+    override fun chooseServerAlias(
+        keyType: String,
+        issuers: Array<Principal>,
+        socket: Socket
+    ): String {
         throw UnsupportedOperationException()
     }
 
@@ -34,7 +48,8 @@ class AdditionalKeyManager private constructor(val context: Context, private val
     }
 
     companion object {
-        private val KEY_CERTIFICATE_ALIAS = AdditionalKeyManager::class.java.name + ".CertificateAlias"
+        private val KEY_CERTIFICATE_ALIAS =
+            AdditionalKeyManager::class.java.name + ".CertificateAlias"
 
         /**
          * Builds an instance of a KeyChainKeyManager using the given certificate alias. If for any reason retrieval of the credentials from the system
@@ -45,7 +60,8 @@ class AdditionalKeyManager private constructor(val context: Context, private val
          */
         @Throws(CertificateException::class)
         fun fromAlias(context: Context): AdditionalKeyManager? {
-            val alias = PreferenceManager.getDefaultSharedPreferences(context).getString(KEY_CERTIFICATE_ALIAS, null)
+            val alias = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(KEY_CERTIFICATE_ALIAS, null)
 
             if (TextUtils.isEmpty(alias) || alias == null) {
                 return null
@@ -94,6 +110,6 @@ class AdditionalKeyManager private constructor(val context: Context, private val
         }
 
         private fun logError(alias: String, type: String, e: Exception) =
-                Timber.e(e, "Unable to retrieve $type for [$alias]")
+            Timber.e(e, "Unable to retrieve $type for [$alias]")
     }
 }

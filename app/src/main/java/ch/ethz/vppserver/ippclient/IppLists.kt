@@ -17,8 +17,6 @@ program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 import ch.ethz.vppserver.schema.ippclient.Tag
-import java.util.ArrayList
-import java.util.LinkedHashMap
 
 object IppLists {
     val tagList: MutableList<Tag>

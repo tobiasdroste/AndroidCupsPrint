@@ -41,9 +41,9 @@ import java.security.cert.X509Certificate
  * - ...
  */
 class CupsClient @JvmOverloads constructor(
-        val context: Context,
-        private val url: URL = URL(DEFAULT_URL),
-        private val userName: String = DEFAULT_USER
+    val context: Context,
+    private val url: URL = URL(DEFAULT_URL),
+    private val userName: String = DEFAULT_USER
 ) {
     var serverCerts: Array<X509Certificate>? = null
         private set // Storage for server certificates if they're not trusted
@@ -110,10 +110,11 @@ class CupsClient @JvmOverloads constructor(
 
     @Throws(Exception::class)
     private fun getJobAttributes(url: URL, userName: String, jobID: Int): PrintJobAttributes =
-            IppGetJobAttributesOperation(context).getPrintJobAttributes(url, userName, jobID)
+        IppGetJobAttributesOperation(context).getPrintJobAttributes(url, userName, jobID)
 
     @Throws(Exception::class)
-    fun cancelJob(jobID: Int): Boolean = IppCancelJobOperation(context).cancelJob(url, userName, jobID)
+    fun cancelJob(jobID: Int): Boolean =
+        IppCancelJobOperation(context).cancelJob(url, userName, jobID)
 
     /**
      * Ensure path starts and ends with a slash

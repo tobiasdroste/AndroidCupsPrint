@@ -46,7 +46,9 @@ class IppResponse {
             sb.append("Major Version:" + IppUtil.toHexWithMarker(byteBuffer!!.get().toInt()))
             sb.append(" Minor Version:" + IppUtil.toHexWithMarker(byteBuffer!!.get().toInt()))
 
-            val statusCode = IppUtil.toHexWithMarker(byteBuffer!!.get().toInt()) + IppUtil.toHex(byteBuffer!!.get().toInt())
+            val statusCode = IppUtil.toHexWithMarker(
+                byteBuffer!!.get().toInt()
+            ) + IppUtil.toHex(byteBuffer!!.get().toInt())
             val statusMessage = IppLists.statusCodeMap[statusCode]
             sb.append(" Request Id:" + byteBuffer!!.int + "\n")
             sb.append("Status Code:$statusCode($statusMessage)")
@@ -104,103 +106,128 @@ class IppResponse {
                         setAttributeGroup(tag)
                         continue@loop
                     }
+
                     0x01 -> {
                         setAttributeGroup(tag)
                         continue@loop
                     }
+
                     0x02 -> {
                         setAttributeGroup(tag)
                         continue@loop
                     }
+
                     0x03 -> return _result
                     0x04 -> {
                         setAttributeGroup(tag)
                         continue@loop
                     }
+
                     0x05 -> {
                         setAttributeGroup(tag)
                         continue@loop
                     }
+
                     0x06 -> {
                         setAttributeGroup(tag)
                         continue@loop
                     }
+
                     0x07 -> {
                         setAttributeGroup(tag)
                         continue@loop
                     }
+
                     0x13 -> {
                         setNoValueAttribute()
                         continue@loop
                     }
+
                     0x21 -> {
                         setIntegerAttribute(tag)
                         continue@loop
                     }
+
                     0x22 -> {
                         setBooleanAttribute(tag)
                         continue@loop
                     }
+
                     0x23 -> {
                         setEnumAttribute(tag)
                         continue@loop
                     }
+
                     0x30 -> {
                         setTextAttribute(tag)
                         continue@loop
                     }
+
                     0x31 -> {
                         setDateTimeAttribute(tag)
                         continue@loop
                     }
+
                     0x32 -> {
                         setResolutionAttribute(tag)
                         continue@loop
                     }
+
                     0x33 -> {
                         setRangeOfIntegerAttribute(tag)
                         continue@loop
                     }
+
                     0x35 -> {
                         setTextWithLanguageAttribute(tag)
                         continue@loop
                     }
+
                     0x36 -> {
                         setNameWithLanguageAttribute(tag)
                         continue@loop
                     }
+
                     0x41 -> {
                         setTextAttribute(tag)
                         continue@loop
                     }
+
                     0x42 -> {
                         setTextAttribute(tag)
                         continue@loop
                     }
+
                     0x44 -> {
                         setTextAttribute(tag)
                         continue@loop
                     }
+
                     0x45 -> {
                         setTextAttribute(tag)
                         continue@loop
                     }
+
                     0x46 -> {
                         setTextAttribute(tag)
                         continue@loop
                     }
+
                     0x47 -> {
                         setTextAttribute(tag)
                         continue@loop
                     }
+
                     0x48 -> {
                         setTextAttribute(tag)
                         continue@loop
                     }
+
                     0x49 -> {
                         setTextAttribute(tag)
                         continue@loop
                     }
+
                     else -> return _result
                 }
             }
@@ -610,9 +637,9 @@ class IppResponse {
         if (nameOfAttribute == null)
             return "Null attribute requested"
         val itemMap = IppLists.enumMap[nameOfAttribute]
-                ?: return "Attribute " + nameOfAttribute + "not found"
+            ?: return "Attribute " + nameOfAttribute + "not found"
         return itemMap[value]?.name
-                ?: return "Value $value for attribute $nameOfAttribute not found"
+            ?: return "Value $value for attribute $nameOfAttribute not found"
     }
 
     companion object {

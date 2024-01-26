@@ -10,7 +10,8 @@ import javax.net.ssl.X509TrustManager
 private const val UNTRUSTED_CERTIFICATE = "Untrusted Certificate"
 
 @SuppressLint("CustomX509TrustManager") // Yes, the risk is known and accepted
-internal class AdditionalKeyStoresTrustManager(vararg additionalKeyStores: KeyStore) : X509TrustManager {
+internal class AdditionalKeyStoresTrustManager(vararg additionalKeyStores: KeyStore) :
+    X509TrustManager {
     private val x509TrustManagers = ArrayList<X509TrustManager>()
     var certChain: Array<X509Certificate>? = null
         private set
@@ -20,12 +21,14 @@ internal class AdditionalKeyStoresTrustManager(vararg additionalKeyStores: KeySt
 
         try {
             // The default Trust manager with default keystore
-            val original = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+            val original =
+                TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
             original.init(null as KeyStore?)
             factories.add(original)
 
             for (keyStore in additionalKeyStores) {
-                val additionalCerts = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+                val additionalCerts =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
                 additionalCerts.init(keyStore)
                 factories.add(additionalCerts)
             }

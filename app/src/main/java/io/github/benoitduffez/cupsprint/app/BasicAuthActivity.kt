@@ -29,15 +29,26 @@ class BasicAuthActivity : Activity() {
         if (foundId >= 0) {
             targetId = foundId
             binding.basicAuthLogin.setText(prefs.getString(KEY_BASIC_AUTH_LOGIN + foundId, ""))
-            binding.basicAuthPassword.setText(prefs.getString(KEY_BASIC_AUTH_PASSWORD + foundId, ""))
+            binding.basicAuthPassword.setText(
+                prefs.getString(
+                    KEY_BASIC_AUTH_PASSWORD + foundId,
+                    ""
+                )
+            )
         } else {
             targetId = numCredentials
         }
 
         binding.basicAuthButton.setOnClickListener {
             val editPrefs = getSharedPreferences(CREDENTIALS_FILE, Context.MODE_PRIVATE).edit()
-            editPrefs.putString(KEY_BASIC_AUTH_LOGIN + targetId, binding.basicAuthLogin.text.toString())
-            editPrefs.putString(KEY_BASIC_AUTH_PASSWORD + targetId, binding.basicAuthPassword.text.toString())
+            editPrefs.putString(
+                KEY_BASIC_AUTH_LOGIN + targetId,
+                binding.basicAuthLogin.text.toString()
+            )
+            editPrefs.putString(
+                KEY_BASIC_AUTH_PASSWORD + targetId,
+                binding.basicAuthPassword.text.toString()
+            )
             editPrefs.putString(KEY_BASIC_AUTH_PRINTERS_URL + targetId, printersUrl)
             editPrefs.putInt(KEY_BASIC_AUTH_NUMBER, numCredentials + 1)
             editPrefs.apply()

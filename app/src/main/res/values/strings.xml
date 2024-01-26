@@ -21,8 +21,7 @@
     <string name="err_add_printer_empty_url">The printer URL cannot be empty</string>
     <string name="untrusted_title">Untrusted SSL connection</string>
     <string name="untrusted_info">Your server sent a certificate that was not trusted by your device. Please review the certificates details below, and choose whether you accept to trust it or not:</string>
-    <string name="untrusted_certificate_info"
-            translatable="false">
+    <string name="untrusted_certificate_info" translatable="false">
         Issuer: CN=test-server\n
         Validity\n
         Not Before: Aug 21 19:36:21 2016 GMT\n

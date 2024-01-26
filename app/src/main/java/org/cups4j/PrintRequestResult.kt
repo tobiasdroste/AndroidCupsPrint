@@ -58,5 +58,6 @@ class PrintRequestResult(ippResult: IppResult?) {
         }
     }
 
-    private fun isNullOrEmpty(string: String?): Boolean = string == null || "" == string.trim { it <= ' ' }
+    private fun isNullOrEmpty(string: String?): Boolean =
+        string == null || "" == string.trim { it <= ' ' }
 }

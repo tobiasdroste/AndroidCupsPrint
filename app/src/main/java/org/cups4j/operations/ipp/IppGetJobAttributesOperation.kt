@@ -32,7 +32,6 @@ import java.io.UnsupportedEncodingException
 import java.net.URL
 import java.nio.ByteBuffer
 import java.util.Date
-import java.util.HashMap
 
 class IppGetJobAttributesOperation(context: Context) : IppOperation(context) {
     init {
@@ -59,10 +58,15 @@ class IppGetJobAttributesOperation(context: Context) : IppOperation(context) {
             ippBuf = IppTag.getUri(ippBuf, "job-uri", stripPortNumber(url))
         }
 
-        ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "requesting-user-name", map["requesting-user-name"])
+        ippBuf = IppTag.getNameWithoutLanguage(
+            ippBuf,
+            "requesting-user-name",
+            map["requesting-user-name"]
+        )
 
         map["requested-attributes"]?.let { requestedAttributes ->
-            val sta = requestedAttributes.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val sta = requestedAttributes.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()
             ippBuf = IppTag.getKeyword(ippBuf, "requested-attributes", sta[0])
             val l = sta.size
             for (i in 1 until l) {
@@ -109,31 +113,41 @@ class IppGetJobAttributesOperation(context: Context) : IppOperation(context) {
                             "job-uri" -> {
                                 job.jobURL = URL(attValue.replace("ipp://", "http://"))
                             }
+
                             "job-id" -> {
                                 job.jobID = Integer.parseInt(attValue)
                             }
+
                             "job-state" -> {
                                 println("job-state $attValue")
                                 job.jobState = JobStateEnum.fromString(attValue)
                             }
+
                             "job-printer-uri" -> {
                                 job.printerURL = URL(attValue.replace("ipp://", "http://"))
                             }
+
                             "job-name" -> {
                                 job.jobName = attValue
                             }
+
                             "job-originating-user-name" -> {
                                 job.userName = attValue
                             }
+
                             "job-k-octets" -> {
                                 job.size = Integer.parseInt(attValue)
                             }
+
                             "time-at-creation" -> {
                                 job.jobCreateTime = Date(1000 * java.lang.Long.parseLong(attValue))
                             }
+
                             "time-at-completed" -> {
-                                job.jobCompleteTime = Date(1000 * java.lang.Long.parseLong(attValue))
+                                job.jobCompleteTime =
+                                    Date(1000 * java.lang.Long.parseLong(attValue))
                             }
+
                             "job-media-sheets-completed" -> {
                                 job.pagesPrinted = Integer.parseInt(attValue)
                             }

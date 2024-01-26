@@ -30,10 +30,16 @@ class AdditionalKeyStoresSSLSocketFactory
  * @throws KeyStoreException
  * @throws UnrecoverableKeyException
  */
-@Throws(NoSuchAlgorithmException::class, KeyManagementException::class, KeyStoreException::class, UnrecoverableKeyException::class)
+@Throws(
+    NoSuchAlgorithmException::class,
+    KeyManagementException::class,
+    KeyStoreException::class,
+    UnrecoverableKeyException::class
+)
 constructor(keyManager: KeyManager?, keyStore: KeyStore) : SSLSocketFactory() {
     private val sslContext = SSLContext.getInstance("TLS")
-    private val trustManager: AdditionalKeyStoresTrustManager = AdditionalKeyStoresTrustManager(keyStore)
+    private val trustManager: AdditionalKeyStoresTrustManager =
+        AdditionalKeyStoresTrustManager(keyStore)
 
     val serverCert: Array<X509Certificate>?
         get() = trustManager.certChain
@@ -53,21 +59,26 @@ constructor(keyManager: KeyManager?, keyStore: KeyStore) : SSLSocketFactory() {
 
     @Throws(IOException::class)
     override fun createSocket(socket: Socket, host: String, port: Int, autoClose: Boolean): Socket =
-            sslContext.socketFactory.createSocket(socket, host, port, autoClose)
+        sslContext.socketFactory.createSocket(socket, host, port, autoClose)
 
     @Throws(IOException::class)
     override fun createSocket(s: String, i: Int): Socket =
-            sslContext.socketFactory.createSocket(s, i)
+        sslContext.socketFactory.createSocket(s, i)
 
     @Throws(IOException::class)
     override fun createSocket(s: String, i: Int, inetAddress: InetAddress, i1: Int): Socket =
-            sslContext.socketFactory.createSocket(s, i, inetAddress, i1)
+        sslContext.socketFactory.createSocket(s, i, inetAddress, i1)
 
     @Throws(IOException::class)
     override fun createSocket(inetAddress: InetAddress, i: Int): Socket =
-            sslContext.socketFactory.createSocket(inetAddress, i)
+        sslContext.socketFactory.createSocket(inetAddress, i)
 
     @Throws(IOException::class)
-    override fun createSocket(inetAddress: InetAddress, i: Int, inetAddress1: InetAddress, i1: Int): Socket =
-            sslContext.socketFactory.createSocket(inetAddress, i, inetAddress1, i1)
+    override fun createSocket(
+        inetAddress: InetAddress,
+        i: Int,
+        inetAddress1: InetAddress,
+        i1: Int
+    ): Socket =
+        sslContext.socketFactory.createSocket(inetAddress, i, inetAddress1, i1)
 }

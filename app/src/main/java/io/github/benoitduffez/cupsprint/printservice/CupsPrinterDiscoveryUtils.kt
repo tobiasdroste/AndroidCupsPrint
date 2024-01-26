@@ -17,11 +17,20 @@ internal object CupsPrinterDiscoveryUtils {
      * @param attributeValue attribute (resolution) value
      * @return resolution parsed into a [android.print.PrintAttributes.Resolution]
      */
-    fun getResolutionFromAttributeValue(id: String, attributeValue: AttributeValue): PrintAttributes.Resolution {
-        val resolution = attributeValue.value!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+    fun getResolutionFromAttributeValue(
+        id: String,
+        attributeValue: AttributeValue
+    ): PrintAttributes.Resolution {
+        val resolution = attributeValue.value!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
         val horizontal = Integer.parseInt(resolution[0])
         val vertical = Integer.parseInt(resolution[1])
-        return PrintAttributes.Resolution(id, String.format(Locale.ENGLISH, "%dx%d dpi", horizontal, vertical), horizontal, vertical)
+        return PrintAttributes.Resolution(
+            id,
+            String.format(Locale.ENGLISH, "%dx%d dpi", horizontal, vertical),
+            horizontal,
+            vertical
+        )
     }
 
     /**
@@ -122,7 +131,7 @@ internal object CupsPrinterDiscoveryUtils {
                     val label = m.group(1)
                     val xInput = m.group(2)
                     val yInput = m.group(3)
-                    if(label != null && xInput != null && yInput != null) {
+                    if (label != null && xInput != null && yInput != null) {
                         try {
                             var x = java.lang.Float.parseFloat(xInput)
                             var y = java.lang.Float.parseFloat(yInput)
@@ -138,9 +147,11 @@ internal object CupsPrinterDiscoveryUtils {
                                     x *= 1000f
                                     y *= 1000f
                                 }
+
                                 else -> return null
                             }
-                            return PrintAttributes.MediaSize(value, label, x.roundToInt(),
+                            return PrintAttributes.MediaSize(
+                                value, label, x.roundToInt(),
                                 y.roundToInt()
                             )
                         } catch (ignored: NumberFormatException) {

@@ -208,7 +208,10 @@ class CupsService : PrintService() {
         Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
             override fun run() {
                 if (updateJobStatus(printJob)) {
-                    Handler(Looper.getMainLooper()).postDelayed(this, JOB_CHECK_POLLING_INTERVAL.toLong())
+                    Handler(Looper.getMainLooper()).postDelayed(
+                        this,
+                        JOB_CHECK_POLLING_INTERVAL.toLong()
+                    )
                 }
             }
         }, JOB_CHECK_POLLING_INTERVAL.toLong())
@@ -325,10 +328,12 @@ class CupsService : PrintService() {
                     jobs.remove(printJob.id)
                     printJob.cancel()
                 }
+
                 JobStateEnum.CANCELED -> {
                     jobs.remove(printJob.id)
                     printJob.cancel()
                 }
+
                 JobStateEnum.COMPLETED, JobStateEnum.ABORTED -> {
                     jobs.remove(printJob.id)
                     printJob.complete()

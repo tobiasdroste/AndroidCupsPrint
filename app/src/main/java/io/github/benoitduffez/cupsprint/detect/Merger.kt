@@ -1,7 +1,6 @@
 package io.github.benoitduffez.cupsprint.detect
 
 import timber.log.Timber
-import java.util.ArrayList
 
 internal class Merger {
     fun merge(httpRecs: List<PrinterRec>, httpsRecs: MutableList<PrinterRec>) {
@@ -11,8 +10,9 @@ internal class Merger {
             for (httpsRec in httpsRecs) {
                 try {
                     if (httpRec.queue == httpsRec.queue &&
-                            httpRec.host == httpsRec.host &&
-                            httpRec.port == httpsRec.port) {
+                        httpRec.host == httpsRec.host &&
+                        httpRec.port == httpsRec.port
+                    ) {
                         match = true
                         break
                     }

@@ -45,7 +45,8 @@ object HttpConnectionManagement {
                 Timber.e(e, "Couldn't load system key store: ${e.localizedMessage}")
             }
 
-            connection.sslSocketFactory = AdditionalKeyStoresSSLSocketFactory(keyManager, trustStore)
+            connection.sslSocketFactory =
+                AdditionalKeyStoresSSLSocketFactory(keyManager, trustStore)
         } catch (e: NoSuchAlgorithmException) {
             Timber.e(e, "Couldn't handle SSL URL connection: ${e.localizedMessage}")
         } catch (e: UnrecoverableKeyException) {
@@ -149,7 +150,8 @@ object HttpConnectionManagement {
      * @param connection The connection to be configured
      */
     fun handleBasicAuth(context: Context, url: URL, connection: HttpURLConnection) {
-        val prefs = context.getSharedPreferences(BasicAuthActivity.CREDENTIALS_FILE, Context.MODE_PRIVATE)
+        val prefs =
+            context.getSharedPreferences(BasicAuthActivity.CREDENTIALS_FILE, Context.MODE_PRIVATE)
 
         val id = BasicAuthActivity.findSavedCredentialsId(url.toString(), prefs)
         if (id < 0) {
@@ -159,7 +161,10 @@ object HttpConnectionManagement {
         val username = prefs.getString(BasicAuthActivity.KEY_BASIC_AUTH_LOGIN + id, "")
         val password = prefs.getString(BasicAuthActivity.KEY_BASIC_AUTH_PASSWORD + id, "")
         try {
-            val encoded = Base64.encodeToString(("$username:$password").toByteArray(charset("UTF-8")), Base64.NO_WRAP)
+            val encoded = Base64.encodeToString(
+                ("$username:$password").toByteArray(charset("UTF-8")),
+                Base64.NO_WRAP
+            )
             connection.setRequestProperty("Authorization", "Basic $encoded")
         } catch (e: UnsupportedEncodingException) {
             Timber.e(e, "Couldn't base64 encode basic auth credentials")

@@ -64,15 +64,25 @@ object IppTag {
      */
     @Throws(UnsupportedEncodingException::class)
     @JvmOverloads
-    fun getOperation(ippBuf: ByteBuffer, operation: Short, charset: String? = null, naturalLanguage: String? = null): ByteBuffer {
+    fun getOperation(
+        ippBuf: ByteBuffer,
+        operation: Short,
+        charset: String? = null,
+        naturalLanguage: String? = null
+    ): ByteBuffer {
         ippBuf.put(MAJOR_VERSION)
         ippBuf.put(MINOR_VERSION)
         ippBuf.putShort(operation)
         ippBuf.putInt(++requestID)
         ippBuf.put(OPERATION_ATTRIBUTES_TAG)
 
-        val outputIppBuf = getCharset(ippBuf, ATTRIBUTES_CHARSET, charset ?: ATTRIBUTES_CHARSET_VALUE)
-        return getNaturalLanguage(outputIppBuf, ATTRIBUTES_NATURAL_LANGUAGE, naturalLanguage ?: ATTRIBUTES_NATURAL_LANGUAGE_VALUE)
+        val outputIppBuf =
+            getCharset(ippBuf, ATTRIBUTES_CHARSET, charset ?: ATTRIBUTES_CHARSET_VALUE)
+        return getNaturalLanguage(
+            outputIppBuf,
+            ATTRIBUTES_NATURAL_LANGUAGE,
+            naturalLanguage ?: ATTRIBUTES_NATURAL_LANGUAGE_VALUE
+        )
     }
 
     /**
@@ -95,7 +105,11 @@ object IppTag {
      */
     @Throws(UnsupportedEncodingException::class)
     @JvmOverloads
-    fun getCharset(ippBuf: ByteBuffer, attributeName: String? = null, value: String? = null): ByteBuffer {
+    fun getCharset(
+        ippBuf: ByteBuffer,
+        attributeName: String? = null,
+        value: String? = null
+    ): ByteBuffer {
         return getUsAscii(ippBuf, CHARSET_TAG, attributeName, value)
     }
 
@@ -109,7 +123,11 @@ object IppTag {
      */
     @Throws(UnsupportedEncodingException::class)
     @JvmOverloads
-    fun getNaturalLanguage(ippBuf: ByteBuffer, attributeName: String? = null, value: String? = null): ByteBuffer {
+    fun getNaturalLanguage(
+        ippBuf: ByteBuffer,
+        attributeName: String? = null,
+        value: String? = null
+    ): ByteBuffer {
         return getUsAscii(ippBuf, NATURAL_LANGUAGE_TAG, attributeName, value)
     }
 
@@ -123,7 +141,11 @@ object IppTag {
      */
     @Throws(UnsupportedEncodingException::class)
     @JvmOverloads
-    fun getUri(ippBuf: ByteBuffer, attributeName: String? = null, value: String? = null): ByteBuffer {
+    fun getUri(
+        ippBuf: ByteBuffer,
+        attributeName: String? = null,
+        value: String? = null
+    ): ByteBuffer {
         return getUsAscii(ippBuf, URI_TAG, attributeName, value)
     }
 
@@ -136,7 +158,11 @@ object IppTag {
      * @throws UnsupportedEncodingException
      */
     @Throws(UnsupportedEncodingException::class)
-    fun getNameWithoutLanguage(ippBuf: ByteBuffer, attributeName: String?, value: String?): ByteBuffer {
+    fun getNameWithoutLanguage(
+        ippBuf: ByteBuffer,
+        attributeName: String?,
+        value: String?
+    ): ByteBuffer {
         ippBuf.put(NAME_WITHOUT_LANGUAGE_TAG)
 
         if (attributeName != null) {
@@ -164,7 +190,11 @@ object IppTag {
      * @throws UnsupportedEncodingException
      */
     @Throws(UnsupportedEncodingException::class)
-    fun getTextWithoutLanguage(ippBuf: ByteBuffer, attributeName: String?, value: String?): ByteBuffer {
+    fun getTextWithoutLanguage(
+        ippBuf: ByteBuffer,
+        attributeName: String?,
+        value: String?
+    ): ByteBuffer {
         ippBuf.put(TEXT_WITHOUT_LANGUAGE_TAG)
 
         if (attributeName != null) {
@@ -265,7 +295,13 @@ object IppTag {
      * @throws UnsupportedEncodingException
      */
     @Throws(UnsupportedEncodingException::class)
-    fun getResolution(ippBuf: ByteBuffer, attributeName: String?, value1: Int, value2: Int, value3: Byte): ByteBuffer {
+    fun getResolution(
+        ippBuf: ByteBuffer,
+        attributeName: String?,
+        value1: Int,
+        value2: Int,
+        value3: Byte
+    ): ByteBuffer {
         ippBuf.put(RESOLUTION_TAG)
         if (attributeName != null) {
             ippBuf.putShort(attributeName.length.toShort())
@@ -290,7 +326,12 @@ object IppTag {
      * @throws UnsupportedEncodingException
      */
     @Throws(UnsupportedEncodingException::class)
-    fun getRangeOfInteger(ippBuf: ByteBuffer, attributeName: String?, value1: Int, value2: Int): ByteBuffer {
+    fun getRangeOfInteger(
+        ippBuf: ByteBuffer,
+        attributeName: String?,
+        value1: Int,
+        value2: Int
+    ): ByteBuffer {
         ippBuf.put(RANGE_OF_INTEGER_TAG)
         if (attributeName != null) {
             ippBuf.putShort(attributeName.length.toShort())
@@ -314,7 +355,11 @@ object IppTag {
      */
     @Throws(UnsupportedEncodingException::class)
     @JvmOverloads
-    fun getMimeMediaType(ippBuf: ByteBuffer, attributeName: String? = null, value: String? = null): ByteBuffer {
+    fun getMimeMediaType(
+        ippBuf: ByteBuffer,
+        attributeName: String? = null,
+        value: String? = null
+    ): ByteBuffer {
         return getUsAscii(ippBuf, MIME_MEDIA_TYPE_TAG, attributeName, value)
     }
 
@@ -328,7 +373,11 @@ object IppTag {
      */
     @Throws(UnsupportedEncodingException::class)
     @JvmOverloads
-    fun getKeyword(ippBuf: ByteBuffer, attributeName: String? = null, value: String? = null): ByteBuffer {
+    fun getKeyword(
+        ippBuf: ByteBuffer,
+        attributeName: String? = null,
+        value: String? = null
+    ): ByteBuffer {
         return getUsAscii(ippBuf, KEYWORD_TAG, attributeName, value)
     }
 
@@ -352,7 +401,12 @@ object IppTag {
      * @throws UnsupportedEncodingException
      */
     @Throws(UnsupportedEncodingException::class)
-    private fun getUsAscii(ippBuf: ByteBuffer, tag: Byte, attributeName: String?, value: String?): ByteBuffer {
+    private fun getUsAscii(
+        ippBuf: ByteBuffer,
+        tag: Byte,
+        attributeName: String?,
+        value: String?
+    ): ByteBuffer {
         ippBuf.put(tag)
         if (attributeName != null) {
             ippBuf.putShort(attributeName.length.toShort())

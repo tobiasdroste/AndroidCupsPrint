@@ -26,9 +26,7 @@ package org.cups4j.operations.cups
 import android.content.Context
 import org.cups4j.CupsPrinter
 import org.cups4j.operations.IppOperation
-
 import java.net.URL
-import java.util.HashMap
 
 const val DEFAULT_PRINTER_NAME = "Unknown printer"
 
@@ -54,14 +52,20 @@ class CupsGetDefaultOperation(context: Context) : IppOperation(context) {
                 var location: String? = null
                 for (attr in group.attribute) {
                     when (attr.name) {
-                        "printer-uri-supported" -> printerURL = attr.attributeValue[0].value!!.replace("ipps?://".toRegex(), url.protocol + "://")
+                        "printer-uri-supported" -> printerURL =
+                            attr.attributeValue[0].value!!.replace(
+                                "ipps?://".toRegex(),
+                                url.protocol + "://"
+                            )
+
                         "printer-name" -> printerName = attr.attributeValue[0].value
                         "printer-location" -> if (attr.attributeValue.size > 0) {
                             location = attr.attributeValue[0].value
                         }
                     }
                 }
-                defaultPrinter = CupsPrinter(URL(printerURL), printerName ?: DEFAULT_PRINTER_NAME, true)
+                defaultPrinter =
+                    CupsPrinter(URL(printerURL), printerName ?: DEFAULT_PRINTER_NAME, true)
                 defaultPrinter.location = location
             }
         }

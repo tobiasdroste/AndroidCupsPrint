@@ -34,6 +34,7 @@ enum class JobStateEnum(val text: String) {
     override fun toString(): String = text
 
     companion object {
-        fun fromString(value: String?): JobStateEnum? = entries.firstOrNull { value?.equals(it.text, ignoreCase = true) == true }
+        fun fromString(value: String?): JobStateEnum? =
+            entries.firstOrNull { value?.equals(it.text, ignoreCase = true) == true }
     }
 }

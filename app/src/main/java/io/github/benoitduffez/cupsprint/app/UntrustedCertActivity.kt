@@ -35,9 +35,17 @@ class UntrustedCertActivity : Activity() {
 
         binding.untrustedTrustButton.setOnClickListener {
             if (HttpConnectionManagement.saveCertificates(this, arrayOf(cert))) {
-                Toast.makeText(this@UntrustedCertActivity, R.string.untrusted_trusted, Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@UntrustedCertActivity,
+                    R.string.untrusted_trusted,
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
-                Toast.makeText(this@UntrustedCertActivity, R.string.untrusted_couldnt_trust, Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@UntrustedCertActivity,
+                    R.string.untrusted_couldnt_trust,
+                    Toast.LENGTH_LONG
+                ).show()
             }
             finish()
         }

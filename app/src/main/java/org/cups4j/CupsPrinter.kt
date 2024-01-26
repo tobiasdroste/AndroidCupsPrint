@@ -34,22 +34,23 @@ import java.net.URL
  * @param isDefault   true if this is the default printer on this IPP server
  */
 class CupsPrinter(
-        /**
-         * The URL for this printer
-         */
-        val printerURL: URL,
+    /**
+     * The URL for this printer
+     */
+    val printerURL: URL,
 
-        /**
-         * Name of this printer.
-         * For a printer http://localhost:631/printers/printerName 'printerName' will
-         * be returned.
-         */
-        val name: String,
+    /**
+     * Name of this printer.
+     * For a printer http://localhost:631/printers/printerName 'printerName' will
+     * be returned.
+     */
+    val name: String,
 
-        /**
-         * Is this the default printer
-         */
-        var isDefault: Boolean) {
+    /**
+     * Is this the default printer
+     */
+    var isDefault: Boolean
+) {
     /**
      * Description attribute for this printer
      */
@@ -95,14 +96,16 @@ class CupsPrinter(
             addJobAttribute(attributes, copiesString)
         }
         if (pageRanges != null && "" != pageRanges) {
-            val ranges = pageRanges.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val ranges =
+                pageRanges.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             var delimiter = ""
 
             rangesString.append("page-ranges:setOfRangeOfInteger:")
             for (range in ranges) {
                 var actualRange = range.trim { it <= ' ' }
-                val values = range.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val values =
+                    range.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 if (values.size == 1) {
                     actualRange = "$range-$range"
                 }
@@ -160,5 +163,5 @@ class CupsPrinter(
      * @return String
      */
     override fun toString(): String =
-            "printer uri=$printerURL default=$isDefault name=$name"
+        "printer uri=$printerURL default=$isDefault name=$name"
 }

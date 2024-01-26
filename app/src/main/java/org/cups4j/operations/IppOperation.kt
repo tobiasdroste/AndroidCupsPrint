@@ -53,14 +53,17 @@ abstract class IppOperation(val context: Context) {
     var lastResponseCode: Int = 0
         private set
     private val aborted: AtomicBoolean = AtomicBoolean(false)
+
     @Volatile
     private var threadRef: Thread? = null
 
     @Throws(Exception::class)
-    fun request(url: URL, map: Map<String, String>): IppResult? = sendRequest(url, getIppHeader(url, map))
+    fun request(url: URL, map: Map<String, String>): IppResult? =
+        sendRequest(url, getIppHeader(url, map))
 
     @Throws(Exception::class)
-    fun request(url: URL, map: Map<String, String>, document: InputStream): IppResult? = sendRequest(url, getIppHeader(url, map), document)
+    fun request(url: URL, map: Map<String, String>, document: InputStream): IppResult? =
+        sendRequest(url, getIppHeader(url, map), document)
 
     /**
      * Gets the IPP header
@@ -82,13 +85,18 @@ abstract class IppOperation(val context: Context) {
             return ippBuf
         }
 
-        ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "requesting-user-name", map["requesting-user-name"])
+        ippBuf = IppTag.getNameWithoutLanguage(
+            ippBuf,
+            "requesting-user-name",
+            map["requesting-user-name"]
+        )
 
 
         map["limit"]?.let { ippBuf = IppTag.getInteger(ippBuf, "limit", it.toInt()) }
 
         map["requested-attributes"]?.let { requestedAttributes ->
-            val sta = requestedAttributes.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val sta = requestedAttributes.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()
             ippBuf = IppTag.getKeyword(ippBuf, "requested-attributes", sta[0])
             val l = sta.size
             for (i in 1 until l) {
@@ -111,7 +119,11 @@ abstract class IppOperation(val context: Context) {
      * @throws Exception If any network error occurs
      */
     @Throws(Exception::class)
-    private fun sendRequest(url: URL, ippBuf: ByteBuffer, documentStream: InputStream? = null): IppResult? {
+    private fun sendRequest(
+        url: URL,
+        ippBuf: ByteBuffer,
+        documentStream: InputStream? = null
+    ): IppResult? {
         if (isAborted()) {
             return null
         }
@@ -133,7 +145,10 @@ abstract class IppOperation(val context: Context) {
             connection.setRequestProperty("Content-Type", IPP_MIME_TYPE)
 
             if (url.protocol == "https") {
-                HttpConnectionManagement.handleHttpsUrlConnection(context, connection as HttpsURLConnection)
+                HttpConnectionManagement.handleHttpsUrlConnection(
+                    context,
+                    connection as HttpsURLConnection
+                )
             }
 
             HttpConnectionManagement.handleBasicAuth(context, url, connection)
@@ -180,7 +195,8 @@ abstract class IppOperation(val context: Context) {
         } finally {
             if (connection is HttpsURLConnection) {
                 if (connection.sslSocketFactory is AdditionalKeyStoresSSLSocketFactory) {
-                    val socketFactory = connection.sslSocketFactory as AdditionalKeyStoresSSLSocketFactory
+                    val socketFactory =
+                        connection.sslSocketFactory as AdditionalKeyStoresSSLSocketFactory
                     serverCerts = socketFactory.serverCert
                 }
             }

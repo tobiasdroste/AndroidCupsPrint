@@ -28,8 +28,6 @@ import org.cups4j.CupsPrinter
 import org.cups4j.operations.IppOperation
 import timber.log.Timber
 import java.net.URL
-import java.util.ArrayList
-import java.util.HashMap
 
 class CupsGetPrintersOperation(context: Context) : IppOperation(context) {
     init {
@@ -38,11 +36,17 @@ class CupsGetPrintersOperation(context: Context) : IppOperation(context) {
     }
 
     @Throws(Exception::class)
-    fun getPrinters(url: URL, path: String, firstName: String? = null, limit: Int? = null): List<CupsPrinter> {
+    fun getPrinters(
+        url: URL,
+        path: String,
+        firstName: String? = null,
+        limit: Int? = null
+    ): List<CupsPrinter> {
         val printers = ArrayList<CupsPrinter>()
 
         val map = HashMap<String, String>()
-        map["requested-attributes"] = "copies-supported page-ranges-supported printer-name printer-info printer-location printer-make-and-model printer-uri-supported"
+        map["requested-attributes"] =
+            "copies-supported page-ranges-supported printer-name printer-info printer-location printer-make-and-model printer-uri-supported"
 
         // When a firstName is given, the returned list starts with this printer
         if (firstName != null) {
@@ -72,11 +76,17 @@ class CupsGetPrintersOperation(context: Context) : IppOperation(context) {
                 var printerDescription: String? = null
                 for (attr in group.attribute) {
                     when (attr.name) {
-                        "printer-uri-supported" -> printerURI = attr.attributeValue[0].value!!.replace("ipps?://".toRegex(), url.protocol + "://")
+                        "printer-uri-supported" -> printerURI =
+                            attr.attributeValue[0].value!!.replace(
+                                "ipps?://".toRegex(),
+                                url.protocol + "://"
+                            )
+
                         "printer-name" -> printerName = attr.attributeValue[0].value
                         "printer-location" -> if (attr.attributeValue.size > 0) {
                             printerLocation = attr.attributeValue[0].value
                         }
+
                         "printer-info" -> if (attr.attributeValue.size > 0) {
                             printerDescription = attr.attributeValue[0].value
                         }
@@ -87,9 +97,11 @@ class CupsGetPrintersOperation(context: Context) : IppOperation(context) {
                     printerUrl = URL(printerURI)
                 } catch (t: Throwable) {
                     t.printStackTrace()
-                    System.err.println("Error encountered building URL from printer uri of printer " + printerName
-                            + ", uri returned was [" + printerURI + "].  Attribute group tag/description: [" + group.tagName
-                            + "/" + group.description)
+                    System.err.println(
+                        "Error encountered building URL from printer uri of printer " + printerName
+                                + ", uri returned was [" + printerURI + "].  Attribute group tag/description: [" + group.tagName
+                                + "/" + group.description
+                    )
                     throw Exception(t)
                 }
 

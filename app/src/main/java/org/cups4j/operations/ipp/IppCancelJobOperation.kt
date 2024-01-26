@@ -24,16 +24,13 @@ package org.cups4j.operations.ipp
  */
 
 import android.content.Context
+import ch.ethz.vppserver.ippclient.IppTag
 import org.cups4j.CupsClient
 import org.cups4j.PrintRequestResult
 import org.cups4j.operations.IppOperation
-
 import java.io.UnsupportedEncodingException
 import java.net.URL
 import java.nio.ByteBuffer
-import java.util.HashMap
-
-import ch.ethz.vppserver.ippclient.IppTag
 
 class IppCancelJobOperation(context: Context) : IppOperation(context) {
     init {
@@ -59,7 +56,11 @@ class IppCancelJobOperation(context: Context) : IppOperation(context) {
             ippBuf = IppTag.getUri(ippBuf, "job-uri", stripPortNumber(url))
         }
 
-        ippBuf = IppTag.getNameWithoutLanguage(ippBuf, "requesting-user-name", map["requesting-user-name"])
+        ippBuf = IppTag.getNameWithoutLanguage(
+            ippBuf,
+            "requesting-user-name",
+            map["requesting-user-name"]
+        )
 
         if (map["message"] != null) {
             ippBuf = IppTag.getTextWithoutLanguage(ippBuf, "message", map["message"])
@@ -75,7 +76,7 @@ class IppCancelJobOperation(context: Context) : IppOperation(context) {
         val requestUrl = URL("$url/jobs/$jobID")
 
         val map = HashMap<String, String>()
-        map["requesting-user-name"] = userName?:CupsClient.DEFAULT_USER
+        map["requesting-user-name"] = userName ?: CupsClient.DEFAULT_USER
         map["job-uri"] = requestUrl.toString()
 
         return PrintRequestResult(request(requestUrl, map)).isSuccessfulResult

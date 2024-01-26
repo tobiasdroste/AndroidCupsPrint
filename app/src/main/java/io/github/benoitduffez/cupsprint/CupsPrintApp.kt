@@ -16,7 +16,7 @@ class CupsPrintApp : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        startKoin{
+        startKoin {
             androidLogger()
             androidContext(this@CupsPrintApp)
         }

@@ -29,7 +29,7 @@ object IppUtil {
      * @return short value
      */
     private fun toShort(a: Byte, b: Byte): Short =
-            ((a and (0x00ff shl 8).toByte()) + (b and 0x00ff.toByte())).toShort()
+        ((a and (0x00ff shl 8).toByte()) + (b and 0x00ff.toByte())).toShort()
 
     /**
      *
@@ -83,7 +83,7 @@ object IppUtil {
     @Throws(UnsupportedEncodingException::class)
     @JvmOverloads
     fun toBytes(str: String, encoding: String? = null): ByteArray =
-            str.toByteArray(charset(encoding ?: DEFAULT_CHARSET))
+        str.toByteArray(charset(encoding ?: DEFAULT_CHARSET))
 
     /**
      * see RFC 2579 for DateAndTime byte length and explanation of byte fields IPP datetime must have

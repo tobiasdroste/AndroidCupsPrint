@@ -6,9 +6,6 @@ import java.net.InetAddress
 import java.net.MulticastSocket
 import java.net.SocketTimeoutException
 import java.nio.ByteBuffer
-import java.util.ArrayList
-import java.util.HashMap
-
 import javax.jmdns.ServiceInfo
 import javax.jmdns.impl.DNSIncoming
 import javax.jmdns.impl.DNSRecord
@@ -21,7 +18,8 @@ private val FOOTER = byteArrayOf(0, 0, 12, 0, 1)
 private const val TIMEOUT = 1000
 
 class MdnsServices {
-    @Volatile private var error = false // Threadsafe state of error
+    @Volatile
+    private var error = false // Threadsafe state of error
 
     /**
      * @return the last exception that occurred while trying to connect to scanned hosts
@@ -67,7 +65,11 @@ class MdnsServices {
         return message
     }
 
-    private fun process(list: MutableMap<String, PrinterRec>, packet: DatagramPacket, service: String) {
+    private fun process(
+        list: MutableMap<String, PrinterRec>,
+        packet: DatagramPacket,
+        service: String
+    ) {
         var protocol = "http"
         if (service == IPPS_SERVICE) {
             protocol = "https"
@@ -134,11 +136,12 @@ class MdnsServices {
                 if (key != null) {
                     val p = try {
                         getPrinterRec(
-                                info.name,
-                                protocol,
-                                services[key]!![0],
-                                Integer.parseInt(services[key]!![1]),
-                                rp)
+                            info.name,
+                            protocol,
+                            services[key]!![0],
+                            Integer.parseInt(services[key]!![1]),
+                            rp
+                        )
                     } catch (e: NullPointerException) {
                         Timber.e("Attempted to parse an invalid mDNS packet: $info, $protocol, $services, $rp; abort.")
                         continue
@@ -148,11 +151,13 @@ class MdnsServices {
                         Timber.d("A new printer responded to an mDNS query: $p")
                         list[key] = p
                     } else {
-                        Timber.e("""
+                        Timber.e(
+                            """
                             A new printer responded to an mDNS query, but it has no PrinterRec: ignore
                             (info: $info, protocol: $protocol, service: ${services[key]!![0]},
                             port: ${Integer.parseInt(services[key]!![1])}, queue: $rp
-                            """.trimIndent())
+                            """.trimIndent()
+                        )
                     }
                 } else {
                     Timber.e("Couldn't find printer from mDNS datagram: ${info.application}, ${info.domain}, ${info.key}")
@@ -162,13 +167,23 @@ class MdnsServices {
             println(e.toString())
             // Don't report this weird issue (https://github.com/BenoitDuffez/AndroidCupsPrint/issues/72)
             when (e.message?.contains("DNSIncoming corrupted message")) {
-                null, false -> Timber.e(e, "There was an error when trying to process a datagram packet: $packet")
+                null, false -> Timber.e(
+                    e,
+                    "There was an error when trying to process a datagram packet: $packet"
+                )
+
                 else -> Timber.e("There was an error when trying to process a datagram packet: $packet")
             }
         }
     }
 
-    private fun getPrinterRec(inputName: String?, protocol: String?, host: String?, port: Int?, queue: String?): PrinterRec? {
+    private fun getPrinterRec(
+        inputName: String?,
+        protocol: String?,
+        host: String?,
+        port: Int?,
+        queue: String?
+    ): PrinterRec? {
         var nickname = inputName
         if (nickname == null) {
             nickname = "unknown"

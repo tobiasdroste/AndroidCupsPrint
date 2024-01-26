@@ -21,7 +21,8 @@ class HostNotVerifiedActivity : Activity() {
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         unverifiedHostname = intent.getStringExtra(KEY_HOST)
-        binding.hostNotVerifiedTitle.text = getString(R.string.host_not_verified_title, unverifiedHostname)
+        binding.hostNotVerifiedTitle.text =
+            getString(R.string.host_not_verified_title, unverifiedHostname)
 
         binding.hostNotVerifiedTrustButton.setOnClickListener { validateTrust(true) }
         binding.hostNotVerifiedAbortButton.setOnClickListener { validateTrust(false) }
@@ -53,7 +54,8 @@ class HostNotVerifiedActivity : Activity() {
          * @return true if the hostname was explicitly trusted, false otherwise or if unknown
          */
         fun isHostnameTrusted(context: Context, hostname: String): Boolean {
-            return context.getSharedPreferences(HOSTS_FILE, Context.MODE_PRIVATE).getBoolean(hostname, false)
+            return context.getSharedPreferences(HOSTS_FILE, Context.MODE_PRIVATE)
+                .getBoolean(hostname, false)
         }
     }
 }
