@@ -1,12 +1,14 @@
 package io.github.benoitduffez.cupsprint.app
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Toast
 import io.github.benoitduffez.cupsprint.HttpConnectionManagement
 import io.github.benoitduffez.cupsprint.R
 import io.github.benoitduffez.cupsprint.databinding.UntrustedCertBinding
+import timber.log.Timber
 import java.security.cert.X509Certificate
 
 /**
@@ -22,7 +24,18 @@ class UntrustedCertActivity : Activity() {
         setContentView(binding.root)
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        val cert = intent.getSerializableExtra(KEY_CERT) as X509Certificate
+        val cert = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra(KEY_CERT, X509Certificate::class.java)
+        } else {
+            @Suppress("DEPRECATION") // Required as we support API LEVEL < 33
+            intent.getSerializableExtra(KEY_CERT) as X509Certificate
+        }
+
+        if (cert == null) {
+            Timber.e("Intent didn't contain a certificate.")
+            finish()
+            return
+        }
 
         // Build short cert description
         val sb = StringBuilder()
