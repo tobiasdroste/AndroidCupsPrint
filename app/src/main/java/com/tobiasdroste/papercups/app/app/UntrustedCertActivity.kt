@@ -1,13 +1,12 @@
-package io.github.benoitduffez.cupsprint.app
+package com.tobiasdroste.papercups.app
 
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Toast
-import io.github.benoitduffez.cupsprint.HttpConnectionManagement
-import io.github.benoitduffez.cupsprint.R
-import io.github.benoitduffez.cupsprint.databinding.UntrustedCertBinding
+import com.tobiasdroste.papercups.R
+import com.tobiasdroste.papercups.databinding.UntrustedCertBinding
 import timber.log.Timber
 import java.security.cert.X509Certificate
 

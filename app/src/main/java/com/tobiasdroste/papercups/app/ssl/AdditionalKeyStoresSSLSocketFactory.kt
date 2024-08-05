@@ -1,4 +1,4 @@
-package io.github.benoitduffez.cupsprint.ssl
+package com.tobiasdroste.papercups.ssl
 
 import java.io.IOException
 import java.net.InetAddress

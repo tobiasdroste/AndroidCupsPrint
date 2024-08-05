@@ -1,4 +1,4 @@
-package io.github.benoitduffez.cupsprint.app
+package com.tobiasdroste.papercups.app
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,9 +11,9 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import io.github.benoitduffez.cupsprint.R
-import io.github.benoitduffez.cupsprint.databinding.ActivityManageManualPrintersBinding
-import io.github.benoitduffez.cupsprint.databinding.ManagePrintersListItemBinding
+import com.tobiasdroste.papercups.R
+import com.tobiasdroste.papercups.databinding.ActivityManageManualPrintersBinding
+import com.tobiasdroste.papercups.databinding.ManagePrintersListItemBinding
 
 class ManageManualPrintersActivity : AppCompatActivity() {
 

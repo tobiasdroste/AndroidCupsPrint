@@ -1,11 +1,11 @@
-package io.github.benoitduffez.cupsprint.app
+package com.tobiasdroste.papercups.app
 
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
-import io.github.benoitduffez.cupsprint.R
-import io.github.benoitduffez.cupsprint.databinding.HostNotVerifiedBinding
+import com.tobiasdroste.papercups.R
+import com.tobiasdroste.papercups.databinding.HostNotVerifiedBinding
 
 /**
  * Ask for host trust when it couldn't be verified

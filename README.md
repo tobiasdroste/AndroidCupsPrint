@@ -2,11 +2,6 @@
 
 Port of cups4j to Android.
 
-See it live on the Play
-Store: https://play.google.com/store/apps/details?id=io.github.benoitduffez.cupsprint  
-See it live on
-f-droid.org: https://f-droid.org/repository/browse/?fdid=io.github.benoitduffez.cupsprint
-
 ## Original work
 
 Original work was created by Jon Freeman, it included an app that reacts to the SEND intent to print
@@ -53,7 +48,7 @@ submit a new issue or fork/fix/submit PR.
 Please use the `develop` branch for testing and troubleshooting.
 
 Also, you can subscribe on the Play Store to receive beta versions of this
-app: https://play.google.com/apps/testing/io.github.benoitduffez.cupsprint
+app: https://play.google.com/apps/testing/com.tobiasdroste.papercups
 
 ## Branches
 

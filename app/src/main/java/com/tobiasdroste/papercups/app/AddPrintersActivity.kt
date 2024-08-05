@@ -1,4 +1,4 @@
-package io.github.benoitduffez.cupsprint.app
+package com.tobiasdroste.papercups.app
 
 import android.content.Context
 import android.os.Bundle
@@ -8,9 +8,9 @@ import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
-import io.github.benoitduffez.cupsprint.R
-import io.github.benoitduffez.cupsprint.databinding.AddPrintersBinding
-import io.github.benoitduffez.cupsprint.printservice.CupsPrinterDiscoverySession
+import com.tobiasdroste.papercups.R
+import com.tobiasdroste.papercups.databinding.AddPrintersBinding
+import com.tobiasdroste.papercups.printservice.CupsPrinterDiscoverySession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package io.github.benoitduffez.cupsprint.printservice
+package com.tobiasdroste.papercups.printservice
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,13 +14,13 @@ import android.text.TextUtils
 import android.widget.Toast
 import ch.ethz.vppserver.schema.ippclient.Attribute
 import ch.ethz.vppserver.schema.ippclient.AttributeValue
-import io.github.benoitduffez.cupsprint.R
-import io.github.benoitduffez.cupsprint.app.AddPrintersActivity
-import io.github.benoitduffez.cupsprint.app.BasicAuthActivity
-import io.github.benoitduffez.cupsprint.app.HostNotVerifiedActivity
-import io.github.benoitduffez.cupsprint.app.UntrustedCertActivity
-import io.github.benoitduffez.cupsprint.detect.MdnsServices
-import io.github.benoitduffez.cupsprint.detect.PrinterRec
+import com.tobiasdroste.papercups.R
+import com.tobiasdroste.papercups.app.AddPrintersActivity
+import com.tobiasdroste.papercups.app.BasicAuthActivity
+import com.tobiasdroste.papercups.app.HostNotVerifiedActivity
+import com.tobiasdroste.papercups.app.UntrustedCertActivity
+import com.tobiasdroste.papercups.detect.MdnsServices
+import com.tobiasdroste.papercups.detect.PrinterRec
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

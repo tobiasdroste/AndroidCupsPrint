@@ -1,4 +1,4 @@
-package io.github.benoitduffez.cupsprint.printservice
+package com.tobiasdroste.papercups.printservice
 
 import android.print.PrintAttributes
 import ch.ethz.vppserver.schema.ippclient.AttributeValue

@@ -1,4 +1,4 @@
-package io.github.benoitduffez.cupsprint.detect
+package com.tobiasdroste.papercups.detect
 
 import timber.log.Timber
 import java.net.DatagramPacket

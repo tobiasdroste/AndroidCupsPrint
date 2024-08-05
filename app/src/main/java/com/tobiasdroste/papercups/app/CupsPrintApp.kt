@@ -1,6 +1,7 @@
-package io.github.benoitduffez.cupsprint
+package com.tobiasdroste.papercups.app
 
 import android.app.Application
+import com.tobiasdroste.papercups.BuildConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

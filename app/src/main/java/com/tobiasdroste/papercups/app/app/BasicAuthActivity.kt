@@ -1,11 +1,11 @@
-package io.github.benoitduffez.cupsprint.app
+package com.tobiasdroste.papercups.app
 
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.ViewGroup
-import io.github.benoitduffez.cupsprint.databinding.BasicAuthBinding
+import com.tobiasdroste.papercups.databinding.BasicAuthBinding
 
 /**
  * Ask for the HTTP basic auth credentials

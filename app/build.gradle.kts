@@ -26,7 +26,7 @@ android {
         versionCode = 5
         versionName = version as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        namespace = "io.github.benoitduffez.cupsprint"
+        namespace = "com.tobiasdroste.papercups"
     }
 
     buildTypes {

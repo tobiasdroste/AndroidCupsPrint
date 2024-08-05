@@ -1,4 +1,4 @@
-package io.github.benoitduffez.cupsprint.printservice
+package com.tobiasdroste.papercups.printservice
 
 import android.os.Handler
 import android.os.Looper
@@ -8,7 +8,7 @@ import android.printservice.PrintJob
 import android.printservice.PrintService
 import android.printservice.PrinterDiscoverySession
 import android.widget.Toast
-import io.github.benoitduffez.cupsprint.R
+import com.tobiasdroste.papercups.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

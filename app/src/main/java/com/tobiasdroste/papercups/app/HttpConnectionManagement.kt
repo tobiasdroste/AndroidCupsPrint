@@ -1,11 +1,10 @@
-package io.github.benoitduffez.cupsprint
+package com.tobiasdroste.papercups.app
 
 import android.content.Context
 import android.util.Base64
-import io.github.benoitduffez.cupsprint.app.BasicAuthActivity
-import io.github.benoitduffez.cupsprint.ssl.AdditionalKeyManager
-import io.github.benoitduffez.cupsprint.ssl.AdditionalKeyStoresSSLSocketFactory
-import io.github.benoitduffez.cupsprint.ssl.AndroidCupsHostnameVerifier
+import com.tobiasdroste.papercups.ssl.AdditionalKeyManager
+import com.tobiasdroste.papercups.ssl.AdditionalKeyStoresSSLSocketFactory
+import com.tobiasdroste.papercups.ssl.AndroidCupsHostnameVerifier
 import timber.log.Timber
 import java.io.FileNotFoundException
 import java.io.FileOutputStream

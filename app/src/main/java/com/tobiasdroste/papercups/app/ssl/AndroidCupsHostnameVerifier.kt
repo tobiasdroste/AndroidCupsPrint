@@ -1,7 +1,7 @@
-package io.github.benoitduffez.cupsprint.ssl
+package com.tobiasdroste.papercups.ssl
 
 import android.content.Context
-import io.github.benoitduffez.cupsprint.app.HostNotVerifiedActivity
+import com.tobiasdroste.papercups.app.HostNotVerifiedActivity
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSession
 
