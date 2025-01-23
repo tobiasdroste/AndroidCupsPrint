@@ -46,9 +46,9 @@
     <string name="print_service_vendor">Cliente genérico CUPS</string>
     <string name="err_400">El servidor CUPS indicó que enviamos una solicitud HTTP errónea. Esto se debe a una mala configuración del servidor o a una mala dirección URL. Por favor, compruebe ambos.</string>
     <string name="err_404">El nombre de la impresora no se encontró en el servidor (HTTP 404). Por favor, compruebe el nombre de la impresora.</string>
-    <string name="manage_printers_none">No hay impresoras añadidas manualmente. Puedes añadir uno en los Ajustes la aplicación, en la sección de Impresión.</string>
     <string name="manage_printers_help">Aquí está la lista de impresoras añadidas manualmente. Haga clic en uno de ellos para borrarlo (¡sin confirmación!)</string>
     <string name="print_job_queue_fail_malformed_url">Imposible poner en cola la impresión: %1$s</string>
     <string name="print_job_queue_fail_uri_syntax">Imposible descifrar la dirección: %1$s</string>
     <string name="cleartext_error_android_9">Desde Android 9.0, las conexiones HTTP no seguras están prohibidas. Por favor, pase su servidor/impresora CUPS a SSL/TLS.</string>
+    <string name="fab_add_printer">Agregar impresora</string>
 </resources>

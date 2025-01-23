@@ -48,10 +48,10 @@
     <string name="err_job_socket_timeout">Не удалось распечатать документ: таймаут сокета. Пожалуйста, проверьте подключение к сети.</string>
     <string name="err_job_exception">Не удалось обработать задание: %1$s (%2$s)</string>
     <string name="print_service_vendor">Общий клиент CUPS</string>
-    <string name="manage_printers_none">Принтеры, введенные вручную, отсутствуют. Их можно добавить в приложении "Настройки" в разделе "Печать".</string>
     <string name="manage_printers_help">Вот принтеры, добавленные вручную. Нажмите на один элемент, чтобы удалить его (без подтверждения!)</string>
     <string name="print_job_queue_fail_malformed_url">Не удалось поставить задание на печать в очередь: %1$s</string>
     <string name="print_job_queue_fail_uri_syntax">Не удалось обработать URI: %1$s</string>
     <string name="cleartext_error_android_9">Трафик с чистым текстом больше не разрешен в Android 9.0. Пожалуйста, включите SSL/TLS на сервере/принтере CUPS.</string>
+    <string name="fab_add_printer">Добавить принтер</string>
 
 </resources>

@@ -1,33 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tobiasdroste.papercups.app.ManageManualPrintersActivity">
-
-    <TextView
-        android:id="@+id/manage_printers_help"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/manage_printers_help" />
-
-    <ListView
-        android:id="@+id/manage_printers_list"
-        android:layout_width="match_parent"
+    <RelativeLayout
         android:layout_height="match_parent"
-        android:layout_below="@+id/manage_printers_help" />
+        android:layout_width="match_parent">
 
-    <TextView
-        android:id="@+id/manage_printers_empty"
+        <TextView
+            android:id="@+id/manage_printers_help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/manage_printers_help" />
+
+        <ListView
+            android:id="@+id/manage_printers_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/manage_printers_help" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:text="@string/manage_printers_none"
-        app:drawableStartCompat="@drawable/ic_no_printers" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/fab_add_printer"
+        android:text="@string/fab_add_printer"
+        app:icon="@drawable/plus"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</RelativeLayout>

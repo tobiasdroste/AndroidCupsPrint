@@ -46,11 +46,11 @@
     <string name="err_job_socket_timeout">ドキュメントを印刷できません: ソケットタイムアウト。 ネットワーク接続を確認してください。</string>
     <string name="err_job_exception">ジョブを処理できません: %1$s (%2$s)</string>
     <string name="print_service_vendor">汎用 CUPS クライアント</string>
-    <string name="manage_printers_none">手動で入力したプリンターはありません。 アプリ設定の印刷セクションで追加できます。</string>
     <string name="manage_printers_help">ここに手動で追加されたプリンターがあります。 削除するアイテムを 1 つクリックしてください (確認は表示されません!)</string>
 
     <string name="print_job_queue_fail_malformed_url">印刷ジョブをキューに追加できませんでした：%1$s</string>
     <string name="print_job_queue_fail_uri_syntax">URI を解析できませんでした：%1$s</string>
     <string name="cleartext_error_android_9">Android 9.0 ではクリアテキストのトラフィックが許可されていません。CUPS サーバー/プリンターで SSL/TLS を有効にしてください。</string>
+    <string name="fab_add_printer">プリンターを追加</string>
 
 </resources>

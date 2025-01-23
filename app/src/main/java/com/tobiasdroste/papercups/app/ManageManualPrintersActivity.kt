@@ -1,6 +1,7 @@
 package com.tobiasdroste.papercups.app
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -39,14 +40,32 @@ class ManageManualPrintersActivity : AppCompatActivity() {
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 val editor = prefs.edit()
                 val actualNumPrinters = prefs.getInt(AddPrintersActivity.PREF_NUM_PRINTERS, 0)
-                editor.putInt(AddPrintersActivity.PREF_NUM_PRINTERS, actualNumPrinters - 1)
+                val newPrinterCount = actualNumPrinters - 1
+                editor.putInt(AddPrintersActivity.PREF_NUM_PRINTERS, newPrinterCount)
                 editor.remove(AddPrintersActivity.PREF_NAME + position)
                 editor.remove(AddPrintersActivity.PREF_URL + position)
                 editor.apply()
                 adapter.removeItem(position)
+                adjustFabBasedOnPrinterCount(newPrinterCount)
             }
 
-        binding.managePrintersEmpty.visibility = if (numPrinters <= 0) View.VISIBLE else View.GONE
+        adjustFabBasedOnPrinterCount(numPrinters)
+
+        binding.floatingActionButton.setOnClickListener {
+            val startAddPrintersActivityIntent = Intent(
+                this,
+                AddPrintersActivity::class.java
+            )
+            startActivity(startAddPrintersActivityIntent)
+        }
+    }
+
+    private fun adjustFabBasedOnPrinterCount(numPrinters: Int) {
+        if (numPrinters == 0) {
+            binding.floatingActionButton.extend()
+        } else {
+            binding.floatingActionButton.shrink()
+        }
     }
 
     private fun getPrinters(prefs: SharedPreferences, numPrinters: Int): List<ManualPrinterInfo> {
