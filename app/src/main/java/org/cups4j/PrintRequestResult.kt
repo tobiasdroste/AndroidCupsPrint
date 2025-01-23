@@ -27,7 +27,6 @@ import java.util.regex.Pattern
 class PrintRequestResult(ippResult: IppResult?) {
     var jobId: Int = 0
     private var resultCode: String? = ""
-    private var resultDescription = ""
     val isSuccessfulResult: Boolean
         get() = resultCode != null && resultCode!!.startsWith("0x00")
 
@@ -45,7 +44,6 @@ class PrintRequestResult(ippResult: IppResult?) {
         val m = p.matcher(ippResult.ippStatusResponse!!)
         if (m.find()) {
             resultCode = m.group(1)
-            resultDescription = m.group(2)
         }
     }
 
@@ -54,7 +52,6 @@ class PrintRequestResult(ippResult: IppResult?) {
         val m = p.matcher(ippResult.httpStatusResponse!!)
         if (m.find()) {
             resultCode = m.group(1)
-            resultDescription = m.group(2)
         }
     }
 
