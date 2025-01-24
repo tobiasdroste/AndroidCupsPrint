@@ -10,13 +10,18 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.tobiasdroste.papercups.R
 import com.tobiasdroste.papercups.databinding.ActivityManageManualPrintersBinding
 import com.tobiasdroste.papercups.databinding.ManagePrintersListItemBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ManageManualPrintersActivity : AppCompatActivity() {
+
+    private val viewModel: ManageManualPrintersViewModel by viewModels()
 
     private lateinit var binding: ActivityManageManualPrintersBinding
 
