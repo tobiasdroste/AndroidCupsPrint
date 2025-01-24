@@ -7,5 +7,6 @@ interface PrinterRepository {
     suspend fun getPrinters(): List<Printer>
     fun observePrinters(): LiveData<List<Printer>>
     suspend fun savePrinter(printer: Printer)
+    suspend fun savePrinters(printers: List<Printer>)
     suspend fun deletePrinter(id: Int)
 }

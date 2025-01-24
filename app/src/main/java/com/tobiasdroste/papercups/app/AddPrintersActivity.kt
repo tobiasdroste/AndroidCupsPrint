@@ -6,15 +6,16 @@ import android.os.Looper
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tobiasdroste.papercups.app.printers.models.InputPrinter
 import com.tobiasdroste.papercups.app.printers.models.InputPrinter.Name
 import com.tobiasdroste.papercups.app.printers.models.InputPrinter.PrinterMappingResult.InputField
+import com.tobiasdroste.papercups.app.printers.models.Printer
 import com.tobiasdroste.papercups.databinding.AddPrintersBinding
 import com.tobiasdroste.papercups.printservice.CupsPrinterDiscoverySession
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -48,7 +49,7 @@ class AddPrintersActivity : AppCompatActivity() {
 
         val inputPrinter = InputPrinter(Name(name), url)
 
-        when(val mappingResult = inputPrinter.toPrinter()) {
+        when (val mappingResult = inputPrinter.toPrinter()) {
             is InputPrinter.PrinterMappingResult.Error -> {
                 when (mappingResult.field) {
                     InputField.URL -> binding.addUrl.error = mappingResult.message
@@ -65,20 +66,31 @@ class AddPrintersActivity : AppCompatActivity() {
     private fun searchPrinters() {
         lifecycleScope.launch {
             val foundPrinters = withContext(Dispatchers.IO) {
-                searchPrinters("http") + searchPrinters("https")
+                val httpPrinter = async { searchPrinters("http") }
+                val httpsPrinter = async { searchPrinters("https") }
+                httpPrinter.await() + httpsPrinter.await()
             }
-            CupsPrinterDiscoverySession.currentSession?.addManualPrinters()
-            withContext(Dispatchers.Main) {
-                snackFoundPrintersCount(foundPrinters)
-                finish()
+
+            if (foundPrinters.isEmpty()) {
+                MaterialAlertDialogBuilder(this@AddPrintersActivity).setTitle("Nothing found")
+                    .setMessage("Couldn't find any printers using this IP / hostname.")
+                    .setPositiveButton("OK") { _, _ -> }
+            } else {
+                MaterialAlertDialogBuilder(this@AddPrintersActivity).setTitle("Found ${foundPrinters.size} printers")
+                    .setMessage("Do you want to add them?")
+                    .setCancelable(true)
+                    .setPositiveButton("Add") { _, _ ->
+                        viewModel.addPrinters(foundPrinters)
+                        lifecycleScope.launch {
+                            CupsPrinterDiscoverySession.currentSession?.addManualPrinters()
+                        }
+                        finish()
+                    }.setNegativeButton("Cancel") { _, _ ->
+                        finish()
+                    }
+                    .show()
             }
         }
-    }
-
-    private suspend fun snackFoundPrintersCount(count: Int) {
-        val snackDurationInMs = 5000
-        Snackbar.make(binding.root, "Added $count printers.", snackDurationInMs).show()
-        delay(snackDurationInMs.toLong())
     }
 
     /**
@@ -87,7 +99,7 @@ class AddPrintersActivity : AppCompatActivity() {
      * @param scheme The target scheme, http or https
      * @return found printers
      */
-    private fun searchPrinters(scheme: String): Int {
+    private fun searchPrinters(scheme: String): List<Printer> {
         var urlConnection: HttpURLConnection? = null
         val sb = StringBuilder()
         var server = binding.addServerIp.text.toString()
@@ -107,7 +119,7 @@ class AddPrintersActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return 0
+            return emptyList()
         } finally {
             urlConnection?.disconnect()
         }
@@ -127,7 +139,7 @@ class AddPrintersActivity : AppCompatActivity() {
         var url: String
         var name: String
 
-        var foundPrinters = 0
+        val foundPrinters = mutableListOf<Printer>()
         while (matcher.find()) {
             val path = matcher.group(1)
             if (path != null) {
@@ -137,14 +149,13 @@ class AddPrintersActivity : AppCompatActivity() {
                     baseUrl + path
                 }
                 name = matcher.group(3) ?: "Unnamed"
-                Timber.d("saving printer from search on $scheme: $url")
-                when(val mappingResult = InputPrinter(Name(name), url).toPrinter()) {
+                when (val mappingResult = InputPrinter(Name(name), url).toPrinter()) {
                     is InputPrinter.PrinterMappingResult.Error -> {
                         Timber.e("Error while saving printer from search on $url: ${mappingResult.message}")
                     }
-                    is InputPrinter.PrinterMappingResult.Success -> viewModel.addPrinter(mappingResult.printer)
+
+                    is InputPrinter.PrinterMappingResult.Success -> foundPrinters.add(mappingResult.printer)
                 }
-                foundPrinters++
             }
         }
         return foundPrinters

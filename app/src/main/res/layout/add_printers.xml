@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:autofillHints="textUri"
         android:hint="@string/add_server_ip"
+        android:imeOptions="actionDone"
         android:inputType="textUri"
         android:maxLines="1"
         tools:targetApi="o" />
@@ -51,6 +52,7 @@
         android:hint="@string/add_name"
         android:inputType="text"
         android:maxLines="1"
+        android:imeOptions="actionDone"
         tools:targetApi="o" />
 
     <Button

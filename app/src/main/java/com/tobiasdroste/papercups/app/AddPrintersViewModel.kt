@@ -16,4 +16,8 @@ class AddPrintersViewModel  @Inject constructor(
         printerRepository.savePrinter(printer)
     }
 
+    fun addPrinters(printers: List<Printer>) = viewModelScope.launch {
+        printerRepository.savePrinters(printers)
+    }
+
 }

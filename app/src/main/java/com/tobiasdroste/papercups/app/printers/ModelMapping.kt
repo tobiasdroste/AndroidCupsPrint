@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tobiasdroste.papercups.app.printers;
+package com.tobiasdroste.papercups.app.printers
 
 import com.tobiasdroste.papercups.app.printers.models.LocalPrinter
 import com.tobiasdroste.papercups.app.printers.models.Printer

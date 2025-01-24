@@ -18,6 +18,10 @@ interface PrinterDao {
     @Upsert
     suspend fun insertPrinter(localPrinter: LocalPrinter)
 
+    @Upsert
+    suspend fun insertPrinters(localPrinters: List<LocalPrinter>)
+
     @Query("DELETE FROM printers WHERE id = :id")
     suspend fun deletePrinter(id: Int)
+
 }

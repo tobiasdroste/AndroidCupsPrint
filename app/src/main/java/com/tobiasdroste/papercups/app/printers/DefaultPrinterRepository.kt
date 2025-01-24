@@ -23,6 +23,10 @@ class DefaultPrinterRepository  @Inject constructor(
         localDataSource.insertPrinter(printer.toLocal())
     }
 
+    override suspend fun savePrinters(printers: List<Printer>) {
+        localDataSource.insertPrinters(printers.toLocal())
+    }
+
     override suspend fun deletePrinter(id: Int) {
         localDataSource.deletePrinter(id)
     }
