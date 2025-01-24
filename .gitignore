@@ -9,3 +9,5 @@
 key.properties
 signing.*
 GooglePlayAPI.json
+/private_key.pepk
+/app/release/app-release.aab
