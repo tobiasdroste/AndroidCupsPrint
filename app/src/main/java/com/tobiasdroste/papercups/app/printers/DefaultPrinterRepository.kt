@@ -1,6 +1,8 @@
 package com.tobiasdroste.papercups.app.printers
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
+import com.tobiasdroste.papercups.app.printers.models.Printer
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -9,15 +11,19 @@ class DefaultPrinterRepository  @Inject constructor(
     private val localDataSource: PrinterDao
 ) : PrinterRepository {
 
-    override fun getPrinters(): LiveData<List<Printer>> {
-        return localDataSource.getPrinters()
+    override suspend fun getPrinters(): List<Printer> {
+        return localDataSource.getPrinters().toExternal()
     }
 
-    override fun savePrinter(printer: Printer) {
-        localDataSource.insertPrinter(printer)
+    override fun observePrinters(): LiveData<List<Printer>> {
+        return localDataSource.observePrinters().map { it.toExternal() }
     }
 
-    override fun deletePrinter(id: String) {
+    override suspend fun savePrinter(printer: Printer) {
+        localDataSource.insertPrinter(printer.toLocal())
+    }
+
+    override suspend fun deletePrinter(id: Int) {
         localDataSource.deletePrinter(id)
     }
 }

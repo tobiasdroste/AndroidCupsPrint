@@ -26,6 +26,7 @@ import java.net.SocketTimeoutException
 import java.net.URI
 import java.net.URISyntaxException
 import java.net.URL
+import javax.inject.Inject
 import javax.net.ssl.SSLException
 
 /**
@@ -43,8 +44,11 @@ class CupsService : PrintService() {
 
     private val jobs = HashMap<PrintJobId, Int>()
 
+    @Inject
+    lateinit var cupsPrinterDiscoverySessionFactory: CupsPrinterDiscoverySessionFactory
+
     override fun onCreatePrinterDiscoverySession(): PrinterDiscoverySession =
-        CupsPrinterDiscoverySession(this)
+        cupsPrinterDiscoverySessionFactory.create(this)
 
     override fun onRequestCancelPrintJob(printJob: PrintJob) {
         val jobInfo = printJob.info

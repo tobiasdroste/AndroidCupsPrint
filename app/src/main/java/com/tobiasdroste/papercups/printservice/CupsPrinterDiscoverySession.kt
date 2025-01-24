@@ -1,7 +1,6 @@
 package com.tobiasdroste.papercups.printservice
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.print.PrintAttributes
 import android.print.PrinterCapabilitiesInfo
@@ -15,12 +14,15 @@ import android.widget.Toast
 import ch.ethz.vppserver.schema.ippclient.Attribute
 import ch.ethz.vppserver.schema.ippclient.AttributeValue
 import com.tobiasdroste.papercups.R
-import com.tobiasdroste.papercups.app.AddPrintersActivity
 import com.tobiasdroste.papercups.app.BasicAuthActivity
 import com.tobiasdroste.papercups.app.HostNotVerifiedActivity
 import com.tobiasdroste.papercups.app.UntrustedCertActivity
+import com.tobiasdroste.papercups.app.printers.PrinterRepository
 import com.tobiasdroste.papercups.detect.MdnsServices
 import com.tobiasdroste.papercups.detect.PrinterRec
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -48,10 +50,15 @@ import javax.net.ssl.SSLException
 import javax.net.ssl.SSLPeerUnverifiedException
 import kotlin.math.min
 
+@AssistedFactory
+interface CupsPrinterDiscoverySessionFactory {
+    fun create(printService: PrintService): CupsPrinterDiscoverySession
+}
+
 /**
  * CUPS printer discovery class
  */
-internal class CupsPrinterDiscoverySession(private val printService: PrintService) :
+class CupsPrinterDiscoverySession @AssistedInject constructor(@Assisted private val printService: PrintService, private val printerRepository: PrinterRepository) :
     PrinterDiscoverySession() {
 
     init {
@@ -395,41 +402,8 @@ internal class CupsPrinterDiscoverySession(private val printService: PrintServic
     /**
      * Add the printers that were manually entered from the app launcher activity
      */
-    private fun getManualPrinters(): MutableMap<String, String> {
-        val prefs = printService.getSharedPreferences(
-            AddPrintersActivity.SHARED_PREFS_MANUAL_PRINTERS,
-            Context.MODE_PRIVATE
-        )
-        val numPrinters = prefs.getInt(AddPrintersActivity.PREF_NUM_PRINTERS, 0)
-        var name: String?
-        var url: String?
-
-        val printers = mutableMapOf<String, String>()
-
-        for (i in 0 until numPrinters) {
-            url = prefs.getString(AddPrintersActivity.PREF_URL + i, null)
-            name = prefs.getString(AddPrintersActivity.PREF_NAME + i, null)
-            if (url != null && name != null && url.trim { it <= ' ' }
-                    .isNotEmpty() && name.trim { it <= ' ' }.isNotEmpty()) {
-                // Ensure a port is set, and set it to 631 if unset
-                try {
-                    val uri = URI(url)
-                    val port = if (uri.port < 0) 631 else uri.port
-                    url = uri.scheme + "://" + uri.host + ":" + port
-                    if (uri.path != null) {
-                        url += uri.path
-                    }
-
-                    // Now, add printer
-                    printers[url] = name
-                    Timber.d("Manually added $name at URL: $url")
-                } catch (e: URISyntaxException) {
-                    Timber.e(e, "Unable to parse manually-entered URI: $url")
-                }
-            }
-        }
-        return printers
-    }
+    private suspend fun getManualPrinters() =
+        printerRepository.getPrinters().associate { Pair(it.url, it.name) }
 
     override fun onStopPrinterDiscovery() {
         mdnsPrinterDiscovery?.stop()

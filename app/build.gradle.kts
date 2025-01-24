@@ -1,10 +1,9 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("com.android.application")
     kotlin("android")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("androidx.room")
 }
 
 android {
@@ -50,6 +49,10 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -77,5 +80,7 @@ dependencies {
     val roomVersion = "2.6.1"
 
     implementation("androidx.room:room-runtime:$roomVersion")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 }
