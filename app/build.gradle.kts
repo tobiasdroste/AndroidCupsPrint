@@ -24,7 +24,7 @@ android {
         applicationId = "com.tobiasdroste.papercups"
         minSdk = 23
         targetSdk = 34
-        versionCode = 5
+        versionCode = 6
         versionName = version as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         namespace = "com.tobiasdroste.papercups"
