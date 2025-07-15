@@ -11,6 +11,10 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import com.tobiasdroste.papercups.R
 import com.tobiasdroste.papercups.app.printers.models.Printer
 import com.tobiasdroste.papercups.databinding.ActivityManageManualPrintersBinding
@@ -26,6 +30,7 @@ class ManageManualPrintersActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityManageManualPrintersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -51,7 +56,43 @@ class ManageManualPrintersActivity : AppCompatActivity() {
             )
             startActivity(startAddPrintersActivityIntent)
         }
+
+        val defaultMargin = 16.toPixels()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.floatingActionButton) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Apply the insets as a margin to the view. This solution sets
+            // only the bottom, left, and right dimensions, but you can apply whichever
+            // insets are appropriate to your layout. You can also update the view padding
+            // if that's more appropriate.
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                leftMargin = insets.left + defaultMargin
+                bottomMargin = insets.bottom + defaultMargin
+                rightMargin = insets.right + defaultMargin
+            }
+
+            // Return CONSUMED if you don't want the window insets to keep passing
+            // down to descendant views.
+            WindowInsetsCompat.CONSUMED
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.managePrintersHelp) { v, insets ->
+            val bars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars()
+                        or WindowInsetsCompat.Type.displayCutout()
+            )
+            v.updatePadding(
+                left = bars.left + defaultMargin,
+                top = bars.top + defaultMargin,
+                right = bars.right + defaultMargin,
+                bottom = bars.bottom + defaultMargin,
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+
     }
+
+    fun Int.toPixels() = (this * resources.displayMetrics.density).toInt()
 
     private fun adjustFabBasedOnPrinterCount(numPrinters: Int) {
         if (numPrinters == 0) {

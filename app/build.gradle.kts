@@ -1,3 +1,7 @@
+import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -24,7 +28,7 @@ android {
         applicationId = "com.tobiasdroste.papercups"
         minSdk = 23
         targetSdk = 36
-        versionCode = 8
+        versionCode = 9
         versionName = version as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         namespace = "com.tobiasdroste.papercups"
@@ -46,12 +50,15 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
 
     room {
         schemaDirectory("$projectDir/schemas")
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JVM_17
     }
 }
 

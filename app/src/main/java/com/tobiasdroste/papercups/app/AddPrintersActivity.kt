@@ -5,6 +5,9 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tobiasdroste.papercups.app.printers.models.InputPrinter
@@ -38,7 +41,25 @@ class AddPrintersActivity : AppCompatActivity() {
         binding.addPrinter.setOnClickListener { addPrinter() }
         binding.searchPrinters.setOnClickListener { searchPrinters() }
         setContentView(binding.root)
+
+        val defaultMargin = 16.toPixels()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.addPrinterLayout) { v, insets ->
+            val bars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars()
+                        or WindowInsetsCompat.Type.displayCutout()
+            )
+            v.updatePadding(
+                left = bars.left + defaultMargin,
+                top = bars.top + defaultMargin,
+                right = bars.right + defaultMargin,
+                bottom = bars.bottom + defaultMargin,
+            )
+            WindowInsetsCompat.CONSUMED
+        }
     }
+
+    fun Int.toPixels() = (this * resources.displayMetrics.density).toInt()
 
     /**
      * Called when the button will be clicked
