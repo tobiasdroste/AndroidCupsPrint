@@ -9,6 +9,7 @@ import android.printservice.PrintService
 import android.printservice.PrinterDiscoverySession
 import android.widget.Toast
 import com.tobiasdroste.papercups.R
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -37,6 +38,7 @@ private const val JOB_CHECK_POLLING_INTERVAL = 5000
 /**
  * CUPS print service
  */
+@AndroidEntryPoint
 class CupsService : PrintService() {
 
     private val job = SupervisorJob()
@@ -150,15 +152,15 @@ class CupsService : PrintService() {
                     // Close the file descriptor, after printing
                     try {
                         data.close()
-                    } catch (e: IOException) {
+                    } catch (_: IOException) {
                         Timber.e("Job document data (file descriptor) couldn't close.")
                     }
                 }
             }
-        } catch (e: MalformedURLException) {
+        } catch (_: MalformedURLException) {
             printJob.fail(getString(R.string.print_job_queue_fail_malformed_url, printJob))
             Timber.e("Couldn't queue print job: $printJob")
-        } catch (e: URISyntaxException) {
+        } catch (_: URISyntaxException) {
             printJob.fail(getString(R.string.print_job_queue_fail_uri_syntax, url))
             Timber.e("Couldn't parse URI: $url")
         }
