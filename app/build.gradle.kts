@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
 
 plugins {
@@ -28,7 +26,7 @@ android {
         applicationId = "com.tobiasdroste.papercups"
         minSdk = 23
         targetSdk = 36
-        versionCode = 9
+        versionCode = 10
         versionName = version as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         namespace = "com.tobiasdroste.papercups"
