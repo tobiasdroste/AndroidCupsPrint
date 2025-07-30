@@ -57,7 +57,11 @@
     <string name="err_job_socket_timeout">Couldn\'t print document: socket timeout. Please check network connectivity.</string>
     <string name="err_job_exception">Couldn\'t handle job: %1$s (%2$s)</string>
     <string name="print_service_vendor">Generic CUPS client</string>
-    <string name="manage_printers_help">Here are the manually added printers. Click on one item to remove it (no confirmation!)</string>
+    <string name="manage_printers_help">Here are the manually added printers. Click on one item to remove it.</string>
+    <string name="delete_printer_title">Delete Printer</string>
+    <string name="delete_printer_message">Are you sure you want to delete the printer \"%1$s\"?</string>
+    <string name="delete_button">Delete</string>
+    <string name="cancel_button">Cancel</string>
     <string name="print_job_queue_fail_malformed_url">Couldn\'t queue print job: %1$s</string>
     <string name="print_job_queue_fail_uri_syntax">Couldn\'t parse URI: %1$s</string>
     <string name="cleartext_error_android_9">Clear text traffic is no longer allowed in Android 9.0. Please enable SSL/TLS on the CUPS server/printer.</string>

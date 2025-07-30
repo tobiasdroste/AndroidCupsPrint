@@ -46,7 +46,11 @@
     <string name="print_service_vendor">Generischer CUPS-Client</string>
     <string name="err_400">Der CUPS-Server gab an, dass wir eine schlechte Anforderung gesendet haben. Dies ist entweder eine schlechte Konfiguration auf dem Server oder eine falsche URL. Bitte überprüfen Sie beide.</string>
     <string name="err_404">Der Druckername wurde auf dem Server nicht gefunden (HTTP 404). Bitte überprüfen Sie den Namen.</string>
-    <string name="manage_printers_help">Hier sind die manuell hinzugefügten Drucker. Klicken Sie auf ein Element, um es zu entfernen (keine Bestätigung!)</string>
+    <string name="manage_printers_help">Hier sind die manuell hinzugefügten Drucker. Klicken Sie auf ein Element, um es zu entfernen.</string>
+    <string name="delete_printer_title">Drucker löschen</string>
+    <string name="delete_printer_message">Möchten Sie den Drucker \"%1$s\" wirklich löschen?</string>
+    <string name="delete_button">Löschen</string>
+    <string name="cancel_button">Abbrechen</string>
     <string name="print_job_queue_fail_malformed_url">Der Auftrag konnte nicht zur Warteschlange hinzugefügt werden: %1$s</string>
     <string name="print_job_queue_fail_uri_syntax">Die URI konnte nicht verarbeitet werden: %1$s</string>
     <string name="cleartext_error_android_9">Datenübertragung im Klartext ist in Android 9.0 nicht mehr erlaubt. Bitte aktivieren Sie SSL/TLS auf dem CUPS-Server/Drucker.</string>

@@ -26,7 +26,7 @@ android {
         applicationId = "com.tobiasdroste.papercups"
         minSdk = 23
         targetSdk = 36
-        versionCode = 10
+        versionCode = 11
         versionName = version as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         namespace = "com.tobiasdroste.papercups"
@@ -77,10 +77,10 @@ dependencies {
     // Koin DI
     implementation("io.insert-koin:koin-android:4.1.0")
     implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.2")
 
-    implementation("com.google.dagger:hilt-android:2.56.2")
-    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+    implementation("com.google.dagger:hilt-android:2.57")
+    ksp("com.google.dagger:hilt-android-compiler:2.57")
 
     val roomVersion = "2.7.2"
 

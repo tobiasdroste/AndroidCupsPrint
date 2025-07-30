@@ -46,7 +46,11 @@
     <string name="print_service_vendor">Client CUPS générique</string>
     <string name="err_400">Le serveur CUPS a indiqué que nous avons envoyé une mauvaise requête HTTP. Cela provient soit d\'une mauvaise configuration du serveur, ou une mauvaise URL. Veuillez vérifier les deux.</string>
     <string name="err_404">Le nom de l\'imprimante n\'a pas été trouvé sur le serveur (HTTP 404). Veuillez vérifier son nom.</string>
-    <string name="manage_printers_help">Voici la liste des imprimantes ajoutées manuellement. Cliquez sur l\'une pour la supprimer (pas de confirmation !)</string>
+    <string name="manage_printers_help">Voici la liste des imprimantes ajoutées manuellement. Cliquez sur l\'une pour la supprimer.</string>
+    <string name="delete_printer_title">Supprimer l\'imprimante</string>
+    <string name="delete_printer_message">Êtes-vous sûr de vouloir supprimer l\'imprimante \"%1$s\" ?</string>
+    <string name="delete_button">Supprimer</string>
+    <string name="cancel_button">Annuler</string>
     <string name="print_job_queue_fail_malformed_url">Impossible de mettre l\'impression en file: %1$s</string>
     <string name="print_job_queue_fail_uri_syntax">Impossible de déchiffrer l\'adresse : %1$s</string>
     <string name="cleartext_error_android_9">À compter d\'Android 9.0, les connexions HTTP sans sécurité sont interdites. Merci de passer votre serveur CUPS/votre imprimante en SSL/TLS.</string>

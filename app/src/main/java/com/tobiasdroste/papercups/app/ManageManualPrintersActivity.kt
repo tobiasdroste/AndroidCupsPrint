@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.activity.viewModels
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -46,7 +47,9 @@ class ManageManualPrintersActivity : AppCompatActivity() {
         // Setup adapter with click to remove
         binding.managePrintersList.adapter = adapter
         binding.managePrintersList.setOnItemClickListener { _, _, position, _ ->
-            adapter.getItem(position)?.let { viewModel.removePrinter(it.id) }
+            adapter.getItem(position)?.let { printer ->
+                showDeleteConfirmationDialog(printer.name, printer.id)
+            }
         }
 
         binding.floatingActionButton.setOnClickListener {
@@ -100,6 +103,17 @@ class ManageManualPrintersActivity : AppCompatActivity() {
         } else {
             binding.floatingActionButton.shrink()
         }
+    }
+
+    private fun showDeleteConfirmationDialog(printerName: String, printerId: Int) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.delete_printer_title)
+            .setMessage(getString(R.string.delete_printer_message, printerName))
+            .setPositiveButton(R.string.delete_button) { _, _ ->
+                viewModel.removePrinter(printerId)
+            }
+            .setNegativeButton(R.string.cancel_button, null)
+            .show()
     }
 
     private class ManualPrinterInfoViews(var name: TextView, var url: TextView)
