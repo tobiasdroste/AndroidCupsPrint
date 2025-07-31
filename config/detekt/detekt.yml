@@ -1,0 +1,109 @@
+# Default detekt configuration with customizations for Android projects
+# Documentation: https://detekt.dev/docs/introduction/configurations
+
+complexity:
+  LongParameterList:
+    functionThreshold: 6
+    constructorThreshold: 7
+    ignoreDefaultParameters: true
+  TooManyFunctions:
+    thresholdInFiles: 15
+    thresholdInClasses: 15
+    thresholdInInterfaces: 15
+    thresholdInObjects: 15
+    thresholdInEnums: 10
+
+formatting:
+  active: true
+  android: true
+  autoCorrect: true
+  MaximumLineLength:
+    active: false
+
+style:
+  MagicNumber:
+    ignorePropertyDeclaration: true
+    ignoreAnnotation: true
+    ignoreEnums: true
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+      - '100'
+  ReturnCount:
+    max: 3
+  ThrowsCount:
+    max: 3
+  NewLineAtEndOfFile:
+    active: true
+  WildcardImport:
+    active: true
+    excludeImports:
+      - 'java.util.*'
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated:
+      - 'Composable'
+  TopLevelPropertyNaming:
+    constantPattern: '[A-Z][A-Za-z0-9_]*'
+  PackageNaming:
+    packagePattern: '[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)*'
+
+performance:
+  active: true
+
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: false
+
+comments:
+  active: true
+  CommentOverPrivateFunction:
+    active: false
+  CommentOverPrivateProperty:
+    active: false
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+  UndocumentedPublicProperty:
+    active: false
+
+# Disable some rules that might be too strict for this project initially
+empty-blocks:
+  active: true
+  EmptyFunctionBlock:
+    active: false
+
+# Custom rule sets for Android
+android:
+  active: true
+  ContentProviderSql:
+    active: true
+  CustomView:
+    active: true
+  ExtraSpace:
+    active: true
+  MissingPermission:
+    active: true
+  NamingPattern:
+    active: true
+  NestedScrolling:
+    active: true
+  ResourceDrawableIdNaming:
+    active: true
+  ResourceIdNaming:
+    active: true
+  ResourceInXml:
+    active: true
+  ResourceType:
+    active: true
+  ShortMethod:
+    active: true
+  ViewConstructor:
+    active: true
+  ViewModelInjection:
+    active: true

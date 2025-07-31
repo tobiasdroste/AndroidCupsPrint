@@ -1,0 +1,58 @@
+[versions]
+# Android
+androidxAppCompat = "1.7.1"
+androidxPreference = "1.2.1"
+androidxLifecycle = "2.9.2"
+material = "1.12.0"
+room = "2.7.2"
+
+# Kotlin
+kotlin = "2.1.20"
+
+# DI
+koin = "4.1.0"
+hilt = "2.57"
+
+# Testing
+junit = "4.13.2"
+espresso = "3.5.1"
+
+# Other
+timber = "5.0.1"
+jmdns = "3.4.1"
+
+[libraries]
+# Android
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
+androidx-preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "androidxPreference" }
+androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# Room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# Kotlin
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version.ref = "kotlin" }
+
+# DI
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+
+# Other
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+jmdns = { group = "javax.jmdns", name = "jmdns", version.ref = "jmdns" }
+
+[plugins]
+android-application = { id = "com.android.application", version = "8.11.1" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.2.0" }
+hilt = { id = "com.google.dagger.hilt.android", version = "2.57" }
+ksp = { id = "com.google.devtools.ksp", version = "2.2.0-2.0.2" }
+room = { id = "androidx.room", version = "2.7.2" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.5" }

@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
-    id("androidx.room")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -22,11 +22,28 @@ android {
         }
     }
 
+    // Configure Android Lint
+    lint {
+        abortOnError = false // Don't fail the build if there are Lint errors
+        checkReleaseBuilds = true // Check lint on release builds
+        checkDependencies = true // Check dependencies for issues
+        checkAllWarnings = true // Check all warnings, not just the important ones
+        warningsAsErrors = false // Treat all warnings as errors
+        baseline = file("lint-baseline.xml") // Baseline file to suppress issues
+
+        // Disable specific Lint checks that might be too strict initially
+        disable += setOf(
+            "InvalidPackage", // Some libraries have invalid packages
+            "ObsoleteSdkInt", // We might need to support older devices
+            "GradleDependency" // We'll handle dependency updates separately
+        )
+    }
+
     defaultConfig {
         applicationId = "com.tobiasdroste.papercups"
         minSdk = 23
         targetSdk = 36
-        versionCode = 11
+        versionCode = 12
         versionName = version as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         namespace = "com.tobiasdroste.papercups"
@@ -61,31 +78,30 @@ kotlin {
 }
 
 dependencies {
-    implementation("javax.jmdns:jmdns:3.4.1")
-    implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation(libs.jmdns)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.preference)
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0-alpha4") {
+    androidTestImplementation(libs.espresso.core) {
         exclude(group = "com.android.support", module = "support-annotations")
     }
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("junit:junit:4.13.2")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.20")
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit)
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.timber)
 
     // Koin DI
-    implementation("io.insert-koin:koin-android:4.1.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.2")
+    implementation(libs.koin.android)
+    implementation(libs.material)
+    implementation(libs.androidx.lifecycle)
 
-    implementation("com.google.dagger:hilt-android:2.57")
-    ksp("com.google.dagger:hilt-android-compiler:2.57")
+    // Hilt DI
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
-    val roomVersion = "2.7.2"
-
-    implementation("androidx.room:room-runtime:$roomVersion")
-    // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 }

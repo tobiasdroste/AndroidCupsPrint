@@ -23,50 +23,67 @@ import org.cups4j.operations.ipp.IppPrintJobOperation
 import java.net.URL
 
 /**
- * Represents a printer on your IPP server
- */
-
-/**
- * Constructor
+ * Represents a printer on a CUPS (Common Unix Printing System) server.
+ * 
+ * This class encapsulates the properties and capabilities of a printer accessible
+ * via the Internet Printing Protocol (IPP). It provides methods to print documents
+ * and manage print jobs for the specific printer.
  *
- * @param printerURL  Printer URL
- * @param name Printer name
- * @param isDefault   true if this is the default printer on this IPP server
+ * @property printerURL The URL for accessing this printer via IPP
+ * @property name The name of this printer as defined on the CUPS server
+ * @property isDefault Whether this printer is set as the default printer on the CUPS server
  */
 class CupsPrinter(
     /**
-     * The URL for this printer
+     * The URL for accessing this printer via IPP.
+     * 
+     * This URL typically follows the format: http://server:631/printers/printer-name
+     * where 631 is the standard port for IPP.
      */
     val printerURL: URL,
 
     /**
-     * Name of this printer.
-     * For a printer http://localhost:631/printers/printerName 'printerName' will
-     * be returned.
+     * The name of this printer as defined on the CUPS server.
+     * 
+     * For a printer with URL http://localhost:631/printers/printerName,
+     * the name would be 'printerName'.
      */
     val name: String,
 
     /**
-     * Is this the default printer
+     * Indicates whether this printer is set as the default printer on the CUPS server.
+     * 
+     * When true, this printer will be used for print jobs that don't specify a printer.
      */
     var isDefault: Boolean
 ) {
     /**
-     * Description attribute for this printer
+     * The description of this printer as provided by the CUPS server.
+     * 
+     * This typically contains information about the printer model, capabilities,
+     * or other identifying information.
      */
     var description: String? = null
 
     /**
-     * Location attribute for this printer
+     * The physical location of this printer as configured on the CUPS server.
+     * 
+     * This might indicate the room, building, or department where the printer
+     * is located (e.g., "Building A, Room 123").
      */
     var location: String? = null
 
     /**
-     * Print method
+     * Sends a print job to this printer.
      *
-     * @param printJob Print job
-     * @return PrintRequestResult
-     * @throws Exception
+     * This method processes the print job, applies any specified attributes (like copies,
+     * page ranges, duplex settings), and submits it to the CUPS server. It handles the
+     * IPP communication and returns the result of the print request.
+     *
+     * @param printJob The print job to be processed, containing the document and print settings
+     * @param context Android context used for network operations
+     * @return A [PrintRequestResult] containing the status and details of the print request
+     * @throws Exception If there's an error during print job submission or communication with the CUPS server
      */
     @Throws(Exception::class)
     fun print(printJob: PrintJob, context: Context): PrintRequestResult {
@@ -140,8 +157,13 @@ class CupsPrinter(
     }
 
     /**
-     * @param map   Attributes map
-     * @param value Attribute value
+     * Adds a job attribute to the attributes map for a print job.
+     *
+     * This method handles the proper formatting of job attributes, including
+     * concatenating multiple attributes with the appropriate delimiter.
+     *
+     * @param map The map of job attributes to modify
+     * @param value The attribute value to add, in the format "name:type:value"
      */
     private fun addJobAttribute(map: MutableMap<String, String>, value: String?) {
         val name = "job-attributes"
@@ -157,10 +179,12 @@ class CupsPrinter(
     }
 
     /**
-     * Get a String representation of this printer consisting of the printer URL
-     * and the name
+     * Returns a string representation of this printer.
      *
-     * @return String
+     * The string includes the printer's URI, default status, and name, providing
+     * a concise summary of the printer's key properties for debugging and logging.
+     *
+     * @return A string representation of the printer in the format "printer uri=[URL] default=[Boolean] name=[name]"
      */
     override fun toString(): String =
         "printer uri=$printerURL default=$isDefault name=$name"
