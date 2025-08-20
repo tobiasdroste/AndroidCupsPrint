@@ -18,7 +18,7 @@ This app was modified in several ways:
 * added support for Android PrintService so that it can print documents straight from almost all
   apps
 * removed all legacy code that allowed printing without the use of Android PrintService (this is
-  removed because of `minSdkVersion=19`, meaning all targets of this app are `PrintService`
+  removed because of `minSdkVersion=23`; all supported devices are `PrintService`
   -compliant)
 * fixed SSL code to properly handle self-signed certificates (as it is likely the case with home
   printers)
@@ -36,8 +36,9 @@ to use it.
 As per the code, the following has been added:
 
 * a service in the AndroidManifest.xml file that registers the app as a PrintService
-* `CupsPrinterDiscoverySession.java`: handles printer discovery and printer management
-* `CupsService.java`: handles Android framework connectivity and print jobs management
+* `CupsPrinterDiscoverySession.kt`: handles printer discovery and printer management
+* `CupsPrinterDiscoveryUtils.kt`: helper utilities for discovery and capabilities
+* `CupsService.kt`: handles Android framework connectivity and print jobs management
 * removed all legacy code (pre API 19)
 
 # Contribute
