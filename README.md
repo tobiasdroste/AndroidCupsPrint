@@ -2,6 +2,18 @@
 
 Port of cups4j to Android.
 
+## About this fork and maintenance
+
+This repository is a maintained fork of the original AndroidCupsPrint project. It was forked from the historical work by Jon Freeman and later community maintenance, and has since been modernized and kept up to date by Tobias Droste:
+- Migrated and consolidated to Kotlin and AndroidX, with an Android PrintService-first architecture.
+- Updated minimum supported Android version to API 23 (Android 6.0) and target/compile SDK 36.
+- Modernized Gradle configuration and dependencies; added lint/detekt configuration.
+- Ongoing maintenance and bug fixes to keep it working with current Android versions.
+
+If you came here from the original project, note that documentation below keeps credits but reflects this maintained fork. For issues and PRs, please use this repository.
+
+Note: Maintained fork — last reviewed 2025-08-20.
+
 ## Original work
 
 Original work was created by Jon Freeman, it included an app that reacts to the SEND intent to print
@@ -43,20 +55,10 @@ As per the code, the following has been added:
 
 # Contribute
 
-This app wasn't widely tested, it needs your help for better quality. If you find bugs, either
-submit a new issue or fork/fix/submit PR.
+Contributions are welcome. If you find bugs or want to improve things, please open an issue or a PR.
+- Small, focused PRs are preferred.
+- For larger changes, please start a discussion first.
 
-Please use the `develop` branch for testing and troubleshooting.
-
-Also, you can subscribe on the Play Store to receive beta versions of this
-app: https://play.google.com/apps/testing/com.tobiasdroste.papercups
-
-## Branches
-
-* The `master` branch is code published to Google Play.
-* The `jonbanjo` branch is the app containing all the legacy code written by Jon Freeman
-* The `fdroid` branch was created in an effort to be compatible with f-droid.org; however, this
-  effort was merged into develop and is intended to be merged into master.
 
 # License
 
