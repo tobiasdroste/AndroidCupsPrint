@@ -8,6 +8,7 @@ room = "2.7.2"
 
 # Kotlin
 kotlin = "2.2.0"
+kotlinxCoroutinesTest = "1.8.0"
 
 # DI
 koin = "4.1.0"
@@ -16,6 +17,10 @@ hilt = "2.57"
 # Testing
 junit = "4.13.2"
 espresso = "3.5.1"
+mockito = "5.20.0"
+mockitoKotlin = "6.1.0"
+androidxArchCoreTesting = "2.2.0"
+
 
 # Other
 timber = "5.0.1"
@@ -35,6 +40,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 
 # Kotlin
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 
 # DI
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
@@ -44,6 +50,9 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", v
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+androidx-arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidxArchCoreTesting" }
 
 # Other
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
