@@ -91,6 +91,7 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.androidx.arch.core.testing)
+    testImplementation(libs.truth)
     androidTestImplementation(libs.junit)
     implementation(libs.kotlin.stdlib)
     implementation(libs.timber)

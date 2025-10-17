@@ -1,402 +1,381 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
-    <CurrentIssues>
-        <ID>
-            CyclomaticComplexMethod:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$@Throws(Exception::class)
-            fun getPrinters( url: URL, path: String, firstName: String? = null, limit: Int? = null
-            ): List&lt;CupsPrinter&gt;
-        </ID>
-        <ID>
-            CyclomaticComplexMethod:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$@Throws(Exception::class)
-            suspend fun checkPrinter(url: String?, printerId: PrinterId): PrinterCapabilitiesInfo?
-        </ID>
-        <ID>
-            CyclomaticComplexMethod:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$private
-            suspend fun handlePrinterException( exception: Exception, printerId: PrinterId ):
-            Boolean
-        </ID>
-        <ID>CyclomaticComplexMethod:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$fun
-            getMediaSizeFromAttributeValue(attributeValue: AttributeValue):
-            PrintAttributes.MediaSize?
-        </ID>
-        <ID>
-            CyclomaticComplexMethod:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$@Throws(Exception::class)
-            fun getPrintJobAttributes(url: URL, userName: String, jobID: Int): PrintJobAttributes
-        </ID>
-        <ID>
-            CyclomaticComplexMethod:IppPrintJobOperation.kt$IppPrintJobOperation$@Throws(UnsupportedEncodingException::class)
-            private fun getJobAttributes( inputIppBuf: ByteBuffer, attributeBlocks: Array&lt;String&gt;?
-            ): ByteBuffer
-        </ID>
-        <ID>CyclomaticComplexMethod:MdnsServices.kt$MdnsServices$private fun process( list:
-            MutableMap&lt;String, PrinterRec&gt;, packet: DatagramPacket, service: String )
-        </ID>
-        <ID>EmptyClassBlock:LocalPrinter.kt$LocalPrinter${ }</ID>
-        <ID>ForbiddenComment:IppPrintJobOperation.kt$IppPrintJobOperation$* TODO: not all
-            possibilities implemented * * @param attributeBlocks Job attributes * @return Modified
-            IPP buffer * @throws UnsupportedEncodingException
-        </ID>
-        <ID>ForbiddenComment:IppResponse.kt$IppResponse$* TODO: natural-language not considered in
-            reporting * * @param tag
-        </ID>
-        <ID>ForbiddenComment:LoggingStrategy.kt$LoggingStrategy.ReleaseTree$// TODO: Implement
-            actual crash reporting service integration
-        </ID>
-        <ID>FunctionParameterNaming:IppOperation.kt$IppOperation$`is`: InputStream</ID>
-        <ID>InstanceOfCheckForException:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$e
-            is MalformedURLException
-        </ID>
-        <ID>InstanceOfCheckForException:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$e
-            is URISyntaxException
-        </ID>
-        <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is FileNotFoundException</ID>
-        <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is NullPointerException</ID>
-        <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is SocketException</ID>
-        <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is SocketTimeoutException</ID>
-        <ID>InstanceOfCheckForException:MdnsServices.kt$MdnsServices$e !is SocketTimeoutException
-        </ID>
-        <ID>
-            LongMethod:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$@Throws(Exception::class)
-            fun getPrinters( url: URL, path: String, firstName: String? = null, limit: Int? = null
-            ): List&lt;CupsPrinter&gt;
-        </ID>
-        <ID>
-            LongMethod:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$@Throws(Exception::class)
-            suspend fun checkPrinter(url: String?, printerId: PrinterId): PrinterCapabilitiesInfo?
-        </ID>
-        <ID>LongMethod:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$fun
-            getMediaSizeFromAttributeValue(attributeValue: AttributeValue):
-            PrintAttributes.MediaSize?
-        </ID>
-        <ID>LongMethod:CupsService.kt$CupsService$internal fun updateJobStatus(printJob: PrintJob):
-            Boolean
-        </ID>
-        <ID>LongMethod:IppOperation.kt$IppOperation$@Throws(Exception::class) private fun
-            sendRequest( url: URL, ippBuf: ByteBuffer, documentStream: InputStream? = null ):
-            IppResult?
-        </ID>
-        <ID>LongMethod:MdnsServices.kt$MdnsServices$private fun process( list: MutableMap&lt;String,
-            PrinterRec&gt;, packet: DatagramPacket, service: String )
-        </ID>
-        <ID>LoopWithTooManyJumpStatements:IppResponse.kt$IppResponse$while</ID>
-        <ID>LoopWithTooManyJumpStatements:MdnsServices.kt$MdnsServices$while</ID>
-        <ID>MagicNumber:AddPrintersActivity.kt$AddPrintersActivity$200</ID>
-        <ID>MagicNumber:AddPrintersActivity.kt$AddPrintersActivity$3</ID>
-        <ID>MagicNumber:CupsGetDefaultOperation.kt$CupsGetDefaultOperation$0x4001</ID>
-        <ID>MagicNumber:CupsGetDefaultOperation.kt$CupsGetDefaultOperation$8192</ID>
-        <ID>MagicNumber:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$0x4002</ID>
-        <ID>MagicNumber:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$8192</ID>
-        <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$0.9f</ID>
-        <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$100</ID>
-        <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$3</ID>
-        <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$300</ID>
-        <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$4</ID>
-        <ID>MagicNumber:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$1000f</ID>
-        <ID>MagicNumber:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$25.4f</ID>
-        <ID>MagicNumber:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$3</ID>
-        <ID>MagicNumber:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$4</ID>
-        <ID>MagicNumber:InputPrinter.kt$InputPrinter.Companion$631</ID>
-        <ID>MagicNumber:IppCancelJobOperation.kt$IppCancelJobOperation$0x0008</ID>
-        <ID>MagicNumber:IppCancelJobOperation.kt$IppCancelJobOperation$8192</ID>
-        <ID>MagicNumber:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$0x0009</ID>
-        <ID>MagicNumber:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$1000</ID>
-        <ID>MagicNumber:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$8192</ID>
-        <ID>
-            MagicNumber:IppGetPrinterAttributesOperation.kt$IppGetPrinterAttributesOperation$0x000b
-        </ID>
-        <ID>MagicNumber:IppGetPrinterAttributesOperation.kt$IppGetPrinterAttributesOperation$8192
-        </ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x00FF</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0400</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0401</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0402</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0403</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0404</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0405</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0406</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0407</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0408</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0409</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x040a</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x040b</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x040c</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x040d</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x040e</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x040f</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0410</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0411</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0412</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0501</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0502</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0503</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0504</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0505</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0506</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0507</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0508</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x0509</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$0x050A</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$3</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$4</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$5</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$6</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$7</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$8</ID>
-        <ID>MagicNumber:IppLists.kt$IppLists$9</ID>
-        <ID>MagicNumber:IppOperation.kt$IppOperation$10000</ID>
-        <ID>MagicNumber:IppOperation.kt$IppOperation$16384</ID>
-        <ID>MagicNumber:IppOperation.kt$IppOperation$8192</ID>
-        <ID>MagicNumber:IppOperation.kt$IppOperation.Companion$0x1000</ID>
-        <ID>MagicNumber:IppPrintJobOperation.kt$IppPrintJobOperation$3</ID>
-        <ID>MagicNumber:IppPrintJobOperation.kt$IppPrintJobOperation$8192</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x03</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x04</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x05</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x06</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x07</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x13</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x21</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x22</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x23</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x30</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x31</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x32</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x33</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x35</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x36</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x41</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x42</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x44</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x45</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x46</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x47</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x48</ID>
-        <ID>MagicNumber:IppResponse.kt$IppResponse$0x49</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$0x00ff</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$0xff</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$10</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$3</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$4</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$5</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$6</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$7</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$8</ID>
-        <ID>MagicNumber:IppUtil.kt$IppUtil$9</ID>
-        <ID>MagicNumber:MdnsServices.kt$12</ID>
-        <ID>MagicNumber:MdnsServices.kt$MdnsServices$5353</ID>
-        <ID>MagicNumber:MdnsServices.kt$MdnsServices$65535</ID>
-        <ID>MatchingDeclarationName:EmumItem.kt$EnumItem</ID>
-        <ID>MaxLineLength:AddPrintersActivity.kt$AddPrintersActivity$/* * 1: URL * 2: Name * 3:
-            Description * 4: Location * 5: Make and model * 6: Current state * pattern matching
-            fields: 1 2 3 4 5 6 */
-        </ID>
-        <ID>MaxLineLength:AddPrintersActivity.kt$AddPrintersActivity$Pattern.compile("&lt;TR&gt;&lt;TD&gt;&lt;A
-            HREF=\"([^\"]+)\"&gt;([^&lt;]*)&lt;/A&gt;&lt;/TD&gt;&lt;TD&gt;([^&lt;]*)&lt;/TD&gt;&lt;TD&gt;([^&lt;]*)&lt;/TD&gt;&lt;TD&gt;([^&lt;]*)&lt;/TD&gt;&lt;TD&gt;([^&lt;]*)&lt;/TD&gt;&lt;/TR&gt;\n")
-        </ID>
-        <ID>MaxLineLength:AdditionalKeyManager.kt$AdditionalKeyManager.Companion$*</ID>
-        <ID>MaxLineLength:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$"copies-supported
-            page-ranges-supported printer-name printer-info printer-location printer-make-and-model
-            printer-uri-supported"
-        </ID>
-        <ID>MaxLineLength:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$+</ID>
-        <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$*</ID>
-        <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$// Most servers
-            have URLs like xxx://ip:port/printers/printer_name; however some may have
-            xxx://ip:port/printer_name (see GitHub issue #40)
-        </ID>
-        <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$attributeValue
-            != null &amp;&amp; "color" == attributeValue.value -&gt;
-            PrintAttributes.COLOR_MODE_COLOR
-        </ID>
-        <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$class</ID>
-        <ID>
-            MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$e.message?.contains("ETIMEDOUT")
-            == true
-        </ID>
-        <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$exception is
-            IOException &amp;&amp; exception.localizedMessage?.contains("Cleartext HTTP traffic") ==
-            true
-        </ID>
-        <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$exception is
-            SSLPeerUnverifiedException
-        </ID>
-        <ID>
-            MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession.Companion$@SuppressLint("StaticFieldLeak")
-        </ID>
-        <ID>
-            MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("NA_GOVT_LETTER".lowercase(Locale.ENGLISH))
-            -&gt; return PrintAttributes.MediaSize.NA_GOVT_LETTER
-        </ID>
-        <ID>
-            MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("NA_JUNIOR_LEGAL".lowercase(Locale.ENGLISH))
-            -&gt; return PrintAttributes.MediaSize.NA_JUNIOR_LEGAL
-        </ID>
-        <ID>
-            MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("OM_DAI_PA_KAI".lowercase(Locale.ENGLISH))
-            -&gt; return PrintAttributes.MediaSize.OM_DAI_PA_KAI
-        </ID>
-        <ID>
-            MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("OM_JUURO_KU_KAI".lowercase(Locale.ENGLISH))
-            -&gt; return PrintAttributes.MediaSize.OM_JUURO_KU_KAI
-        </ID>
-        <ID>
-            MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("UNKNOWN_LANDSCAPE".lowercase(Locale.ENGLISH))
-            -&gt; return PrintAttributes.MediaSize.UNKNOWN_LANDSCAPE
-        </ID>
-        <ID>
-            MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("UNKNOWN_PORTRAIT".lowercase(Locale.ENGLISH))
-            -&gt; return PrintAttributes.MediaSize.UNKNOWN_PORTRAIT
-        </ID>
-        <ID>MaxLineLength:CupsService.kt$CupsService$*</ID>
-        <ID>MaxLineLength:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$//
-            "page-ranges print-quality sides job-uri job-id job-state job-printer-uri job-name
-            job-originating-user-name job-k-octets time-at-creation time-at-processing
-            time-at-completed job-media-sheets-completed");
-        </ID>
-        <ID>MaxLineLength:IppOperation.kt$IppOperation$Timber.e("Caught exception while connecting
-            to printer $url: HTTP ${connection.responseCode} ${connection.responseMessage}")
-        </ID>
-        <ID>MaxLineLength:MdnsServices.kt$MdnsServices$Timber.e("Couldn't find printer from mDNS
-            datagram: ${info.application}, ${info.domain}, ${info.key}")
-        </ID>
-        <ID>
-            NestedBlockDepth:CupsGetDefaultOperation.kt$CupsGetDefaultOperation$@Throws(Exception::class)
-            fun getDefaultPrinter(url: URL, path: String): CupsPrinter?
-        </ID>
-        <ID>
-            NestedBlockDepth:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$@Throws(Exception::class)
-            fun getPrinters( url: URL, path: String, firstName: String? = null, limit: Int? = null
-            ): List&lt;CupsPrinter&gt;
-        </ID>
-        <ID>NestedBlockDepth:CupsPrinter.kt$CupsPrinter$@Throws(Exception::class) fun
-            print(printJob: PrintJob, context: Context): PrintRequestResult
-        </ID>
-        <ID>NestedBlockDepth:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$fun
-            getMediaSizeFromAttributeValue(attributeValue: AttributeValue):
-            PrintAttributes.MediaSize?
-        </ID>
-        <ID>
-            NestedBlockDepth:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$@Throws(Exception::class)
-            fun getPrintJobAttributes(url: URL, userName: String, jobID: Int): PrintJobAttributes
-        </ID>
-        <ID>
-            NestedBlockDepth:IppPrintJobOperation.kt$IppPrintJobOperation$@Throws(UnsupportedEncodingException::class)
-            private fun getJobAttributes( inputIppBuf: ByteBuffer, attributeBlocks: Array&lt;String&gt;?
-            ): ByteBuffer
-        </ID>
-        <ID>NestedBlockDepth:MdnsServices.kt$MdnsServices$private fun getPrinters(service: String):
-            Map&lt;String, PrinterRec&gt;
-        </ID>
-        <ID>NestedBlockDepth:MdnsServices.kt$MdnsServices$private fun process( list: MutableMap&lt;String,
-            PrinterRec&gt;, packet: DatagramPacket, service: String )
-        </ID>
-        <ID>NestedBlockDepth:Merger.kt$Merger$fun merge(httpRecs: List&lt;PrinterRec&gt;, httpsRecs:
-            MutableList&lt;PrinterRec&gt;)
-        </ID>
-        <ID>
-            NewLineAtEndOfFile:AddPrintersViewModel.kt$com.tobiasdroste.papercups.app.AddPrintersViewModel.kt
-        </ID>
-        <ID>
-            NewLineAtEndOfFile:DataModules.kt$com.tobiasdroste.papercups.app.printers.DataModules.kt
-        </ID>
-        <ID>
-            NewLineAtEndOfFile:LocalPrinter.kt$com.tobiasdroste.papercups.app.printers.models.LocalPrinter.kt
-        </ID>
-        <ID>
-            NewLineAtEndOfFile:LoggingStrategy.kt$com.tobiasdroste.papercups.app.logging.LoggingStrategy.kt
-        </ID>
-        <ID>
-            NewLineAtEndOfFile:ManageManualPrintersViewModel.kt$com.tobiasdroste.papercups.app.ManageManualPrintersViewModel.kt
-        </ID>
-        <ID>PrintStackTrace:AddPrintersActivity.kt$AddPrintersActivity$e</ID>
-        <ID>PrintStackTrace:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$t</ID>
-        <ID>ReturnCount:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$private fun
-            handleHttpError(exception: Exception, printerId: PrinterId): Boolean
-        </ID>
-        <ID>ReturnCount:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$fun
-            getMediaSizeFromAttributeValue(attributeValue: AttributeValue):
-            PrintAttributes.MediaSize?
-        </ID>
-        <ID>ReturnCount:CupsService.kt$CupsService$internal fun updateJobStatus(printJob: PrintJob):
-            Boolean
-        </ID>
-        <ID>ReturnCount:CupsService.kt$CupsService$override fun onRequestCancelPrintJob(printJob:
-            PrintJob)
-        </ID>
-        <ID>ReturnCount:HttpConnectionManagement.kt$HttpConnectionManagement$fun
-            saveCertificates(context: Context, chain: Array&lt;X509Certificate&gt;): Boolean
-        </ID>
-        <ID>ReturnCount:HttpConnectionManagement.kt$HttpConnectionManagement$private fun
-            loadKeyStore(context: Context): KeyStore?
-        </ID>
-        <ID>ReturnCount:IppOperation.kt$IppOperation$@Throws(Exception::class) private fun
-            sendRequest( url: URL, ippBuf: ByteBuffer, documentStream: InputStream? = null ):
-            IppResult?
-        </ID>
-        <ID>
-            ReturnCount:IppPrintJobOperation.kt$IppPrintJobOperation$@Throws(UnsupportedEncodingException::class)
-            private fun getJobAttributes( inputIppBuf: ByteBuffer, attributeBlocks: Array&lt;String&gt;?
-            ): ByteBuffer
-        </ID>
-        <ID>ReturnCount:IppResponse.kt$IppResponse$private fun getEnumName(value: Int,
-            nameOfAttribute: String?): String
-        </ID>
-        <ID>ReturnCount:IppResponse.kt$IppResponse$private fun getTagName(tag: String?): String?
-        </ID>
-        <ID>ReturnCount:MdnsServices.kt$MdnsServices$private fun getPrinterRec( inputName: String?,
-            protocol: String?, host: String?, port: Int?, queue: String? ): PrinterRec?
-        </ID>
-        <ID>
-            SpreadOperator:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$(*tm.acceptedIssuers)
-        </ID>
-        <ID>SwallowedException:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$e:
-            CertificateException
-        </ID>
-        <ID>SwallowedException:InputPrinter.kt$InputPrinter$illegalArgumentException:
-            IllegalArgumentException
-        </ID>
-        <ID>SwallowedException:InputPrinter.kt$InputPrinter.Companion$e: URISyntaxException</ID>
-        <ID>TooGenericExceptionCaught:AddPrintersActivity.kt$AddPrintersActivity$e: Exception</ID>
-        <ID>
-            TooGenericExceptionCaught:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$e:
-            Exception
-        </ID>
-        <ID>TooGenericExceptionCaught:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$t:
-            Throwable
-        </ID>
-        <ID>TooGenericExceptionCaught:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$e:
-            Exception
-        </ID>
-        <ID>TooGenericExceptionCaught:CupsService.kt$CupsService$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:HttpConnectionManagement.kt$HttpConnectionManagement$e:
-            Exception
-        </ID>
-        <ID>TooGenericExceptionCaught:IppOperation.kt$IppOperation$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:MdnsServices.kt$MdnsServices$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:MdnsServices.kt$MdnsServices$e: NullPointerException</ID>
-        <ID>TooGenericExceptionCaught:Merger.kt$Merger$e: Exception</ID>
-        <ID>
-            TooGenericExceptionThrown:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$throw
-            RuntimeException("Couldn't find any X509TrustManagers")
-        </ID>
-        <ID>
-            TooGenericExceptionThrown:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$throw
-            RuntimeException(e)
-        </ID>
-        <ID>TooGenericExceptionThrown:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$throw
-            Exception(t)
-        </ID>
-        <ID>TooManyFunctions:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession :
-            PrinterDiscoverySession
-        </ID>
-        <ID>TooManyFunctions:CupsService.kt$CupsService : PrintService</ID>
-        <ID>TooManyFunctions:IppResponse.kt$IppResponse</ID>
-        <ID>TooManyFunctions:IppTag.kt$IppTag</ID>
-        <ID>
-            UseCheckOrError:ManageManualPrintersActivity.kt$ManageManualPrintersActivity.ManualPrintersAdapter$throw
-            IllegalStateException("Manual printers list can't have invalid items")
-        </ID>
-        <ID>VariableNaming:MdnsServices.kt$MdnsServices$val `in` = DNSIncoming(packet)</ID>
-    </CurrentIssues>
+  <ManuallySuppressedIssues />
+  <CurrentIssues>
+    <ID>
+      CyclomaticComplexMethod:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$@Throws(Exception::class)
+      fun getPrinters( url: URL, path: String, firstName: String? = null, limit: Int? = null ): List&lt;CupsPrinter&gt;
+    </ID>
+    <ID>
+      CyclomaticComplexMethod:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$@Throws(Exception::class)
+      suspend fun checkPrinter(url: String?, printerId: PrinterId): PrinterCapabilitiesInfo?
+    </ID>
+    <ID>CyclomaticComplexMethod:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$private
+      suspend fun handlePrinterException( exception: Exception, printerId: PrinterId ): Boolean
+    </ID>
+    <ID>CyclomaticComplexMethod:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$fun
+      getMediaSizeFromAttributeValue(attributeValue: AttributeValue): PrintAttributes.MediaSize?
+    </ID>
+    <ID>
+      CyclomaticComplexMethod:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$@Throws(Exception::class)
+      fun getPrintJobAttributes(url: URL, userName: String, jobID: Int): PrintJobAttributes
+    </ID>
+    <ID>
+      CyclomaticComplexMethod:IppPrintJobOperation.kt$IppPrintJobOperation$@Throws(UnsupportedEncodingException::class)
+      private fun getJobAttributes( inputIppBuf: ByteBuffer, attributeBlocks: Array&lt;String&gt;?
+      ): ByteBuffer
+    </ID>
+    <ID>CyclomaticComplexMethod:MdnsServices.kt$MdnsServices$private fun process( list: MutableMap&lt;String,
+      PrinterRec&gt;, packet: DatagramPacket, service: String )
+    </ID>
+    <ID>EmptyClassBlock:LocalPrinter.kt$LocalPrinter${ }</ID>
+    <ID>ForbiddenComment:IppPrintJobOperation.kt$IppPrintJobOperation$* TODO: not all possibilities
+      implemented * * @param attributeBlocks Job attributes * @return Modified IPP buffer * @throws
+      UnsupportedEncodingException
+    </ID>
+    <ID>ForbiddenComment:IppResponse.kt$IppResponse$* TODO: natural-language not considered in
+      reporting * * @param tag
+    </ID>
+    <ID>ForbiddenComment:LoggingStrategy.kt$LoggingStrategy.ReleaseTree$// TODO: Implement actual
+      crash reporting service integration
+    </ID>
+    <ID>FunctionParameterNaming:IppOperation.kt$IppOperation$`is`: InputStream</ID>
+    <ID>InstanceOfCheckForException:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$e is
+      MalformedURLException
+    </ID>
+    <ID>InstanceOfCheckForException:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$e is
+      URISyntaxException
+    </ID>
+    <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is FileNotFoundException</ID>
+    <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is NullPointerException</ID>
+    <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is SocketException</ID>
+    <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is SocketTimeoutException</ID>
+    <ID>InstanceOfCheckForException:MdnsServices.kt$MdnsServices$e !is SocketTimeoutException</ID>
+    <ID>LongMethod:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$@Throws(Exception::class)
+      fun getPrinters( url: URL, path: String, firstName: String? = null, limit: Int? = null ): List&lt;CupsPrinter&gt;
+    </ID>
+    <ID>
+      LongMethod:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$@Throws(Exception::class)
+      suspend fun checkPrinter(url: String?, printerId: PrinterId): PrinterCapabilitiesInfo?
+    </ID>
+    <ID>LongMethod:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$fun
+      getMediaSizeFromAttributeValue(attributeValue: AttributeValue): PrintAttributes.MediaSize?
+    </ID>
+    <ID>LongMethod:CupsService.kt$CupsService$internal fun updateJobStatus(printJob: PrintJob):
+      Boolean
+    </ID>
+    <ID>LongMethod:IppOperation.kt$IppOperation$@Throws(Exception::class) private fun sendRequest(
+      url: URL, ippBuf: ByteBuffer, documentStream: InputStream? = null ): IppResult?
+    </ID>
+    <ID>LongMethod:MdnsServices.kt$MdnsServices$private fun process( list: MutableMap&lt;String,
+      PrinterRec&gt;, packet: DatagramPacket, service: String )
+    </ID>
+    <ID>LoopWithTooManyJumpStatements:IppResponse.kt$IppResponse$while</ID>
+    <ID>LoopWithTooManyJumpStatements:MdnsServices.kt$MdnsServices$while</ID>
+    <ID>MagicNumber:AddPrintersActivity.kt$AddPrintersActivity$200</ID>
+    <ID>MagicNumber:AddPrintersActivity.kt$AddPrintersActivity$3</ID>
+    <ID>MagicNumber:CupsGetDefaultOperation.kt$CupsGetDefaultOperation$0x4001</ID>
+    <ID>MagicNumber:CupsGetDefaultOperation.kt$CupsGetDefaultOperation$8192</ID>
+    <ID>MagicNumber:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$0x4002</ID>
+    <ID>MagicNumber:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$8192</ID>
+    <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$0.9f</ID>
+    <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$100</ID>
+    <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$3</ID>
+    <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$300</ID>
+    <ID>MagicNumber:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$4</ID>
+    <ID>MagicNumber:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$1000f</ID>
+    <ID>MagicNumber:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$25.4f</ID>
+    <ID>MagicNumber:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$3</ID>
+    <ID>MagicNumber:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$4</ID>
+    <ID>MagicNumber:IppCancelJobOperation.kt$IppCancelJobOperation$0x0008</ID>
+    <ID>MagicNumber:IppCancelJobOperation.kt$IppCancelJobOperation$8192</ID>
+    <ID>MagicNumber:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$0x0009</ID>
+    <ID>MagicNumber:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$1000</ID>
+    <ID>MagicNumber:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$8192</ID>
+    <ID>MagicNumber:IppGetPrinterAttributesOperation.kt$IppGetPrinterAttributesOperation$0x000b</ID>
+    <ID>MagicNumber:IppGetPrinterAttributesOperation.kt$IppGetPrinterAttributesOperation$8192</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x00FF</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0400</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0401</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0402</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0403</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0404</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0405</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0406</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0407</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0408</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0409</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x040a</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x040b</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x040c</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x040d</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x040e</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x040f</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0410</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0411</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0412</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0501</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0502</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0503</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0504</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0505</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0506</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0507</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0508</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x0509</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$0x050A</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$3</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$4</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$5</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$6</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$7</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$8</ID>
+    <ID>MagicNumber:IppLists.kt$IppLists$9</ID>
+    <ID>MagicNumber:IppOperation.kt$IppOperation$10000</ID>
+    <ID>MagicNumber:IppOperation.kt$IppOperation$16384</ID>
+    <ID>MagicNumber:IppOperation.kt$IppOperation$8192</ID>
+    <ID>MagicNumber:IppOperation.kt$IppOperation.Companion$0x1000</ID>
+    <ID>MagicNumber:IppPrintJobOperation.kt$IppPrintJobOperation$3</ID>
+    <ID>MagicNumber:IppPrintJobOperation.kt$IppPrintJobOperation$8192</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x03</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x04</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x05</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x06</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x07</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x13</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x21</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x22</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x23</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x30</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x31</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x32</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x33</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x35</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x36</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x41</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x42</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x44</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x45</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x46</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x47</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x48</ID>
+    <ID>MagicNumber:IppResponse.kt$IppResponse$0x49</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$0x00ff</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$0xff</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$10</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$3</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$4</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$5</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$6</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$7</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$8</ID>
+    <ID>MagicNumber:IppUtil.kt$IppUtil$9</ID>
+    <ID>MagicNumber:MdnsServices.kt$12</ID>
+    <ID>MagicNumber:MdnsServices.kt$MdnsServices$5353</ID>
+    <ID>MagicNumber:MdnsServices.kt$MdnsServices$65535</ID>
+    <ID>MatchingDeclarationName:EmumItem.kt$EnumItem</ID>
+    <ID>MaxLineLength:AddPrintersActivity.kt$AddPrintersActivity$/* * 1: URL * 2: Name * 3:
+      Description * 4: Location * 5: Make and model * 6: Current state * pattern matching fields: 1
+      2 3 4 5 6 */
+    </ID>
+    <ID>MaxLineLength:AddPrintersActivity.kt$AddPrintersActivity$Pattern.compile("&lt;TR&gt;&lt;TD&gt;&lt;A
+      HREF=\"([^\"]+)\"&gt;([^&lt;]*)&lt;/A&gt;&lt;/TD&gt;&lt;TD&gt;([^&lt;]*)&lt;/TD&gt;&lt;TD&gt;([^&lt;]*)&lt;/TD&gt;&lt;TD&gt;([^&lt;]*)&lt;/TD&gt;&lt;TD&gt;([^&lt;]*)&lt;/TD&gt;&lt;/TR&gt;\n")
+    </ID>
+    <ID>MaxLineLength:AdditionalKeyManager.kt$AdditionalKeyManager.Companion$*</ID>
+    <ID>MaxLineLength:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$"copies-supported
+      page-ranges-supported printer-name printer-info printer-location printer-make-and-model
+      printer-uri-supported"
+    </ID>
+    <ID>MaxLineLength:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$+</ID>
+    <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$*</ID>
+    <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$// Most servers
+      have URLs like xxx://ip:port/printers/printer_name; however some may have
+      xxx://ip:port/printer_name (see GitHub issue #40)
+    </ID>
+    <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$attributeValue !=
+      null &amp;&amp; "color" == attributeValue.value -&gt; PrintAttributes.COLOR_MODE_COLOR
+    </ID>
+    <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$class</ID>
+    <ID>
+      MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$e.message?.contains("ETIMEDOUT")
+      == true
+    </ID>
+    <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$exception is
+      IOException &amp;&amp; exception.localizedMessage?.contains("Cleartext HTTP traffic") == true
+    </ID>
+    <ID>MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$exception is
+      SSLPeerUnverifiedException
+    </ID>
+    <ID>
+      MaxLineLength:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession.Companion$@SuppressLint("StaticFieldLeak")
+    </ID>
+    <ID>
+      MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("NA_GOVT_LETTER".lowercase(Locale.ENGLISH))
+      -&gt; return PrintAttributes.MediaSize.NA_GOVT_LETTER
+    </ID>
+    <ID>
+      MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("NA_JUNIOR_LEGAL".lowercase(Locale.ENGLISH))
+      -&gt; return PrintAttributes.MediaSize.NA_JUNIOR_LEGAL
+    </ID>
+    <ID>
+      MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("OM_DAI_PA_KAI".lowercase(Locale.ENGLISH))
+      -&gt; return PrintAttributes.MediaSize.OM_DAI_PA_KAI
+    </ID>
+    <ID>
+      MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("OM_JUURO_KU_KAI".lowercase(Locale.ENGLISH))
+      -&gt; return PrintAttributes.MediaSize.OM_JUURO_KU_KAI
+    </ID>
+    <ID>
+      MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("UNKNOWN_LANDSCAPE".lowercase(Locale.ENGLISH))
+      -&gt; return PrintAttributes.MediaSize.UNKNOWN_LANDSCAPE
+    </ID>
+    <ID>
+      MaxLineLength:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$value.startsWith("UNKNOWN_PORTRAIT".lowercase(Locale.ENGLISH))
+      -&gt; return PrintAttributes.MediaSize.UNKNOWN_PORTRAIT
+    </ID>
+    <ID>MaxLineLength:CupsService.kt$CupsService$*</ID>
+    <ID>MaxLineLength:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$// "page-ranges
+      print-quality sides job-uri job-id job-state job-printer-uri job-name
+      job-originating-user-name job-k-octets time-at-creation time-at-processing time-at-completed
+      job-media-sheets-completed");
+    </ID>
+    <ID>MaxLineLength:IppOperation.kt$IppOperation$Timber.e("Caught exception while connecting to
+      printer $url: HTTP ${connection.responseCode} ${connection.responseMessage}")
+    </ID>
+    <ID>MaxLineLength:MdnsServices.kt$MdnsServices$Timber.e("Couldn't find printer from mDNS
+      datagram: ${info.application}, ${info.domain}, ${info.key}")
+    </ID>
+    <ID>
+      NestedBlockDepth:CupsGetDefaultOperation.kt$CupsGetDefaultOperation$@Throws(Exception::class)
+      fun getDefaultPrinter(url: URL, path: String): CupsPrinter?
+    </ID>
+    <ID>
+      NestedBlockDepth:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$@Throws(Exception::class)
+      fun getPrinters( url: URL, path: String, firstName: String? = null, limit: Int? = null ): List&lt;CupsPrinter&gt;
+    </ID>
+    <ID>NestedBlockDepth:CupsPrinter.kt$CupsPrinter$@Throws(Exception::class) fun print(printJob:
+      PrintJob, context: Context): PrintRequestResult
+    </ID>
+    <ID>NestedBlockDepth:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$fun
+      getMediaSizeFromAttributeValue(attributeValue: AttributeValue): PrintAttributes.MediaSize?
+    </ID>
+    <ID>
+      NestedBlockDepth:IppGetJobAttributesOperation.kt$IppGetJobAttributesOperation$@Throws(Exception::class)
+      fun getPrintJobAttributes(url: URL, userName: String, jobID: Int): PrintJobAttributes
+    </ID>
+    <ID>
+      NestedBlockDepth:IppPrintJobOperation.kt$IppPrintJobOperation$@Throws(UnsupportedEncodingException::class)
+      private fun getJobAttributes( inputIppBuf: ByteBuffer, attributeBlocks: Array&lt;String&gt;?
+      ): ByteBuffer
+    </ID>
+    <ID>NestedBlockDepth:MdnsServices.kt$MdnsServices$private fun getPrinters(service: String): Map&lt;String,
+      PrinterRec&gt;
+    </ID>
+    <ID>NestedBlockDepth:MdnsServices.kt$MdnsServices$private fun process( list: MutableMap&lt;String,
+      PrinterRec&gt;, packet: DatagramPacket, service: String )
+    </ID>
+    <ID>NestedBlockDepth:Merger.kt$Merger$fun merge(httpRecs: List&lt;PrinterRec&gt;, httpsRecs:
+      MutableList&lt;PrinterRec&gt;)
+    </ID>
+    <ID>
+      NewLineAtEndOfFile:AddPrintersViewModel.kt$com.tobiasdroste.papercups.app.AddPrintersViewModel.kt
+    </ID>
+    <ID>NewLineAtEndOfFile:DataModules.kt$com.tobiasdroste.papercups.app.printers.DataModules.kt
+    </ID>
+    <ID>
+      NewLineAtEndOfFile:LocalPrinter.kt$com.tobiasdroste.papercups.app.printers.models.LocalPrinter.kt
+    </ID>
+    <ID>
+      NewLineAtEndOfFile:LoggingStrategy.kt$com.tobiasdroste.papercups.app.logging.LoggingStrategy.kt
+    </ID>
+    <ID>
+      NewLineAtEndOfFile:ManageManualPrintersViewModel.kt$com.tobiasdroste.papercups.app.ManageManualPrintersViewModel.kt
+    </ID>
+    <ID>PrintStackTrace:AddPrintersActivity.kt$AddPrintersActivity$e</ID>
+    <ID>PrintStackTrace:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$t</ID>
+    <ID>ReturnCount:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$private fun
+      handleHttpError(exception: Exception, printerId: PrinterId): Boolean
+    </ID>
+    <ID>ReturnCount:CupsPrinterDiscoveryUtils.kt$CupsPrinterDiscoveryUtils$fun
+      getMediaSizeFromAttributeValue(attributeValue: AttributeValue): PrintAttributes.MediaSize?
+    </ID>
+    <ID>ReturnCount:CupsService.kt$CupsService$internal fun updateJobStatus(printJob: PrintJob):
+      Boolean
+    </ID>
+    <ID>ReturnCount:CupsService.kt$CupsService$override fun onRequestCancelPrintJob(printJob:
+      PrintJob)
+    </ID>
+    <ID>ReturnCount:HttpConnectionManagement.kt$HttpConnectionManagement$fun
+      saveCertificates(context: Context, chain: Array&lt;X509Certificate&gt;): Boolean
+    </ID>
+    <ID>ReturnCount:HttpConnectionManagement.kt$HttpConnectionManagement$private fun
+      loadKeyStore(context: Context): KeyStore?
+    </ID>
+    <ID>ReturnCount:IppOperation.kt$IppOperation$@Throws(Exception::class) private fun sendRequest(
+      url: URL, ippBuf: ByteBuffer, documentStream: InputStream? = null ): IppResult?
+    </ID>
+    <ID>
+      ReturnCount:IppPrintJobOperation.kt$IppPrintJobOperation$@Throws(UnsupportedEncodingException::class)
+      private fun getJobAttributes( inputIppBuf: ByteBuffer, attributeBlocks: Array&lt;String&gt;?
+      ): ByteBuffer
+    </ID>
+    <ID>ReturnCount:IppResponse.kt$IppResponse$private fun getEnumName(value: Int, nameOfAttribute:
+      String?): String
+    </ID>
+    <ID>ReturnCount:IppResponse.kt$IppResponse$private fun getTagName(tag: String?): String?</ID>
+    <ID>ReturnCount:MdnsServices.kt$MdnsServices$private fun getPrinterRec( inputName: String?,
+      protocol: String?, host: String?, port: Int?, queue: String? ): PrinterRec?
+    </ID>
+    <ID>
+      SpreadOperator:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$(*tm.acceptedIssuers)
+    </ID>
+    <ID>SwallowedException:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$e:
+      CertificateException
+    </ID>
+    <ID>SwallowedException:InputPrinter.kt$InputPrinter$illegalArgumentException:
+      IllegalArgumentException
+    </ID>
+    <ID>SwallowedException:InputPrinter.kt$InputPrinter.Companion$e: URISyntaxException</ID>
+    <ID>TooGenericExceptionCaught:AddPrintersActivity.kt$AddPrintersActivity$e: Exception</ID>
+    <ID>
+      TooGenericExceptionCaught:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$e:
+      Exception
+    </ID>
+    <ID>TooGenericExceptionCaught:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$t:
+      Throwable
+    </ID>
+    <ID>TooGenericExceptionCaught:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$e:
+      Exception
+    </ID>
+    <ID>TooGenericExceptionCaught:CupsService.kt$CupsService$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:HttpConnectionManagement.kt$HttpConnectionManagement$e:
+      Exception
+    </ID>
+    <ID>TooGenericExceptionCaught:IppOperation.kt$IppOperation$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:MdnsServices.kt$MdnsServices$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:MdnsServices.kt$MdnsServices$e: NullPointerException</ID>
+    <ID>TooGenericExceptionCaught:Merger.kt$Merger$e: Exception</ID>
+    <ID>
+      TooGenericExceptionThrown:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$throw
+      RuntimeException("Couldn't find any X509TrustManagers")
+    </ID>
+    <ID>
+      TooGenericExceptionThrown:AdditionalKeyStoresTrustManager.kt$AdditionalKeyStoresTrustManager$throw
+      RuntimeException(e)
+    </ID>
+    <ID>TooGenericExceptionThrown:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$throw
+      Exception(t)
+    </ID>
+    <ID>TooManyFunctions:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession :
+      PrinterDiscoverySession
+    </ID>
+    <ID>TooManyFunctions:CupsService.kt$CupsService : PrintService</ID>
+    <ID>TooManyFunctions:IppResponse.kt$IppResponse</ID>
+    <ID>TooManyFunctions:IppTag.kt$IppTag</ID>
+    <ID>
+      UseCheckOrError:ManageManualPrintersActivity.kt$ManageManualPrintersActivity.ManualPrintersAdapter$throw
+      IllegalStateException("Manual printers list can't have invalid items")
+    </ID>
+    <ID>VariableNaming:MdnsServices.kt$MdnsServices$val `in` = DNSIncoming(packet)</ID>
+  </CurrentIssues>
 </SmellBaseline>
