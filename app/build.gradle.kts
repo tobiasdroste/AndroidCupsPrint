@@ -77,8 +77,6 @@ kotlin {
     }
 }
 
-val mockitoAgent = configurations.create("mockitoAgent")
-
 dependencies {
     implementation(libs.jmdns)
     implementation(libs.androidx.appcompat)
@@ -90,8 +88,8 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
-    mockitoAgent(libs.mockito.core) { isTransitive = false }
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.truth)
@@ -112,9 +110,4 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
-}
-
-
-tasks.withType<Test> {
-    jvmArgs("-javaagent:${mockitoAgent.asPath}")
 }
