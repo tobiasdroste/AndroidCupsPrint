@@ -18,9 +18,11 @@ package org.cups4j.operations.cups
  * <http:></http:>//www.gnu.org/licenses/>.
  */
 
-/*Notice
+/* 
+ * Notice
  * This file has been modified. It is not the original.
  * Jon Freeman - 2013
+ * Tobias Droste - 2025
  */
 
 import android.content.Context
@@ -29,7 +31,7 @@ import org.cups4j.operations.IppOperation
 import timber.log.Timber
 import java.net.URL
 
-class CupsGetPrintersOperation(context: Context) : IppOperation(context) {
+open class CupsGetPrintersOperation(context: Context) : IppOperation(context) {
     init {
         operationID = 0x4002
         bufferSize = 8192
@@ -42,76 +44,23 @@ class CupsGetPrintersOperation(context: Context) : IppOperation(context) {
         firstName: String? = null,
         limit: Int? = null
     ): List<CupsPrinter> {
-        val printers = ArrayList<CupsPrinter>()
-
-        val map = HashMap<String, String>()
-        map["requested-attributes"] =
+        val parameters = HashMap<String, String>()
+        parameters["requested-attributes"] =
             "copies-supported page-ranges-supported printer-name printer-info printer-location printer-make-and-model printer-uri-supported"
 
-        // When a firstName is given, the returned list starts with this printer
         if (firstName != null) {
-            map["first-printer-name"] = firstName
+            parameters["first-printer-name"] = firstName
+        }
+        if (limit != null && limit >= 1) {
+            parameters["limit"] = limit.toString()
         }
 
-        // When a limit is given, this is the maximum length of the returned list
-        if (limit != null) {
-            if (limit >= 1) {
-                map["limit"] = limit.toString()
+        val result = request(URL(url.toString() + path), parameters)
+            ?: run {
+                Timber.e("Couldn't get printers from URL: $url with path: $path")
+                return emptyList()
             }
-        }
 
-        val result = request(URL(url.toString() + path), map)
-
-        if (result == null) {
-            Timber.e("Couldn't get printers from URL: $url with path: $path")
-            return printers
-        }
-
-        for (group in result.attributeGroupList!!) {
-            val printer: CupsPrinter
-            if (group.tagName == "printer-attributes-tag") {
-                var printerURI: String? = null
-                var printerName: String? = null
-                var printerLocation: String? = null
-                var printerDescription: String? = null
-                for (attr in group.attribute) {
-                    when (attr.name) {
-                        "printer-uri-supported" -> printerURI =
-                            attr.attributeValue[0].value!!.replace(
-                                "ipps?://".toRegex(),
-                                url.protocol + "://"
-                            )
-
-                        "printer-name" -> printerName = attr.attributeValue[0].value
-                        "printer-location" -> if (attr.attributeValue.size > 0) {
-                            printerLocation = attr.attributeValue[0].value
-                        }
-
-                        "printer-info" -> if (attr.attributeValue.size > 0) {
-                            printerDescription = attr.attributeValue[0].value
-                        }
-                    }
-                }
-                val printerUrl: URL
-                try {
-                    printerUrl = URL(printerURI)
-                } catch (t: Throwable) {
-                    t.printStackTrace()
-                    System.err.println(
-                        "Error encountered building URL from printer uri of printer " + printerName
-                                + ", uri returned was [" + printerURI + "].  Attribute group tag/description: [" + group.tagName
-                                + "/" + group.description
-                    )
-                    throw Exception(t)
-                }
-
-                printer = CupsPrinter(printerUrl, printerName ?: DEFAULT_PRINTER_NAME, false)
-                printer.location = printerLocation
-                printer.description = printerDescription
-                printers.add(printer)
-            }
-        }
-
-        return printers
+        return CupsPrintersParser.parsePrinters(result, url.protocol, DEFAULT_PRINTER_NAME)
     }
 }

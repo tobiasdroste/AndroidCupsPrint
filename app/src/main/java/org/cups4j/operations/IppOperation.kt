@@ -58,8 +58,8 @@ abstract class IppOperation(val context: Context) {
     private var threadRef: Thread? = null
 
     @Throws(Exception::class)
-    fun request(url: URL, map: Map<String, String>): IppResult? =
-        sendRequest(url, getIppHeader(url, map))
+    open fun request(url: URL, parameters: Map<String, String>): IppResult? =
+        sendRequest(url, getIppHeader(url, parameters))
 
     @Throws(Exception::class)
     fun request(url: URL, map: Map<String, String>, document: InputStream): IppResult? =
