@@ -3,10 +3,6 @@
   <ManuallySuppressedIssues />
   <CurrentIssues>
     <ID>
-      CyclomaticComplexMethod:CupsGetPrintersOperation.kt$CupsGetPrintersOperation$@Throws(Exception::class)
-      fun getPrinters( url: URL, path: String, firstName: String? = null, limit: Int? = null ): List&lt;CupsPrinter&gt;
-    </ID>
-    <ID>
       CyclomaticComplexMethod:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$@Throws(Exception::class)
       suspend fun checkPrinter(url: String?, printerId: PrinterId): PrinterCapabilitiesInfo?
     </ID>
