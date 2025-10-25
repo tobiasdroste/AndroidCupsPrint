@@ -24,11 +24,11 @@ android {
 
     // Configure Android Lint
     lint {
-        abortOnError = false // Don't fail the build if there are Lint errors
+        abortOnError = true // Don't fail the build if there are Lint errors
         checkReleaseBuilds = true // Check lint on release builds
         checkDependencies = true // Check dependencies for issues
         checkAllWarnings = true // Check all warnings, not just the important ones
-        warningsAsErrors = false // Treat all warnings as errors
+        warningsAsErrors = true // Treat all warnings as errors
         baseline = file("lint-baseline.xml") // Baseline file to suppress issues
 
         // Disable specific Lint checks that might be too strict initially
@@ -43,7 +43,7 @@ android {
         applicationId = "com.tobiasdroste.papercups"
         minSdk = 23
         targetSdk = 36
-        versionCode = 14
+        versionCode = (project.findProperty("versionCode")?.toString()?.toInt()) ?: 1
         versionName = version as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         namespace = "com.tobiasdroste.papercups"
