@@ -26,14 +26,9 @@ class MdnsServices {
      */
     val exception: Exception? = null
 
-    private val hosts: MutableMap<String, String>
+    private val hosts: MutableMap<String, String> = HashMap()
 
-    private val services: MutableMap<String, Array<String>>
-
-    init {
-        hosts = HashMap()
-        services = HashMap()
-    }
+    private val services: MutableMap<String, Array<String>> = HashMap()
 
     private fun makeQuestion(input: String): ByteArray {
         var data = input
@@ -87,7 +82,7 @@ class MdnsServices {
             while (iterator.hasNext()) {
                 val record = iterator.next()
                 if (record is DNSRecord.Address) {
-                    info = record.getServiceInfo()
+                    info = record.serviceInfo
                     val ip = info.hostAddresses[0]
                     hosts[info.name + "." + info.domain + "."] = ip
                     iterator.remove()
@@ -97,7 +92,7 @@ class MdnsServices {
             while (iterator.hasNext()) {
                 val record = iterator.next()
                 if (record is DNSRecord.Service) {
-                    info = record.getServiceInfo()
+                    info = record.serviceInfo
                     val server = hosts[info.server] ?: continue
                     val port = info.port.toString()
                     services[info.key] = arrayOf(server, port)
@@ -142,7 +137,7 @@ class MdnsServices {
                             Integer.parseInt(services[key]!![1]),
                             rp
                         )
-                    } catch (e: NullPointerException) {
+                    } catch (_: NullPointerException) {
                         Timber.e("Attempted to parse an invalid mDNS packet: $info, $protocol, $services, $rp; abort.")
                         continue
                     }
