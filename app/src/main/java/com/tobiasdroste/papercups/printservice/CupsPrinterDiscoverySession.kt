@@ -92,7 +92,7 @@ class CupsPrinterDiscoverySession @AssistedInject constructor(@Assisted private 
     override fun onStartPrinterDiscovery(priorityList: List<PrinterId>) {
 
         // Add a dummy printer when no printers are available
-        if (printers.size == 0) {
+        if (printers.isEmpty()) {
             addPrinters(
                 listOf(
                     PrinterInfo.Builder(
@@ -222,7 +222,7 @@ class CupsPrinterDiscoverySession @AssistedInject constructor(@Assisted private 
                 for (attributeGroup in attributes) {
                     for (attribute in attributeGroup.attribute) {
                         if ("media-default" == attribute.name) {
-                            val mediaSize = if (attribute.attributeValue.size > 0) {
+                            val mediaSize = if (attribute.attributeValue.isNotEmpty()) {
                                 CupsPrinterDiscoveryUtils.getMediaSizeFromAttributeValue(attribute.attributeValue[0])
                             } else {
                                 PrintAttributes.MediaSize.ISO_A4
@@ -491,7 +491,7 @@ class CupsPrinterDiscoverySession @AssistedInject constructor(@Assisted private 
                 Toast.LENGTH_LONG
             ).show()
 
-            exception is ConnectException && exception.getLocalizedMessage()
+            exception is ConnectException && exception.localizedMessage
                 ?.contains("ENETUNREACH") == true -> Toast.makeText(
                 printService,
                 R.string.err_printer_network_unreachable,
