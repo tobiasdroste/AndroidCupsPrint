@@ -41,8 +41,6 @@
     <ID>InstanceOfCheckForException:CupsPrinterDiscoverySession.kt$CupsPrinterDiscoverySession$e is
       URISyntaxException
     </ID>
-    <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is FileNotFoundException</ID>
-    <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is NullPointerException</ID>
     <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is SocketException</ID>
     <ID>InstanceOfCheckForException:CupsService.kt$CupsService$e is SocketTimeoutException</ID>
     <ID>InstanceOfCheckForException:MdnsServices.kt$MdnsServices$e !is SocketTimeoutException</ID>

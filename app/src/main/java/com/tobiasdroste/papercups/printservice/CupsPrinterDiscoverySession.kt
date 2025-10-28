@@ -37,7 +37,6 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.net.ConnectException
 import java.net.HttpURLConnection
-import java.net.MalformedURLException
 import java.net.SocketTimeoutException
 import java.net.URI
 import java.net.URISyntaxException
@@ -431,14 +430,9 @@ class CupsPrinterDiscoverySession @AssistedInject constructor(@Assisted private 
                     onPrinterChecked(printerId, printerCapabilitiesInfo)
                 }
             } catch (e: Exception) {
-                if (handlePrinterException(e, printerId)) {
-                    when {
-                        e is MalformedURLException || e is URISyntaxException ||
-                                e.message?.contains("ETIMEDOUT") == true -> Timber.e("Start printer state tracking failed")
-
-                        else -> Timber.e(e, "Start printer state tracking failed")
-                    }
-                }
+                handlePrinterException(e, printerId)
+            } catch (e: Exception) {
+                Timber.e(e, "Start printer state tracking failed")
             }
         }
 
