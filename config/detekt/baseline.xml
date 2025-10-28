@@ -24,7 +24,6 @@
     <ID>CyclomaticComplexMethod:MdnsServices.kt$MdnsServices$private fun process( list: MutableMap&lt;String,
       PrinterRec&gt;, packet: DatagramPacket, service: String )
     </ID>
-    <ID>EmptyClassBlock:LocalPrinter.kt$LocalPrinter${ }</ID>
     <ID>ForbiddenComment:IppPrintJobOperation.kt$IppPrintJobOperation$* TODO: not all possibilities
       implemented * * @param attributeBlocks Job attributes * @return Modified IPP buffer * @throws
       UnsupportedEncodingException

@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class LocalPrinter(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     var name: String,
-    var url: String) {
-}
+    var url: String
+)
