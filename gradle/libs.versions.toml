@@ -61,9 +61,8 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 jmdns = { group = "javax.jmdns", name = "jmdns", version.ref = "jmdns" }
 
 [plugins]
-android-application = { id = "com.android.application", version = "8.13.1" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.2.20" }
-hilt = { id = "com.google.dagger.hilt.android", version = "2.57.2" }
-ksp = { id = "com.google.devtools.ksp", version = "2.2.20-2.0.4" }
+android-application = { id = "com.android.application", version = "9.0.0" }
+hilt = { id = "com.google.dagger.hilt.android", version = "2.59.1" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.5" }
 room = { id = "androidx.room", version = "2.7.2" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.8" }
